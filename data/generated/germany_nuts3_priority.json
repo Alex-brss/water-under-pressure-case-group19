@@ -1,0 +1,5839 @@
+{
+  "generated_at": "2026-09-10T18:21:52.790Z",
+  "methodology": {
+    "scope": "Germany only; NUTS 3 regions; 2024 industrial-site records and 2025 population.",
+    "exposure": "Count of sites in PFAS-associated industrial proxy sectors: chemicals, metals/surface treatment, paper/wood and textile.",
+    "consequence": "Eurostat population on 1 January by NUTS 3 region.",
+    "score": "sqrt((100 × industrial_site_count / German maximum) × (100 × population / German maximum)).",
+    "limitation": "Indicative pre-prioritisation only. An industrial site is a proxy for potential pressure, not evidence of PFAS contamination, human exposure, or regulatory non-compliance."
+  },
+  "sources": {
+    "industrial": {
+      "name": "EEA Industrial Emissions Portal — IED Site Map",
+      "url": "https://industry.eea.europa.eu/industrial-emissions/dataset",
+      "service": "https://air.discomap.eea.europa.eu/arcgis/rest/services/Air/IED_SiteMap/MapServer/0",
+      "reporting_year": 2024,
+      "sector_fields_verified": [
+        "eprtr_sectors",
+        "eea_activities"
+      ]
+    },
+    "population": {
+      "name": "Eurostat — Population on 1 January by broad age group, sex and NUTS 3 region",
+      "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/demo_r_pjanaggr3",
+      "reference_year": 2025
+    },
+    "boundaries": {
+      "name": "Eurostat GISCO — NUTS 3 boundaries",
+      "url": "https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/NUTS_RG_03M_2024_4326_LEVL_3.geojson",
+      "nuts_version": 2024
+    }
+  },
+  "quality_checks": {
+    "source_site_record_count": 2059,
+    "duplicate_site_record_count": 0,
+    "excluded_invalid_coordinates_count": 0,
+    "excluded_no_nuts3_match_count": 0,
+    "matched_by_nuts_attribute_count": 2035,
+    "matched_by_geometry_count": 24,
+    "assigned_industrial_site_count": 2059,
+    "german_nuts3_region_count": 400,
+    "regions_with_population_count": 400,
+    "missing_population_region_count": 0,
+    "nuts3_codes_aligned_count": 400
+  },
+  "regions": [
+    {
+      "nuts3_id": "DE300",
+      "nuts3_name": "Berlin",
+      "population": 3685265,
+      "industrial_site_count": 14,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 12,
+        "Chimie": 2
+      },
+      "exposure_index": 22.58,
+      "population_index": 100,
+      "priority_score": 47.52,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE600",
+      "nuts3_name": "Hamburg",
+      "population": 1862565,
+      "industrial_site_count": 27,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 17,
+        "Métaux / traitement de surface": 10
+      },
+      "exposure_index": 43.55,
+      "population_index": 50.54,
+      "priority_score": 46.91,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA58",
+      "nuts3_name": "Märkischer Kreis",
+      "population": 408046,
+      "industrial_site_count": 62,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 61,
+        "Chimie": 1
+      },
+      "exposure_index": 100,
+      "population_index": 11.07,
+      "priority_score": 33.28,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA23",
+      "nuts3_name": "Köln, Kreisfreie Stadt",
+      "population": 1024621,
+      "industrial_site_count": 24,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 21,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 38.71,
+      "population_index": 27.8,
+      "priority_score": 32.81,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE929",
+      "nuts3_name": "Region Hannover",
+      "population": 1140888,
+      "industrial_site_count": 21,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 10,
+        "Chimie": 11
+      },
+      "exposure_index": 33.87,
+      "population_index": 30.96,
+      "priority_score": 32.38,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE712",
+      "nuts3_name": "Frankfurt am Main, Kreisfreie Stadt",
+      "population": 756021,
+      "industrial_site_count": 29,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 29
+      },
+      "exposure_index": 46.77,
+      "population_index": 20.51,
+      "priority_score": 30.98,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA1C",
+      "nuts3_name": "Mettmann",
+      "population": 490910,
+      "industrial_site_count": 33,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 29,
+        "Chimie": 4
+      },
+      "exposure_index": 53.23,
+      "population_index": 13.32,
+      "priority_score": 26.63,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA36",
+      "nuts3_name": "Recklinghausen",
+      "population": 621305,
+      "industrial_site_count": 20,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 16,
+        "Métaux / traitement de surface": 4
+      },
+      "exposure_index": 32.26,
+      "population_index": 16.86,
+      "priority_score": 23.32,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE134",
+      "nuts3_name": "Ortenaukreis",
+      "population": 444858,
+      "industrial_site_count": 23,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 6,
+        "Métaux / traitement de surface": 14,
+        "Chimie": 3
+      },
+      "exposure_index": 37.1,
+      "population_index": 12.07,
+      "priority_score": 21.16,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA27",
+      "nuts3_name": "Rhein-Erft-Kreis",
+      "population": 477988,
+      "industrial_site_count": 20,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 17,
+        "Métaux / traitement de surface": 2,
+        "Papier / bois": 1
+      },
+      "exposure_index": 32.26,
+      "population_index": 12.97,
+      "priority_score": 20.45,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA12",
+      "nuts3_name": "Duisburg, Kreisfreie Stadt",
+      "population": 502270,
+      "industrial_site_count": 16,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 7,
+        "Métaux / traitement de surface": 10
+      },
+      "exposure_index": 25.81,
+      "population_index": 13.63,
+      "priority_score": 18.75,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DED43",
+      "nuts3_name": "Mittelsachsen",
+      "population": 296431,
+      "industrial_site_count": 27,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 19,
+        "Chimie": 4,
+        "Papier / bois": 4
+      },
+      "exposure_index": 43.55,
+      "population_index": 8.04,
+      "priority_score": 18.72,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE115",
+      "nuts3_name": "Ludwigsburg",
+      "population": 535374,
+      "industrial_site_count": 14,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 12,
+        "Chimie": 2
+      },
+      "exposure_index": 22.58,
+      "population_index": 14.53,
+      "priority_score": 18.11,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE949",
+      "nuts3_name": "Emsland",
+      "population": 334539,
+      "industrial_site_count": 21,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 12,
+        "Chimie": 7,
+        "Papier / bois": 2
+      },
+      "exposure_index": 33.87,
+      "population_index": 9.08,
+      "priority_score": 17.53,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA2D",
+      "nuts3_name": "Städteregion Aachen",
+      "population": 582410,
+      "industrial_site_count": 12,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 10,
+        "Chimie": 3
+      },
+      "exposure_index": 19.35,
+      "population_index": 15.8,
+      "priority_score": 17.49,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA57",
+      "nuts3_name": "Hochsauerlandkreis",
+      "population": 260843,
+      "industrial_site_count": 26,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 6,
+        "Métaux / traitement de surface": 18,
+        "Chimie": 2
+      },
+      "exposure_index": 41.94,
+      "population_index": 7.08,
+      "priority_score": 17.23,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA2C",
+      "nuts3_name": "Rhein-Sieg-Kreis",
+      "population": 605441,
+      "industrial_site_count": 11,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 7,
+        "Chimie": 4
+      },
+      "exposure_index": 17.74,
+      "population_index": 16.43,
+      "priority_score": 17.07,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA5A",
+      "nuts3_name": "Siegen-Wittgenstein",
+      "population": 274074,
+      "industrial_site_count": 24,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 22,
+        "Chimie": 2
+      },
+      "exposure_index": 38.71,
+      "population_index": 7.44,
+      "priority_score": 16.97,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA1F",
+      "nuts3_name": "Wesel",
+      "population": 457918,
+      "industrial_site_count": 14,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 9,
+        "Métaux / traitement de surface": 5
+      },
+      "exposure_index": 22.58,
+      "population_index": 12.43,
+      "priority_score": 16.75,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE0B",
+      "nuts3_name": "Saalekreis",
+      "population": 182451,
+      "industrial_site_count": 34,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 30,
+        "Métaux / traitement de surface": 3,
+        "Papier / bois": 1
+      },
+      "exposure_index": 54.84,
+      "population_index": 4.95,
+      "priority_score": 16.48,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA1D",
+      "nuts3_name": "Rhein-Kreis Neuss",
+      "population": 457077,
+      "industrial_site_count": 13,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 2,
+        "Chimie": 4,
+        "Métaux / traitement de surface": 7
+      },
+      "exposure_index": 20.97,
+      "population_index": 12.4,
+      "priority_score": 16.13,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE128",
+      "nuts3_name": "Rhein-Neckar-Kreis",
+      "population": 558561,
+      "industrial_site_count": 10,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 5,
+        "Métaux / traitement de surface": 5
+      },
+      "exposure_index": 16.13,
+      "population_index": 15.16,
+      "priority_score": 15.64,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA11",
+      "nuts3_name": "Düsseldorf, Kreisfreie Stadt",
+      "population": 618685,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4,
+        "Papier / bois": 2,
+        "Chimie": 3
+      },
+      "exposure_index": 14.52,
+      "population_index": 16.79,
+      "priority_score": 15.61,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA5C",
+      "nuts3_name": "Unna",
+      "population": 393784,
+      "industrial_site_count": 14,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 5,
+        "Métaux / traitement de surface": 9
+      },
+      "exposure_index": 22.58,
+      "population_index": 10.69,
+      "priority_score": 15.53,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA37",
+      "nuts3_name": "Steinfurt",
+      "population": 451712,
+      "industrial_site_count": 12,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 8,
+        "Chimie": 4
+      },
+      "exposure_index": 19.35,
+      "population_index": 12.26,
+      "priority_score": 15.4,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DED42",
+      "nuts3_name": "Erzgebirgskreis",
+      "population": 318394,
+      "industrial_site_count": 17,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 4,
+        "Métaux / traitement de surface": 13,
+        "Chimie": 1
+      },
+      "exposure_index": 27.42,
+      "population_index": 8.64,
+      "priority_score": 15.39,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE05",
+      "nuts3_name": "Anhalt-Bitterfeld",
+      "population": 153035,
+      "industrial_site_count": 35,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 33,
+        "Papier / bois": 2,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 56.45,
+      "population_index": 4.15,
+      "priority_score": 15.31,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA56",
+      "nuts3_name": "Ennepe-Ruhr-Kreis",
+      "population": 314167,
+      "industrial_site_count": 17,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 13,
+        "Chimie": 4
+      },
+      "exposure_index": 27.42,
+      "population_index": 8.52,
+      "priority_score": 15.29,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE118",
+      "nuts3_name": "Heilbronn, Landkreis",
+      "population": 353877,
+      "industrial_site_count": 15,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 11,
+        "Chimie": 2,
+        "Papier / bois": 2
+      },
+      "exposure_index": 24.19,
+      "population_index": 9.6,
+      "priority_score": 15.24,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA34",
+      "nuts3_name": "Borken",
+      "population": 380796,
+      "industrial_site_count": 13,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 10,
+        "Papier / bois": 1,
+        "Chimie": 2
+      },
+      "exposure_index": 20.97,
+      "population_index": 10.33,
+      "priority_score": 14.72,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE113",
+      "nuts3_name": "Esslingen",
+      "population": 536601,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 8,
+        "Chimie": 1
+      },
+      "exposure_index": 14.52,
+      "population_index": 14.56,
+      "priority_score": 14.54,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE11D",
+      "nuts3_name": "Ostalbkreis",
+      "population": 317427,
+      "industrial_site_count": 14,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 2,
+        "Métaux / traitement de surface": 10,
+        "Chimie": 2
+      },
+      "exposure_index": 22.58,
+      "population_index": 8.61,
+      "priority_score": 13.95,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA42",
+      "nuts3_name": "Gütersloh",
+      "population": 363982,
+      "industrial_site_count": 12,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 4,
+        "Métaux / traitement de surface": 7,
+        "Papier / bois": 1
+      },
+      "exposure_index": 19.35,
+      "population_index": 9.88,
+      "priority_score": 13.83,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA41",
+      "nuts3_name": "Bielefeld, Kreisfreie Stadt",
+      "population": 331605,
+      "industrial_site_count": 13,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 9,
+        "Chimie": 3,
+        "Papier / bois": 1
+      },
+      "exposure_index": 20.97,
+      "population_index": 9,
+      "priority_score": 13.74,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DED51",
+      "nuts3_name": "Leipzig, Kreisfreie Stadt",
+      "population": 611850,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 5,
+        "Chimie": 2
+      },
+      "exposure_index": 11.29,
+      "population_index": 16.6,
+      "priority_score": 13.69,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA26",
+      "nuts3_name": "Düren",
+      "population": 279285,
+      "industrial_site_count": 14,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 6,
+        "Papier / bois": 7,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 22.58,
+      "population_index": 7.58,
+      "priority_score": 13.08,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA5B",
+      "nuts3_name": "Soest",
+      "population": 300297,
+      "industrial_site_count": 13,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 13
+      },
+      "exposure_index": 20.97,
+      "population_index": 8.15,
+      "priority_score": 13.07,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE719",
+      "nuts3_name": "Main-Kinzig-Kreis",
+      "population": 420914,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 6,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 14.52,
+      "population_index": 11.42,
+      "priority_score": 12.88,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE714",
+      "nuts3_name": "Wiesbaden, Kreisfreie Stadt",
+      "population": 288850,
+      "industrial_site_count": 13,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 10,
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 20.97,
+      "population_index": 7.84,
+      "priority_score": 12.82,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA14",
+      "nuts3_name": "Krefeld, Kreisfreie Stadt",
+      "population": 231406,
+      "industrial_site_count": 16,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 7,
+        "Chimie": 9
+      },
+      "exposure_index": 25.81,
+      "population_index": 6.28,
+      "priority_score": 12.73,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE276",
+      "nuts3_name": "Augsburg, Landkreis",
+      "population": 262811,
+      "industrial_site_count": 14,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 11,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 22.58,
+      "population_index": 7.13,
+      "priority_score": 12.69,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE123",
+      "nuts3_name": "Karlsruhe, Landkreis",
+      "population": 456264,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 6,
+        "Chimie": 2
+      },
+      "exposure_index": 12.9,
+      "population_index": 12.38,
+      "priority_score": 12.64,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE116",
+      "nuts3_name": "Rems-Murr-Kreis",
+      "population": 440696,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 7,
+        "Chimie": 1
+      },
+      "exposure_index": 12.9,
+      "population_index": 11.96,
+      "priority_score": 12.42,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE501",
+      "nuts3_name": "Bremen, Kreisfreie Stadt",
+      "population": 586271,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 5
+      },
+      "exposure_index": 9.68,
+      "population_index": 15.91,
+      "priority_score": 12.41,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE09",
+      "nuts3_name": "Harz",
+      "population": 205484,
+      "industrial_site_count": 17,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Métaux / traitement de surface": 14
+      },
+      "exposure_index": 27.42,
+      "population_index": 5.58,
+      "priority_score": 12.36,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DED2F",
+      "nuts3_name": "Sächsische Schweiz-Osterzgebirge",
+      "population": 243996,
+      "industrial_site_count": 14,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 6,
+        "Chimie": 5,
+        "Papier / bois": 3
+      },
+      "exposure_index": 22.58,
+      "population_index": 6.62,
+      "priority_score": 12.23,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE139",
+      "nuts3_name": "Lörrach",
+      "population": 238263,
+      "industrial_site_count": 14,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 7,
+        "Métaux / traitement de surface": 7
+      },
+      "exposure_index": 22.58,
+      "population_index": 6.47,
+      "priority_score": 12.08,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA1A",
+      "nuts3_name": "Wuppertal, Kreisfreie Stadt",
+      "population": 358193,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4,
+        "Chimie": 4,
+        "Papier / bois": 1
+      },
+      "exposure_index": 14.52,
+      "population_index": 9.72,
+      "priority_score": 11.88,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE126",
+      "nuts3_name": "Mannheim, Stadtkreis",
+      "population": 318035,
+      "industrial_site_count": 10,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Chimie": 6,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 16.13,
+      "population_index": 8.63,
+      "priority_score": 11.8,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE254",
+      "nuts3_name": "Nürnberg, Kreisfreie Stadt",
+      "population": 529508,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 5,
+        "Chimie": 1
+      },
+      "exposure_index": 9.68,
+      "population_index": 14.37,
+      "priority_score": 11.79,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA45",
+      "nuts3_name": "Lippe",
+      "population": 347149,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 6,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 14.52,
+      "population_index": 9.42,
+      "priority_score": 11.69,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE212",
+      "nuts3_name": "München, Kreisfreie Stadt",
+      "population": 1505005,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 40.84,
+      "priority_score": 11.48,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA13",
+      "nuts3_name": "Essen, Kreisfreie Stadt",
+      "population": 574682,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4,
+        "Chimie": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 15.59,
+      "priority_score": 11.21,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE124",
+      "nuts3_name": "Rastatt",
+      "population": 230737,
+      "industrial_site_count": 12,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Chimie": 5,
+        "Papier / bois": 4
+      },
+      "exposure_index": 19.35,
+      "population_index": 6.26,
+      "priority_score": 11.01,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA1E",
+      "nuts3_name": "Viersen",
+      "population": 297857,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 5,
+        "Métaux / traitement de surface": 4
+      },
+      "exposure_index": 14.52,
+      "population_index": 8.08,
+      "priority_score": 10.83,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DED2E",
+      "nuts3_name": "Meißen",
+      "population": 239221,
+      "industrial_site_count": 11,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 4,
+        "Métaux / traitement de surface": 6,
+        "Papier / bois": 2
+      },
+      "exposure_index": 17.74,
+      "population_index": 6.49,
+      "priority_score": 10.73,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE91C",
+      "nuts3_name": "Göttingen",
+      "population": 328028,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2,
+        "Métaux / traitement de surface": 5,
+        "Papier / bois": 1
+      },
+      "exposure_index": 12.9,
+      "population_index": 8.9,
+      "priority_score": 10.72,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE722",
+      "nuts3_name": "Lahn-Dill-Kreis",
+      "population": 254074,
+      "industrial_site_count": 10,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 9,
+        "Chimie": 1
+      },
+      "exposure_index": 16.13,
+      "population_index": 6.89,
+      "priority_score": 10.55,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE0C",
+      "nuts3_name": "Salzlandkreis",
+      "population": 180771,
+      "industrial_site_count": 14,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 7,
+        "Métaux / traitement de surface": 7,
+        "Papier / bois": 1
+      },
+      "exposure_index": 22.58,
+      "population_index": 4.91,
+      "priority_score": 10.52,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE71C",
+      "nuts3_name": "Offenbach, Landkreis",
+      "population": 358022,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 6,
+        "Papier / bois": 1
+      },
+      "exposure_index": 11.29,
+      "population_index": 9.71,
+      "priority_score": 10.47,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE94E",
+      "nuts3_name": "Osnabrück, Landkreis",
+      "population": 354821,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 6,
+        "Chimie": 1
+      },
+      "exposure_index": 11.29,
+      "population_index": 9.63,
+      "priority_score": 10.43,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEC04",
+      "nuts3_name": "Saarlouis",
+      "population": 205129,
+      "industrial_site_count": 12,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 12
+      },
+      "exposure_index": 19.35,
+      "population_index": 5.57,
+      "priority_score": 10.38,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DED45",
+      "nuts3_name": "Zwickau",
+      "population": 306793,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2,
+        "Métaux / traitement de surface": 5,
+        "Papier / bois": 1
+      },
+      "exposure_index": 12.9,
+      "population_index": 8.32,
+      "priority_score": 10.36,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE724",
+      "nuts3_name": "Marburg-Biedenkopf",
+      "population": 242805,
+      "industrial_site_count": 10,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 5,
+        "Métaux / traitement de surface": 5
+      },
+      "exposure_index": 16.13,
+      "population_index": 6.59,
+      "priority_score": 10.31,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE716",
+      "nuts3_name": "Darmstadt-Dieburg",
+      "population": 302021,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Chimie": 5
+      },
+      "exposure_index": 12.9,
+      "population_index": 8.2,
+      "priority_score": 10.28,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA52",
+      "nuts3_name": "Dortmund, Kreisfreie Stadt",
+      "population": 603462,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 16.37,
+      "priority_score": 10.28,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE925",
+      "nuts3_name": "Hildesheim",
+      "population": 267506,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 7,
+        "Chimie": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 14.52,
+      "population_index": 7.26,
+      "priority_score": 10.26,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA17",
+      "nuts3_name": "Oberhausen, Kreisfreie Stadt",
+      "population": 213646,
+      "industrial_site_count": 11,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 8,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 17.74,
+      "population_index": 5.8,
+      "priority_score": 10.14,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE138",
+      "nuts3_name": "Konstanz",
+      "population": 291841,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 7,
+        "Chimie": 1
+      },
+      "exposure_index": 12.9,
+      "population_index": 7.92,
+      "priority_score": 10.11,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21K",
+      "nuts3_name": "Rosenheim, Landkreis",
+      "population": 258637,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 4,
+        "Métaux / traitement de surface": 3,
+        "Chimie": 2
+      },
+      "exposure_index": 14.52,
+      "population_index": 7.02,
+      "priority_score": 10.09,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA53",
+      "nuts3_name": "Hagen, Kreisfreie Stadt",
+      "population": 190384,
+      "industrial_site_count": 12,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 10,
+        "Papier / bois": 1,
+        "Chimie": 1
+      },
+      "exposure_index": 19.35,
+      "population_index": 5.17,
+      "priority_score": 10,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DED21",
+      "nuts3_name": "Dresden, Kreisfreie Stadt",
+      "population": 564904,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Chimie": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 15.33,
+      "priority_score": 9.94,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA46",
+      "nuts3_name": "Minden-Lübbecke",
+      "population": 320557,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Chimie": 3,
+        "Papier / bois": 1
+      },
+      "exposure_index": 11.29,
+      "population_index": 8.7,
+      "priority_score": 9.91,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA47",
+      "nuts3_name": "Paderborn",
+      "population": 315912,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 7
+      },
+      "exposure_index": 11.29,
+      "population_index": 8.57,
+      "priority_score": 9.84,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA2A",
+      "nuts3_name": "Oberbergischer Kreis",
+      "population": 274057,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 8
+      },
+      "exposure_index": 12.9,
+      "population_index": 7.44,
+      "priority_score": 9.8,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA24",
+      "nuts3_name": "Leverkusen, Kreisfreie Stadt",
+      "population": 168581,
+      "industrial_site_count": 13,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 13
+      },
+      "exposure_index": 20.97,
+      "population_index": 4.57,
+      "priority_score": 9.79,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA51",
+      "nuts3_name": "Bochum, Kreisfreie Stadt",
+      "population": 358676,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 6
+      },
+      "exposure_index": 9.68,
+      "population_index": 9.73,
+      "priority_score": 9.71,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA59",
+      "nuts3_name": "Olpe",
+      "population": 132346,
+      "industrial_site_count": 16,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 15,
+        "Papier / bois": 1
+      },
+      "exposure_index": 25.81,
+      "population_index": 3.59,
+      "priority_score": 9.63,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DED2C",
+      "nuts3_name": "Bautzen",
+      "population": 292608,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Métaux / traitement de surface": 4
+      },
+      "exposure_index": 11.29,
+      "population_index": 7.94,
+      "priority_score": 9.47,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA38",
+      "nuts3_name": "Warendorf",
+      "population": 282639,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 6,
+        "Chimie": 1
+      },
+      "exposure_index": 11.29,
+      "population_index": 7.67,
+      "priority_score": 9.31,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA1B",
+      "nuts3_name": "Kleve",
+      "population": 322018,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Chimie": 4
+      },
+      "exposure_index": 9.68,
+      "population_index": 8.74,
+      "priority_score": 9.2,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE136",
+      "nuts3_name": "Schwarzwald-Baar-Kreis",
+      "population": 214065,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 7,
+        "Papier / bois": 2
+      },
+      "exposure_index": 14.52,
+      "population_index": 5.81,
+      "priority_score": 9.18,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE916",
+      "nuts3_name": "Goslar",
+      "population": 126775,
+      "industrial_site_count": 15,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 12,
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 24.19,
+      "population_index": 3.44,
+      "priority_score": 9.12,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE111",
+      "nuts3_name": "Stuttgart, Stadtkreis",
+      "population": 612663,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 4.84,
+      "population_index": 16.62,
+      "priority_score": 8.97,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE279",
+      "nuts3_name": "Neu-Ulm",
+      "population": 183595,
+      "industrial_site_count": 10,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 4,
+        "Métaux / traitement de surface": 6
+      },
+      "exposure_index": 16.13,
+      "population_index": 4.98,
+      "priority_score": 8.96,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DED52",
+      "nuts3_name": "Leipzig",
+      "population": 260127,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 11.29,
+      "population_index": 7.06,
+      "priority_score": 8.93,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF0D",
+      "nuts3_name": "Segeberg",
+      "population": 283562,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 5,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 9.68,
+      "population_index": 7.69,
+      "priority_score": 8.63,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA32",
+      "nuts3_name": "Gelsenkirchen, Kreisfreie Stadt",
+      "population": 267930,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Métaux / traitement de surface": 2,
+        "Papier / bois": 1
+      },
+      "exposure_index": 9.68,
+      "population_index": 7.27,
+      "priority_score": 8.39,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE214",
+      "nuts3_name": "Altötting",
+      "population": 113938,
+      "industrial_site_count": 14,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 11,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 22.58,
+      "population_index": 3.09,
+      "priority_score": 8.36,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB34",
+      "nuts3_name": "Ludwigshafen am Rhein, Kreisfreie Stadt",
+      "population": 177222,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 9
+      },
+      "exposure_index": 14.52,
+      "population_index": 4.81,
+      "priority_score": 8.36,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE13A",
+      "nuts3_name": "Waldshut",
+      "population": 171579,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Métaux / traitement de surface": 5,
+        "Papier / bois": 2
+      },
+      "exposure_index": 14.52,
+      "population_index": 4.66,
+      "priority_score": 8.22,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB18",
+      "nuts3_name": "Neuwied",
+      "population": 189061,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4,
+        "Papier / bois": 1,
+        "Chimie": 3
+      },
+      "exposure_index": 12.9,
+      "population_index": 5.13,
+      "priority_score": 8.14,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE271",
+      "nuts3_name": "Augsburg, Kreisfreie Stadt",
+      "population": 301105,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 4
+      },
+      "exposure_index": 8.06,
+      "population_index": 8.17,
+      "priority_score": 8.12,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE148",
+      "nuts3_name": "Ravensburg",
+      "population": 291102,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4,
+        "Papier / bois": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 7.9,
+      "priority_score": 7.98,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE939",
+      "nuts3_name": "Stade",
+      "population": 207700,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 7
+      },
+      "exposure_index": 11.29,
+      "population_index": 5.64,
+      "priority_score": 7.98,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE131",
+      "nuts3_name": "Freiburg im Breisgau, Stadtkreis",
+      "population": 237460,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 6
+      },
+      "exposure_index": 9.68,
+      "population_index": 6.44,
+      "priority_score": 7.9,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE40H",
+      "nuts3_name": "Teltow-Fläming",
+      "population": 177688,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 4,
+        "Métaux / traitement de surface": 4
+      },
+      "exposure_index": 12.9,
+      "population_index": 4.82,
+      "priority_score": 7.89,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21H",
+      "nuts3_name": "München, Landkreis",
+      "population": 354396,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Chimie": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 9.62,
+      "priority_score": 7.88,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA28",
+      "nuts3_name": "Euskirchen",
+      "population": 202609,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 4,
+        "Chimie": 2,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 11.29,
+      "population_index": 5.5,
+      "priority_score": 7.88,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE132",
+      "nuts3_name": "Breisgau-Hochschwarzwald",
+      "population": 272558,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 3,
+        "Chimie": 1,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 7.4,
+      "priority_score": 7.72,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE259",
+      "nuts3_name": "Nürnberger Land",
+      "population": 168813,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 5,
+        "Chimie": 3
+      },
+      "exposure_index": 12.9,
+      "population_index": 4.58,
+      "priority_score": 7.69,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE80N",
+      "nuts3_name": "Vorpommern-Greifswald",
+      "population": 224956,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 9.68,
+      "population_index": 6.1,
+      "priority_score": 7.69,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB35",
+      "nuts3_name": "Mainz, Kreisfreie Stadt",
+      "population": 224684,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 1,
+        "Chimie": 4
+      },
+      "exposure_index": 9.68,
+      "population_index": 6.1,
+      "priority_score": 7.68,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE717",
+      "nuts3_name": "Groß-Gerau",
+      "population": 268310,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 5
+      },
+      "exposure_index": 8.06,
+      "population_index": 7.28,
+      "priority_score": 7.66,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE721",
+      "nuts3_name": "Gießen, Landkreis",
+      "population": 268418,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4,
+        "Chimie": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 7.28,
+      "priority_score": 7.66,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEC01",
+      "nuts3_name": "Regionalverband Saarbrücken",
+      "population": 333149,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4
+      },
+      "exposure_index": 6.45,
+      "population_index": 9.04,
+      "priority_score": 7.64,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE944",
+      "nuts3_name": "Osnabrück, Kreisfreie Stadt",
+      "population": 166057,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 3,
+        "Chimie": 2,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 12.9,
+      "population_index": 4.51,
+      "priority_score": 7.63,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA19",
+      "nuts3_name": "Solingen, Kreisfreie Stadt",
+      "population": 165626,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 8
+      },
+      "exposure_index": 12.9,
+      "population_index": 4.49,
+      "priority_score": 7.62,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA29",
+      "nuts3_name": "Heinsberg",
+      "population": 263681,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4,
+        "Chimie": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 7.16,
+      "priority_score": 7.6,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DED44",
+      "nuts3_name": "Vogtlandkreis",
+      "population": 219100,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 6
+      },
+      "exposure_index": 9.68,
+      "population_index": 5.95,
+      "priority_score": 7.59,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB17",
+      "nuts3_name": "Mayen-Koblenz",
+      "population": 217228,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Papier / bois": 2,
+        "Chimie": 1
+      },
+      "exposure_index": 9.68,
+      "population_index": 5.89,
+      "priority_score": 7.55,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF09",
+      "nuts3_name": "Pinneberg",
+      "population": 325223,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 2,
+        "Chimie": 2
+      },
+      "exposure_index": 6.45,
+      "population_index": 8.82,
+      "priority_score": 7.55,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE278",
+      "nuts3_name": "Günzburg",
+      "population": 129846,
+      "industrial_site_count": 10,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2,
+        "Métaux / traitement de surface": 8
+      },
+      "exposure_index": 16.13,
+      "population_index": 3.52,
+      "priority_score": 7.54,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE114",
+      "nuts3_name": "Göppingen",
+      "population": 258809,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4,
+        "Chimie": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 7.02,
+      "priority_score": 7.53,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE135",
+      "nuts3_name": "Rottweil",
+      "population": 140237,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 9
+      },
+      "exposure_index": 14.52,
+      "population_index": 3.81,
+      "priority_score": 7.43,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE40C",
+      "nuts3_name": "Oder-Spree",
+      "population": 179817,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Papier / bois": 3,
+        "Chimie": 2
+      },
+      "exposure_index": 11.29,
+      "population_index": 4.88,
+      "priority_score": 7.42,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE80O",
+      "nuts3_name": "Ludwigslust-Parchim",
+      "population": 208092,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 2,
+        "Chimie": 3
+      },
+      "exposure_index": 9.68,
+      "population_index": 5.65,
+      "priority_score": 7.39,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB1B",
+      "nuts3_name": "Westerwaldkreis",
+      "population": 207803,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 5
+      },
+      "exposure_index": 9.68,
+      "population_index": 5.64,
+      "priority_score": 7.39,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE146",
+      "nuts3_name": "Biberach",
+      "population": 207415,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Métaux / traitement de surface": 2,
+        "Papier / bois": 1
+      },
+      "exposure_index": 9.68,
+      "population_index": 5.63,
+      "priority_score": 7.38,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DED2D",
+      "nuts3_name": "Görlitz",
+      "population": 243958,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 5
+      },
+      "exposure_index": 8.06,
+      "population_index": 6.62,
+      "priority_score": 7.31,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE12B",
+      "nuts3_name": "Enzkreis",
+      "population": 199745,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 6
+      },
+      "exposure_index": 9.68,
+      "population_index": 5.42,
+      "priority_score": 7.24,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE112",
+      "nuts3_name": "Böblingen",
+      "population": 395167,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Chimie": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 10.72,
+      "priority_score": 7.2,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE141",
+      "nuts3_name": "Reutlingen",
+      "population": 293483,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2,
+        "Métaux / traitement de surface": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 7.96,
+      "priority_score": 7.17,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21G",
+      "nuts3_name": "Mühldorf a. Inn",
+      "population": 122037,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 5,
+        "Métaux / traitement de surface": 4
+      },
+      "exposure_index": 14.52,
+      "population_index": 3.31,
+      "priority_score": 6.93,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE715",
+      "nuts3_name": "Bergstraße",
+      "population": 274169,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 6.45,
+      "population_index": 7.44,
+      "priority_score": 6.93,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0Q",
+      "nuts3_name": "Schmalkalden-Meiningen",
+      "population": 120214,
+      "industrial_site_count": 9,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 5,
+        "Chimie": 1,
+        "Papier / bois": 4
+      },
+      "exposure_index": 14.52,
+      "population_index": 3.26,
+      "priority_score": 6.88,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE129",
+      "nuts3_name": "Pforzheim, Stadtkreis",
+      "population": 134912,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 8,
+        "Chimie": 2
+      },
+      "exposure_index": 12.9,
+      "population_index": 3.66,
+      "priority_score": 6.87,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA15",
+      "nuts3_name": "Mönchengladbach, Kreisfreie Stadt",
+      "population": 267213,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Chimie": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 7.25,
+      "priority_score": 6.84,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21M",
+      "nuts3_name": "Traunstein",
+      "population": 175144,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Papier / bois": 1,
+        "Chimie": 3
+      },
+      "exposure_index": 9.68,
+      "population_index": 4.75,
+      "priority_score": 6.78,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE239",
+      "nuts3_name": "Schwandorf",
+      "population": 149312,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 5,
+        "Chimie": 2
+      },
+      "exposure_index": 11.29,
+      "population_index": 4.05,
+      "priority_score": 6.76,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE269",
+      "nuts3_name": "Miltenberg",
+      "population": 127547,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Chimie": 5,
+        "Papier / bois": 1
+      },
+      "exposure_index": 12.9,
+      "population_index": 3.46,
+      "priority_score": 6.68,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE911",
+      "nuts3_name": "Braunschweig, Kreisfreie Stadt",
+      "population": 252962,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 6.45,
+      "population_index": 6.86,
+      "priority_score": 6.65,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB1A",
+      "nuts3_name": "Rhein-Lahn-Kreis",
+      "population": 125588,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Chimie": 4,
+        "Papier / bois": 1
+      },
+      "exposure_index": 12.9,
+      "population_index": 3.41,
+      "priority_score": 6.63,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DED53",
+      "nuts3_name": "Nordsachsen",
+      "population": 199422,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Papier / bois": 1,
+        "Chimie": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 5.41,
+      "priority_score": 6.61,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE932",
+      "nuts3_name": "Cuxhaven",
+      "population": 198842,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 4,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 5.4,
+      "priority_score": 6.6,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE228",
+      "nuts3_name": "Passau, Landkreis",
+      "population": 194699,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 5
+      },
+      "exposure_index": 8.06,
+      "population_index": 5.28,
+      "priority_score": 6.53,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE927",
+      "nuts3_name": "Nienburg (Weser)",
+      "population": 121468,
+      "industrial_site_count": 8,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 7,
+        "Papier / bois": 1
+      },
+      "exposure_index": 12.9,
+      "population_index": 3.3,
+      "priority_score": 6.52,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA22",
+      "nuts3_name": "Bonn, Kreisfreie Stadt",
+      "population": 323336,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Chimie": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 8.77,
+      "priority_score": 6.52,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE718",
+      "nuts3_name": "Hochtaunuskreis",
+      "population": 241664,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4
+      },
+      "exposure_index": 6.45,
+      "population_index": 6.56,
+      "priority_score": 6.5,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE11C",
+      "nuts3_name": "Heidenheim",
+      "population": 135235,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 6,
+        "Chimie": 1
+      },
+      "exposure_index": 11.29,
+      "population_index": 3.67,
+      "priority_score": 6.44,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE122",
+      "nuts3_name": "Karlsruhe, Stadtkreis",
+      "population": 309050,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Chimie": 2
+      },
+      "exposure_index": 4.84,
+      "population_index": 8.39,
+      "priority_score": 6.37,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE0A",
+      "nuts3_name": "Mansfeld-Südharz",
+      "population": 129029,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 6,
+        "Chimie": 1
+      },
+      "exposure_index": 11.29,
+      "population_index": 3.5,
+      "priority_score": 6.29,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE147",
+      "nuts3_name": "Bodenseekreis",
+      "population": 220804,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 6.45,
+      "population_index": 5.99,
+      "priority_score": 6.22,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE922",
+      "nuts3_name": "Diepholz",
+      "population": 221202,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 6.45,
+      "population_index": 6,
+      "priority_score": 6.22,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE80K",
+      "nuts3_name": "Landkreis Rostock",
+      "population": 218721,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 5.94,
+      "priority_score": 6.19,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF03",
+      "nuts3_name": "Lübeck, Kreisfreie Stadt",
+      "population": 216889,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 3
+      },
+      "exposure_index": 6.45,
+      "population_index": 5.89,
+      "priority_score": 6.16,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA16",
+      "nuts3_name": "Mülheim an der Ruhr, Kreisfreie Stadt",
+      "population": 173050,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 5
+      },
+      "exposure_index": 8.06,
+      "population_index": 4.7,
+      "priority_score": 6.15,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE264",
+      "nuts3_name": "Aschaffenburg, Landkreis",
+      "population": 170945,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4,
+        "Chimie": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 4.64,
+      "priority_score": 6.12,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF06",
+      "nuts3_name": "Herzogtum Lauenburg",
+      "population": 206235,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 5.6,
+      "priority_score": 6.01,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE145",
+      "nuts3_name": "Alb-Donau-Kreis",
+      "population": 202354,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 6.45,
+      "population_index": 5.49,
+      "priority_score": 5.95,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF05",
+      "nuts3_name": "Dithmarschen",
+      "population": 133460,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 6
+      },
+      "exposure_index": 9.68,
+      "population_index": 3.62,
+      "priority_score": 5.92,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE149",
+      "nuts3_name": "Sigmaringen",
+      "population": 132167,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 6
+      },
+      "exposure_index": 9.68,
+      "population_index": 3.59,
+      "priority_score": 5.89,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE736",
+      "nuts3_name": "Waldeck-Frankenberg",
+      "population": 155126,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Papier / bois": 3
+      },
+      "exposure_index": 8.06,
+      "population_index": 4.21,
+      "priority_score": 5.83,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0T",
+      "nuts3_name": "Ilm-Kreis",
+      "population": 106657,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2,
+        "Métaux / traitement de surface": 4,
+        "Papier / bois": 1
+      },
+      "exposure_index": 11.29,
+      "population_index": 2.89,
+      "priority_score": 5.72,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF0F",
+      "nuts3_name": "Stormarn",
+      "population": 246974,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3
+      },
+      "exposure_index": 4.84,
+      "population_index": 6.7,
+      "priority_score": 5.69,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE0E",
+      "nuts3_name": "Wittenberg",
+      "population": 121694,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 6
+      },
+      "exposure_index": 9.68,
+      "population_index": 3.3,
+      "priority_score": 5.65,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE127",
+      "nuts3_name": "Neckar-Odenwald-Kreis",
+      "population": 145263,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 5
+      },
+      "exposure_index": 8.06,
+      "population_index": 3.94,
+      "priority_score": 5.64,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE40I",
+      "nuts3_name": "Uckermark",
+      "population": 117432,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Chimie": 2,
+        "Papier / bois": 2
+      },
+      "exposure_index": 9.68,
+      "population_index": 3.19,
+      "priority_score": 5.55,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE914",
+      "nuts3_name": "Gifhorn",
+      "population": 175943,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 2,
+        "Papier / bois": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 4.77,
+      "priority_score": 5.55,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE142",
+      "nuts3_name": "Tübingen, Landkreis",
+      "population": 233546,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 2
+      },
+      "exposure_index": 4.84,
+      "population_index": 6.34,
+      "priority_score": 5.54,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE236",
+      "nuts3_name": "Neumarkt i. d. OPf.",
+      "population": 138693,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 2,
+        "Chimie": 2
+      },
+      "exposure_index": 8.06,
+      "population_index": 3.76,
+      "priority_score": 5.51,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE734",
+      "nuts3_name": "Kassel, Landkreis",
+      "population": 231073,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 4.84,
+      "population_index": 6.27,
+      "priority_score": 5.51,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE91A",
+      "nuts3_name": "Peine",
+      "population": 137045,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 5
+      },
+      "exposure_index": 8.06,
+      "population_index": 3.72,
+      "priority_score": 5.48,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE02",
+      "nuts3_name": "Halle (Saale), Kreisfreie Stadt",
+      "population": 226767,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 2
+      },
+      "exposure_index": 4.84,
+      "population_index": 6.15,
+      "priority_score": 5.46,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE27D",
+      "nuts3_name": "Donau-Ries",
+      "population": 135098,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4,
+        "Chimie": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 3.67,
+      "priority_score": 5.44,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE94C",
+      "nuts3_name": "Leer",
+      "population": 169103,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 2,
+        "Chimie": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 4.59,
+      "priority_score": 5.44,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB3C",
+      "nuts3_name": "Bad Dürkheim",
+      "population": 134329,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 3,
+        "Chimie": 3
+      },
+      "exposure_index": 8.06,
+      "population_index": 3.65,
+      "priority_score": 5.42,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE711",
+      "nuts3_name": "Darmstadt, Kreisfreie Stadt",
+      "population": 167029,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Chimie": 2,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 4.53,
+      "priority_score": 5.41,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0L",
+      "nuts3_name": "Greiz",
+      "population": 93707,
+      "industrial_site_count": 7,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 4,
+        "Métaux / traitement de surface": 2,
+        "Papier / bois": 1
+      },
+      "exposure_index": 11.29,
+      "population_index": 2.54,
+      "priority_score": 5.36,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE40B",
+      "nuts3_name": "Oberspreewald-Lausitz",
+      "population": 107793,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 9.68,
+      "population_index": 2.92,
+      "priority_score": 5.32,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB1D",
+      "nuts3_name": "Rhein-Hunsrück-Kreis",
+      "population": 106705,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Métaux / traitement de surface": 2,
+        "Papier / bois": 1
+      },
+      "exposure_index": 9.68,
+      "population_index": 2.9,
+      "priority_score": 5.29,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE80M",
+      "nuts3_name": "Nordwestmecklenburg",
+      "population": 156692,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Chimie": 2,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 4.25,
+      "priority_score": 5.24,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE918",
+      "nuts3_name": "Northeim",
+      "population": 125623,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Papier / bois": 1,
+        "Chimie": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 3.41,
+      "priority_score": 5.24,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE71E",
+      "nuts3_name": "Wetteraukreis",
+      "population": 311593,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 8.46,
+      "priority_score": 5.22,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0R",
+      "nuts3_name": "Wartburgkreis",
+      "population": 154957,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Chimie": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 4.2,
+      "priority_score": 5.21,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA33",
+      "nuts3_name": "Münster, Kreisfreie Stadt",
+      "population": 308258,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 8.36,
+      "priority_score": 5.19,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE27C",
+      "nuts3_name": "Unterallgäu",
+      "population": 147255,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 2,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 6.45,
+      "population_index": 4,
+      "priority_score": 5.08,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE94F",
+      "nuts3_name": "Vechta",
+      "population": 146539,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4
+      },
+      "exposure_index": 6.45,
+      "population_index": 3.98,
+      "priority_score": 5.06,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE119",
+      "nuts3_name": "Hohenlohekreis",
+      "population": 115644,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4,
+        "Chimie": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 3.14,
+      "priority_score": 5.03,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA2B",
+      "nuts3_name": "Rheinisch-Bergischer Kreis",
+      "population": 284273,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 7.71,
+      "priority_score": 4.99,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA44",
+      "nuts3_name": "Höxter",
+      "population": 139252,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 2,
+        "Chimie": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 3.78,
+      "priority_score": 4.94,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF0B",
+      "nuts3_name": "Rendsburg-Eckernförde",
+      "population": 278058,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 7.55,
+      "priority_score": 4.93,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21B",
+      "nuts3_name": "Freising",
+      "population": 184564,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 5.01,
+      "priority_score": 4.92,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE40G",
+      "nuts3_name": "Spree-Neiße",
+      "population": 109635,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 4,
+        "Papier / bois": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 2.97,
+      "priority_score": 4.9,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE275",
+      "nuts3_name": "Aichach-Friedberg",
+      "population": 136803,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Papier / bois": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 3.71,
+      "priority_score": 4.89,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0C",
+      "nuts3_name": "Gotha",
+      "population": 135838,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Chimie": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 3.69,
+      "priority_score": 4.88,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA54",
+      "nuts3_name": "Hamm, Kreisfreie Stadt",
+      "population": 179968,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 2
+      },
+      "exposure_index": 4.84,
+      "population_index": 4.88,
+      "priority_score": 4.86,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE935",
+      "nuts3_name": "Lüneburg, Landkreis",
+      "population": 179448,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 4.87,
+      "priority_score": 4.85,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE0D",
+      "nuts3_name": "Stendal",
+      "population": 106538,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2,
+        "Papier / bois": 2,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 8.06,
+      "population_index": 2.89,
+      "priority_score": 4.83,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE933",
+      "nuts3_name": "Harburg",
+      "population": 265864,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 7.21,
+      "priority_score": 4.82,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE06",
+      "nuts3_name": "Jerichower Land",
+      "population": 88509,
+      "industrial_site_count": 6,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Métaux / traitement de surface": 2,
+        "Papier / bois": 1
+      },
+      "exposure_index": 9.68,
+      "population_index": 2.4,
+      "priority_score": 4.82,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE117",
+      "nuts3_name": "Heilbronn, Stadtkreis",
+      "population": 131986,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Chimie": 2
+      },
+      "exposure_index": 6.45,
+      "population_index": 3.58,
+      "priority_score": 4.81,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE216",
+      "nuts3_name": "Bad Tölz-Wolfratshausen",
+      "population": 130248,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 4
+      },
+      "exposure_index": 6.45,
+      "population_index": 3.53,
+      "priority_score": 4.78,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE08",
+      "nuts3_name": "Burgenlandkreis",
+      "population": 173684,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 2
+      },
+      "exposure_index": 4.84,
+      "population_index": 4.71,
+      "priority_score": 4.78,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE144",
+      "nuts3_name": "Ulm, Stadtkreis",
+      "population": 129882,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 6.45,
+      "population_index": 3.52,
+      "priority_score": 4.77,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE408",
+      "nuts3_name": "Havelland",
+      "population": 170834,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3
+      },
+      "exposure_index": 4.84,
+      "population_index": 4.64,
+      "priority_score": 4.74,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE07",
+      "nuts3_name": "Börde",
+      "population": 167924,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3
+      },
+      "exposure_index": 4.84,
+      "population_index": 4.56,
+      "priority_score": 4.7,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF02",
+      "nuts3_name": "Kiel, Kreisfreie Stadt",
+      "population": 252668,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 6.86,
+      "priority_score": 4.7,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB14",
+      "nuts3_name": "Bad Kreuznach",
+      "population": 164748,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 2,
+        "Chimie": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 4.47,
+      "priority_score": 4.65,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE80J",
+      "nuts3_name": "Mecklenburgische Seenplatte",
+      "population": 246318,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 6.68,
+      "priority_score": 4.64,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DED41",
+      "nuts3_name": "Chemnitz, Kreisfreie Stadt",
+      "population": 245618,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 6.66,
+      "priority_score": 4.64,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE26C",
+      "nuts3_name": "Würzburg, Landkreis",
+      "population": 162216,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Chimie": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 4.4,
+      "priority_score": 4.62,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE733",
+      "nuts3_name": "Hersfeld-Rotenburg",
+      "population": 117414,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Chimie": 2
+      },
+      "exposure_index": 6.45,
+      "population_index": 3.19,
+      "priority_score": 4.53,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA55",
+      "nuts3_name": "Herne, Kreisfreie Stadt",
+      "population": 155851,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3
+      },
+      "exposure_index": 4.84,
+      "population_index": 4.23,
+      "priority_score": 4.52,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE94G",
+      "nuts3_name": "Wesermarsch",
+      "population": 88936,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Chimie": 3,
+        "Papier / bois": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 2.41,
+      "priority_score": 4.41,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG03",
+      "nuts3_name": "Jena, Kreisfreie Stadt",
+      "population": 109725,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Chimie": 2
+      },
+      "exposure_index": 6.45,
+      "population_index": 2.98,
+      "priority_score": 4.38,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE137",
+      "nuts3_name": "Tuttlingen",
+      "population": 145208,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.94,
+      "priority_score": 4.37,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21C",
+      "nuts3_name": "Fürstenfeldbruck",
+      "population": 218227,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 5.92,
+      "priority_score": 4.37,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE40A",
+      "nuts3_name": "Oberhavel",
+      "population": 217690,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 5.91,
+      "priority_score": 4.37,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB39",
+      "nuts3_name": "Worms, Kreisfreie Stadt",
+      "population": 86753,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 5
+      },
+      "exposure_index": 8.06,
+      "population_index": 2.35,
+      "priority_score": 4.36,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEC05",
+      "nuts3_name": "Saarpfalz-Kreis",
+      "population": 144092,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.91,
+      "priority_score": 4.35,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE27B",
+      "nuts3_name": "Ostallgäu",
+      "population": 142047,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 2,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.85,
+      "priority_score": 4.32,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE938",
+      "nuts3_name": "Heidekreis",
+      "population": 141321,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.83,
+      "priority_score": 4.31,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21N",
+      "nuts3_name": "Weilheim-Schongau",
+      "population": 138957,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2,
+        "Papier / bois": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.77,
+      "priority_score": 4.27,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG06",
+      "nuts3_name": "Eichsfeld",
+      "population": 103694,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3,
+        "Papier / bois": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 2.81,
+      "priority_score": 4.26,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB3J",
+      "nuts3_name": "Mainz-Bingen",
+      "population": 206454,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 5.6,
+      "priority_score": 4.25,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE803",
+      "nuts3_name": "Rostock, Kreisfreie Stadt",
+      "population": 205307,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 5.57,
+      "priority_score": 4.24,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF0C",
+      "nuts3_name": "Schleswig-Flensburg",
+      "population": 205472,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 5.58,
+      "priority_score": 4.24,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE11A",
+      "nuts3_name": "Schwäbisch Hall",
+      "population": 200902,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 5.45,
+      "priority_score": 4.19,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEC03",
+      "nuts3_name": "Neunkirchen",
+      "population": 133179,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.61,
+      "priority_score": 4.18,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF0E",
+      "nuts3_name": "Steinburg",
+      "population": 132731,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2,
+        "Papier / bois": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.6,
+      "priority_score": 4.17,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE253",
+      "nuts3_name": "Fürth, Kreisfreie Stadt",
+      "population": 132036,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.58,
+      "priority_score": 4.16,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE277",
+      "nuts3_name": "Dillingen a.d. Donau",
+      "population": 98899,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4
+      },
+      "exposure_index": 6.45,
+      "population_index": 2.68,
+      "priority_score": 4.16,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE94D",
+      "nuts3_name": "Oldenburg, Landkreis",
+      "population": 132008,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.58,
+      "priority_score": 4.16,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB3E",
+      "nuts3_name": "Germersheim",
+      "population": 131383,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 2,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.57,
+      "priority_score": 4.15,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21J",
+      "nuts3_name": "Pfaffenhofen a. d. Ilm",
+      "population": 130781,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.55,
+      "priority_score": 4.14,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE238",
+      "nuts3_name": "Regensburg, Landkreis",
+      "population": 196213,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 5.32,
+      "priority_score": 4.14,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE407",
+      "nuts3_name": "Elbe-Elster",
+      "population": 97967,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 4
+      },
+      "exposure_index": 6.45,
+      "population_index": 2.66,
+      "priority_score": 4.14,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE737",
+      "nuts3_name": "Werra-Meißner-Kreis",
+      "population": 97695,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Papier / bois": 3
+      },
+      "exposure_index": 6.45,
+      "population_index": 2.65,
+      "priority_score": 4.14,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE143",
+      "nuts3_name": "Zollernalbkreis",
+      "population": 193326,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 5.25,
+      "priority_score": 4.11,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE235",
+      "nuts3_name": "Cham",
+      "population": 128534,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Chimie": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.49,
+      "priority_score": 4.11,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE226",
+      "nuts3_name": "Kelheim",
+      "population": 126037,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.42,
+      "priority_score": 4.07,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE40F",
+      "nuts3_name": "Prignitz",
+      "population": 75595,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 8.06,
+      "population_index": 2.05,
+      "priority_score": 4.07,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE26A",
+      "nuts3_name": "Main-Spessart",
+      "population": 125282,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.4,
+      "priority_score": 4.06,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE01",
+      "nuts3_name": "Dessau-Roßlau, Kreisfreie Stadt",
+      "population": 75402,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 4,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 2.05,
+      "priority_score": 4.06,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE256",
+      "nuts3_name": "Ansbach, Landkreis",
+      "population": 187633,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 5.09,
+      "priority_score": 4.05,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA31",
+      "nuts3_name": "Bottrop, Kreisfreie Stadt",
+      "population": 118535,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 2
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.22,
+      "priority_score": 3.95,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE948",
+      "nuts3_name": "Cloppenburg",
+      "population": 177025,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 4.8,
+      "priority_score": 3.94,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE943",
+      "nuts3_name": "Oldenburg (Oldenburg), Kreisfreie Stadt",
+      "population": 176614,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 4.79,
+      "priority_score": 3.93,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE723",
+      "nuts3_name": "Limburg-Weilburg",
+      "population": 173830,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 4.72,
+      "priority_score": 3.9,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE931",
+      "nuts3_name": "Celle",
+      "population": 172449,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 4.68,
+      "priority_score": 3.89,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB11",
+      "nuts3_name": "Koblenz, Kreisfreie Stadt",
+      "population": 113378,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Papier / bois": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 3.08,
+      "priority_score": 3.86,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF07",
+      "nuts3_name": "Nordfriesland",
+      "population": 170029,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 4.61,
+      "priority_score": 3.86,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0J",
+      "nuts3_name": "Saale-Holzland-Kreis",
+      "population": 83342,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 2,
+        "Chimie": 1
+      },
+      "exposure_index": 6.45,
+      "population_index": 2.26,
+      "priority_score": 3.82,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE227",
+      "nuts3_name": "Landshut, Landkreis",
+      "population": 162170,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 4.4,
+      "priority_score": 3.77,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE12A",
+      "nuts3_name": "Calw",
+      "population": 161251,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 4.38,
+      "priority_score": 3.76,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB3F",
+      "nuts3_name": "Kaiserslautern, Landkreis",
+      "population": 106343,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Chimie": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 2.89,
+      "priority_score": 3.74,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE928",
+      "nuts3_name": "Schaumburg",
+      "population": 156841,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 4.26,
+      "priority_score": 3.71,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE22B",
+      "nuts3_name": "Straubing-Bogen",
+      "population": 103041,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 4.84,
+      "population_index": 2.8,
+      "priority_score": 3.68,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE246",
+      "nuts3_name": "Bayreuth, Landkreis",
+      "population": 103215,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Chimie": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 2.8,
+      "priority_score": 3.68,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE94A",
+      "nuts3_name": "Friesland (DE)",
+      "population": 100411,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 4.84,
+      "population_index": 2.72,
+      "priority_score": 3.63,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE923",
+      "nuts3_name": "Hameln-Pyrmont",
+      "population": 150203,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 4.08,
+      "priority_score": 3.63,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB32",
+      "nuts3_name": "Kaiserslautern, Kreisfreie Stadt",
+      "population": 100426,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 2
+      },
+      "exposure_index": 4.84,
+      "population_index": 2.73,
+      "priority_score": 3.63,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0U",
+      "nuts3_name": "Saalfeld-Rudolstadt",
+      "population": 100105,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Chimie": 1,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 2.72,
+      "priority_score": 3.63,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21I",
+      "nuts3_name": "Neuburg-Schrobenhausen",
+      "population": 99364,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 2.7,
+      "priority_score": 3.61,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE40D",
+      "nuts3_name": "Ostprignitz-Ruppin",
+      "population": 99152,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 2.69,
+      "priority_score": 3.61,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE237",
+      "nuts3_name": "Neustadt a. d. Waldnaab",
+      "population": 96049,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2,
+        "Papier / bois": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 2.61,
+      "priority_score": 3.55,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG09",
+      "nuts3_name": "Unstrut-Hainich-Kreis",
+      "population": 94613,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 4.84,
+      "population_index": 2.57,
+      "priority_score": 3.52,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE257",
+      "nuts3_name": "Erlangen-Höchstadt",
+      "population": 138325,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 3.75,
+      "priority_score": 3.48,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE93B",
+      "nuts3_name": "Verden",
+      "population": 138626,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 3.76,
+      "priority_score": 3.48,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE263",
+      "nuts3_name": "Würzburg, Kreisfreie Stadt",
+      "population": 133258,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 3.62,
+      "priority_score": 3.42,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB13",
+      "nuts3_name": "Altenkirchen (Westerwald)",
+      "population": 132125,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Chimie": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 3.59,
+      "priority_score": 3.4,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEC06",
+      "nuts3_name": "St. Wendel",
+      "population": 87813,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 2.38,
+      "priority_score": 3.4,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE926",
+      "nuts3_name": "Holzminden",
+      "population": 65581,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 2,
+        "Chimie": 2
+      },
+      "exposure_index": 6.45,
+      "population_index": 1.78,
+      "priority_score": 3.39,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE25B",
+      "nuts3_name": "Roth",
+      "population": 128632,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 3.49,
+      "priority_score": 3.36,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE946",
+      "nuts3_name": "Ammerland",
+      "population": 127751,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 3.47,
+      "priority_score": 3.34,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA43",
+      "nuts3_name": "Herford",
+      "population": 254404,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 6.9,
+      "priority_score": 3.34,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB38",
+      "nuts3_name": "Speyer, Kreisfreie Stadt",
+      "population": 49564,
+      "industrial_site_count": 5,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 3,
+        "Métaux / traitement de surface": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 8.06,
+      "population_index": 1.34,
+      "priority_score": 3.29,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE224",
+      "nuts3_name": "Deggendorf",
+      "population": 121844,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 3.31,
+      "priority_score": 3.27,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21E",
+      "nuts3_name": "Landsberg am Lech",
+      "population": 122107,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 3.31,
+      "priority_score": 3.27,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE03",
+      "nuts3_name": "Magdeburg, Kreisfreie Stadt",
+      "population": 244329,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 6.63,
+      "priority_score": 3.27,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE71A",
+      "nuts3_name": "Main-Taunus-Kreis",
+      "population": 238775,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 6.48,
+      "priority_score": 3.23,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE229",
+      "nuts3_name": "Regen",
+      "population": 77267,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Papier / bois": 1,
+        "Chimie": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 2.1,
+      "priority_score": 3.19,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA18",
+      "nuts3_name": "Remscheid, Kreisfreie Stadt",
+      "population": 113828,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 3.09,
+      "priority_score": 3.16,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEA35",
+      "nuts3_name": "Coesfeld",
+      "population": 227859,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 6.18,
+      "priority_score": 3.16,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB22",
+      "nuts3_name": "Bernkastel-Wittlich",
+      "population": 113187,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 3.07,
+      "priority_score": 3.15,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE732",
+      "nuts3_name": "Fulda",
+      "population": 222283,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 6.03,
+      "priority_score": 3.12,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE40E",
+      "nuts3_name": "Potsdam-Mittelmark",
+      "population": 221268,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 6,
+      "priority_score": 3.11,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE261",
+      "nuts3_name": "Aschaffenburg, Kreisfreie Stadt",
+      "population": 73091,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 4.84,
+      "population_index": 1.98,
+      "priority_score": 3.1,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE80L",
+      "nuts3_name": "Vorpommern-Rügen",
+      "population": 215203,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 5.84,
+      "priority_score": 3.07,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE234",
+      "nuts3_name": "Amberg-Sulzbach",
+      "population": 103982,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 2.82,
+      "priority_score": 3.02,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE273",
+      "nuts3_name": "Kempten (Allgäu), Kreisfreie Stadt",
+      "population": 67645,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 4.84,
+      "population_index": 1.84,
+      "priority_score": 2.98,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE25A",
+      "nuts3_name": "Neustadt a. d. Aisch-Bad Windsheim",
+      "population": 101043,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 2.74,
+      "priority_score": 2.97,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21F",
+      "nuts3_name": "Miesbach",
+      "population": 97152,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 2.64,
+      "priority_score": 2.92,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE405",
+      "nuts3_name": "Barnim",
+      "population": 194169,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 5.27,
+      "priority_score": 2.92,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE947",
+      "nuts3_name": "Aurich",
+      "population": 188816,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 5.12,
+      "priority_score": 2.87,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE249",
+      "nuts3_name": "Hof, Landkreis",
+      "population": 92191,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 2.5,
+      "priority_score": 2.84,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE272",
+      "nuts3_name": "Kaufbeuren, Kreisfreie Stadt",
+      "population": 46193,
+      "industrial_site_count": 4,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Papier / bois": 1,
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 6.45,
+      "population_index": 1.25,
+      "priority_score": 2.84,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE268",
+      "nuts3_name": "Kitzingen",
+      "population": 91287,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 2.48,
+      "priority_score": 2.83,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE406",
+      "nuts3_name": "Dahme-Spreewald",
+      "population": 178793,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 4.85,
+      "priority_score": 2.8,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0M",
+      "nuts3_name": "Altenburger Land",
+      "population": 87508,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1,
+        "Chimie": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 2.37,
+      "priority_score": 2.77,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE133",
+      "nuts3_name": "Emmendingen",
+      "population": 169787,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 4.61,
+      "priority_score": 2.73,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE267",
+      "nuts3_name": "Haßberge",
+      "population": 83869,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1,
+        "Chimie": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 2.28,
+      "priority_score": 2.71,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB15",
+      "nuts3_name": "Birkenfeld",
+      "population": 82611,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 2.24,
+      "priority_score": 2.69,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0G",
+      "nuts3_name": "Weimarer Land",
+      "population": 82392,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 2.24,
+      "priority_score": 2.69,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF04",
+      "nuts3_name": "Neumünster, Kreisfreie Stadt",
+      "population": 79809,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 2.17,
+      "priority_score": 2.64,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB3I",
+      "nuts3_name": "Rhein-Pfalz-Kreis",
+      "population": 155882,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 4.23,
+      "priority_score": 2.61,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE232",
+      "nuts3_name": "Regensburg, Kreisfreie Stadt",
+      "population": 151389,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 4.11,
+      "priority_score": 2.57,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE401",
+      "nuts3_name": "Brandenburg an der Havel, Kreisfreie Stadt",
+      "population": 74113,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 2.01,
+      "priority_score": 2.55,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE245",
+      "nuts3_name": "Bamberg, Landkreis",
+      "population": 147777,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 4.01,
+      "priority_score": 2.54,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB33",
+      "nuts3_name": "Landau in der Pfalz, Kreisfreie Stadt",
+      "population": 48209,
+      "industrial_site_count": 3,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 3
+      },
+      "exposure_index": 4.84,
+      "population_index": 1.31,
+      "priority_score": 2.52,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE218",
+      "nuts3_name": "Ebersberg",
+      "population": 144225,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 3.91,
+      "priority_score": 2.51,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE211",
+      "nuts3_name": "Ingolstadt, Kreisfreie Stadt",
+      "population": 141185,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 3.83,
+      "priority_score": 2.49,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21L",
+      "nuts3_name": "Starnberg",
+      "population": 139329,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 3.78,
+      "priority_score": 2.47,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE219",
+      "nuts3_name": "Eichstätt",
+      "population": 135668,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 3.68,
+      "priority_score": 2.44,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0D",
+      "nuts3_name": "Sömmerda",
+      "population": 67693,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 1.84,
+      "priority_score": 2.43,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE713",
+      "nuts3_name": "Offenbach am Main, Kreisfreie Stadt",
+      "population": 132746,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 3.6,
+      "priority_score": 2.41,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB3B",
+      "nuts3_name": "Alzey-Worms",
+      "population": 131238,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 3.56,
+      "priority_score": 2.4,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE12C",
+      "nuts3_name": "Freudenstadt",
+      "population": 121958,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 3.31,
+      "priority_score": 2.31,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE91B",
+      "nuts3_name": "Wolfenbüttel",
+      "population": 118290,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 3.21,
+      "priority_score": 2.28,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE248",
+      "nuts3_name": "Forchheim",
+      "population": 116184,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 3.15,
+      "priority_score": 2.25,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE936",
+      "nuts3_name": "Osterholz",
+      "population": 113598,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 3.08,
+      "priority_score": 2.23,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB3H",
+      "nuts3_name": "Südliche Weinstraße",
+      "population": 113031,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 3.07,
+      "priority_score": 2.22,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEC02",
+      "nuts3_name": "Merzig-Wadern",
+      "population": 108779,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.95,
+      "priority_score": 2.18,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE215",
+      "nuts3_name": "Berchtesgadener Land",
+      "population": 105292,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.86,
+      "priority_score": 2.15,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE912",
+      "nuts3_name": "Salzgitter, Kreisfreie Stadt",
+      "population": 104970,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.85,
+      "priority_score": 2.14,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB21",
+      "nuts3_name": "Trier, Kreisfreie Stadt",
+      "population": 104342,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.83,
+      "priority_score": 2.14,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE265",
+      "nuts3_name": "Bad Kissingen",
+      "population": 103489,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.81,
+      "priority_score": 2.13,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE22C",
+      "nuts3_name": "Dingolfing-Landau",
+      "population": 101035,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.74,
+      "priority_score": 2.1,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE725",
+      "nuts3_name": "Vogelsbergkreis",
+      "population": 101163,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.75,
+      "priority_score": 2.1,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB23",
+      "nuts3_name": "Eifelkreis Bitburg-Prüm",
+      "population": 99788,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.71,
+      "priority_score": 2.09,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE942",
+      "nuts3_name": "Emden, Kreisfreie Stadt",
+      "population": 49202,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 1.34,
+      "priority_score": 2.08,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE804",
+      "nuts3_name": "Schwerin, Kreisfreie Stadt",
+      "population": 98308,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.67,
+      "priority_score": 2.07,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF01",
+      "nuts3_name": "Flensburg, Kreisfreie Stadt",
+      "population": 96326,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.61,
+      "priority_score": 2.05,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE25C",
+      "nuts3_name": "Weißenburg-Gunzenhausen",
+      "population": 94695,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.57,
+      "priority_score": 2.04,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21D",
+      "nuts3_name": "Garmisch-Partenkirchen",
+      "population": 89296,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.42,
+      "priority_score": 1.98,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE274",
+      "nuts3_name": "Memmingen, Kreisfreie Stadt",
+      "population": 44192,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 3.23,
+      "population_index": 1.2,
+      "priority_score": 1.97,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE231",
+      "nuts3_name": "Amberg, Kreisfreie Stadt",
+      "population": 42553,
+      "industrial_site_count": 2,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 2
+      },
+      "exposure_index": 3.23,
+      "population_index": 1.15,
+      "priority_score": 1.93,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE27A",
+      "nuts3_name": "Lindau (Bodensee)",
+      "population": 82411,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.24,
+      "priority_score": 1.9,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE941",
+      "nuts3_name": "Delmenhorst, Kreisfreie Stadt",
+      "population": 81406,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.21,
+      "priority_score": 1.89,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEE04",
+      "nuts3_name": "Altmarkkreis Salzwedel",
+      "population": 79980,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.17,
+      "priority_score": 1.87,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE266",
+      "nuts3_name": "Rhön-Grabfeld",
+      "population": 79375,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.15,
+      "priority_score": 1.86,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0K",
+      "nuts3_name": "Saale-Orla-Kreis",
+      "population": 77341,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1,
+        "Papier / bois": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.1,
+      "priority_score": 1.84,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE945",
+      "nuts3_name": "Wilhelmshaven, Kreisfreie Stadt",
+      "population": 75745,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.06,
+      "priority_score": 1.82,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB3D",
+      "nuts3_name": "Donnersbergkreis",
+      "population": 74783,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 2.03,
+      "priority_score": 1.81,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE24B",
+      "nuts3_name": "Kulmbach",
+      "population": 71518,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.94,
+      "priority_score": 1.77,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0A",
+      "nuts3_name": "Kyffhäuserkreis",
+      "population": 71738,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.95,
+      "priority_score": 1.77,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE24D",
+      "nuts3_name": "Wunsiedel i. Fichtelgebirge",
+      "population": 70549,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.91,
+      "priority_score": 1.76,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE24C",
+      "nuts3_name": "Lichtenfels",
+      "population": 67379,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.83,
+      "priority_score": 1.72,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG05",
+      "nuts3_name": "Weimar, Kreisfreie Stadt",
+      "population": 65954,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.79,
+      "priority_score": 1.7,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE24A",
+      "nuts3_name": "Kronach",
+      "population": 64545,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.75,
+      "priority_score": 1.68,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB1C",
+      "nuts3_name": "Cochem-Zell",
+      "population": 61608,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Papier / bois": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.67,
+      "priority_score": 1.64,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0E",
+      "nuts3_name": "Hildburghausen",
+      "population": 59987,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.63,
+      "priority_score": 1.62,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE121",
+      "nuts3_name": "Baden-Baden, Stadtkreis",
+      "population": 56881,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.54,
+      "priority_score": 1.58,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE403",
+      "nuts3_name": "Frankfurt (Oder), Kreisfreie Stadt",
+      "population": 57107,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.55,
+      "priority_score": 1.58,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0V",
+      "nuts3_name": "Sonneberg",
+      "population": 54964,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.49,
+      "priority_score": 1.55,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE233",
+      "nuts3_name": "Weiden i. d. Opf, Kreisfreie Stadt",
+      "population": 42444,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.15,
+      "priority_score": 1.36,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE255",
+      "nuts3_name": "Schwabach, Kreisfreie Stadt",
+      "population": 40835,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Métaux / traitement de surface": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.11,
+      "priority_score": 1.34,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB37",
+      "nuts3_name": "Pirmasens, Kreisfreie Stadt",
+      "population": 39761,
+      "industrial_site_count": 1,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {
+        "Chimie": 1
+      },
+      "exposure_index": 1.61,
+      "population_index": 1.08,
+      "priority_score": 1.32,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE221",
+      "nuts3_name": "Landshut, Kreisfreie Stadt",
+      "population": 71863,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.95,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE222",
+      "nuts3_name": "Passau, Kreisfreie Stadt",
+      "population": 53039,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.44,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE223",
+      "nuts3_name": "Straubing, Kreisfreie Stadt",
+      "population": 49002,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.33,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE225",
+      "nuts3_name": "Freyung-Grafenau",
+      "population": 78710,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 2.14,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE22A",
+      "nuts3_name": "Rottal-Inn",
+      "population": 120497,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 3.27,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE11B",
+      "nuts3_name": "Main-Tauber-Kreis",
+      "population": 133169,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 3.61,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE125",
+      "nuts3_name": "Heidelberg, Stadtkreis",
+      "population": 155756,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 4.23,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE213",
+      "nuts3_name": "Rosenheim, Kreisfreie Stadt",
+      "population": 65274,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.77,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE217",
+      "nuts3_name": "Dachau",
+      "population": 153595,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 4.17,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE21A",
+      "nuts3_name": "Erding",
+      "population": 140127,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 3.8,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE23A",
+      "nuts3_name": "Tirschenreuth",
+      "population": 72210,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.96,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE241",
+      "nuts3_name": "Bamberg, Kreisfreie Stadt",
+      "population": 77150,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 2.09,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE242",
+      "nuts3_name": "Bayreuth, Kreisfreie Stadt",
+      "population": 72940,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.98,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE243",
+      "nuts3_name": "Coburg, Kreisfreie Stadt",
+      "population": 41064,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.11,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE244",
+      "nuts3_name": "Hof, Kreisfreie Stadt",
+      "population": 46778,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.27,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE247",
+      "nuts3_name": "Coburg, Landkreis",
+      "population": 84468,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 2.29,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE251",
+      "nuts3_name": "Ansbach, Kreisfreie Stadt",
+      "population": 40742,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.11,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE252",
+      "nuts3_name": "Erlangen, Kreisfreie Stadt",
+      "population": 115928,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 3.15,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE258",
+      "nuts3_name": "Fürth, Landkreis",
+      "population": 117719,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 3.19,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE262",
+      "nuts3_name": "Schweinfurt, Kreisfreie Stadt",
+      "population": 54481,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.48,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE26B",
+      "nuts3_name": "Schweinfurt, Landkreis",
+      "population": 113977,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 3.09,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE27E",
+      "nuts3_name": "Oberallgäu",
+      "population": 155413,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 4.22,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE402",
+      "nuts3_name": "Cottbus, Kreisfreie Stadt",
+      "population": 95123,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 2.58,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE404",
+      "nuts3_name": "Potsdam, Kreisfreie Stadt",
+      "population": 184754,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 5.01,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE409",
+      "nuts3_name": "Märkisch-Oderland",
+      "population": 197817,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 5.37,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE94B",
+      "nuts3_name": "Grafschaft Bentheim",
+      "population": 144543,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 3.92,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE502",
+      "nuts3_name": "Bremerhaven, Kreisfreie Stadt",
+      "population": 118610,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 3.22,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE71B",
+      "nuts3_name": "Odenwaldkreis",
+      "population": 93846,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 2.55,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE71D",
+      "nuts3_name": "Rheingau-Taunus-Kreis",
+      "population": 185651,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 5.04,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE731",
+      "nuts3_name": "Kassel, Kreisfreie Stadt",
+      "population": 197230,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 5.35,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE735",
+      "nuts3_name": "Schwalm-Eder-Kreis",
+      "population": 180071,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 4.89,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE913",
+      "nuts3_name": "Wolfsburg, Kreisfreie Stadt",
+      "population": 129560,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 3.52,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE917",
+      "nuts3_name": "Helmstedt",
+      "population": 90227,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 2.45,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE934",
+      "nuts3_name": "Lüchow-Dannenberg",
+      "population": 46502,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.26,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE937",
+      "nuts3_name": "Rotenburg (Wümme)",
+      "population": 165904,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 4.5,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE93A",
+      "nuts3_name": "Uelzen",
+      "population": 91638,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 2.49,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB31",
+      "nuts3_name": "Frankenthal (Pfalz), Kreisfreie Stadt",
+      "population": 48140,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.31,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB36",
+      "nuts3_name": "Neustadt an der Weinstraße, Kreisfreie Stadt",
+      "population": 52945,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.44,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB3A",
+      "nuts3_name": "Zweibrücken, Kreisfreie Stadt",
+      "population": 33323,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 0.9,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB3G",
+      "nuts3_name": "Kusel",
+      "population": 69334,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.88,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DE94H",
+      "nuts3_name": "Wittmund",
+      "population": 55969,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.52,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB12",
+      "nuts3_name": "Ahrweiler",
+      "population": 129353,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 3.51,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB24",
+      "nuts3_name": "Vulkaneifel",
+      "population": 59313,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 1.61,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB25",
+      "nuts3_name": "Trier-Saarburg",
+      "population": 148953,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 4.04,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG0S",
+      "nuts3_name": "Suhl, Kreisfreie Stadt",
+      "population": 34685,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 0.94,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEB3K",
+      "nuts3_name": "Südwestpfalz",
+      "population": 89974,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 2.44,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF08",
+      "nuts3_name": "Ostholstein",
+      "population": 201472,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 5.47,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEF0A",
+      "nuts3_name": "Plön",
+      "population": 130609,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 3.54,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG01",
+      "nuts3_name": "Erfurt, Kreisfreie Stadt",
+      "population": 218793,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 5.94,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG02",
+      "nuts3_name": "Gera, Kreisfreie Stadt",
+      "population": 95608,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 2.59,
+      "priority_score": 0,
+      "data_status": "complete"
+    },
+    {
+      "nuts3_id": "DEG07",
+      "nuts3_name": "Nordhausen",
+      "population": 80762,
+      "industrial_site_count": 0,
+      "filter_method": "secteurs PFAS associés",
+      "sector_proxy_counts": {},
+      "exposure_index": 0,
+      "population_index": 2.19,
+      "priority_score": 0,
+      "data_status": "complete"
+    }
+  ]
+}

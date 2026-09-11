@@ -34,8 +34,21 @@
       .swatch { width:11px; height:11px; flex:0 0 auto; border-radius:50%; box-shadow:0 0 0 4px rgba(91,168,149,.1); }
       .note { margin:25px 0 0; padding:15px 15px 0; border-top:1px solid var(--line); color:#71868c; font-size:.72rem; line-height:1.6; }
       .note strong { color:#3d5e66; }
-      .map-stage { min-height:100vh; padding:0; }
+      .map-stage { position:relative; min-height:100vh; padding:0; }
       #map { min-height:100vh; background:radial-gradient(circle at 63% 42%,#edf6f3 0,#d9e8e8 53%,#cbdedd 100%); }
+      .map-inspector { position:absolute; z-index:800; top:24px; right:24px; width:300px; padding:18px; border:1px solid rgba(255,255,255,.8); border-radius:18px; background:rgba(255,253,250,.94); box-shadow:0 18px 45px rgba(16,44,58,.15); backdrop-filter:blur(16px); }
+      .map-inspector__eyebrow { margin:0 0 7px; color:#39827b; font-size:.62rem; font-weight:850; letter-spacing:.13em; text-transform:uppercase; }
+      .map-inspector h2 { margin:0; font-family:Georgia,"Times New Roman",serif; font-size:1.35rem; font-weight:400; line-height:1.05; }
+      .map-inspector__hint { margin:9px 0 0; color:#6d8389; font-size:.75rem; line-height:1.5; }
+      .map-inspector__score { display:flex; align-items:baseline; justify-content:space-between; margin:14px 0; padding:10px 11px; border-radius:11px; color:white; font-size:.65rem; font-weight:850; letter-spacing:.09em; text-transform:uppercase; }
+      .map-inspector__score strong { font-size:1.15rem; letter-spacing:-.02em; }
+      .map-inspector dl { display:grid; grid-template-columns:1fr auto; gap:8px 12px; margin:0; padding-top:13px; border-top:1px solid var(--line); color:#678087; font-size:.72rem; }
+      .map-inspector dt, .map-inspector dd { margin:0; }
+      .map-inspector dd { max-width:145px; color:#244955; font-weight:800; text-align:right; }
+      .map-legend { position:absolute; z-index:800; right:24px; bottom:26px; display:flex; align-items:center; gap:10px; padding:10px 13px; border:1px solid rgba(255,255,255,.8); border-radius:14px; color:#516970; background:rgba(255,253,250,.9); box-shadow:0 10px 28px rgba(16,44,58,.1); font-size:.68rem; font-weight:750; backdrop-filter:blur(12px); }
+      .map-legend__title { color:#2c4f58; font-weight:850; letter-spacing:.06em; text-transform:uppercase; }
+      .map-legend__scale { display:flex; overflow:hidden; width:104px; height:8px; border-radius:8px; }
+      .map-legend__scale i { flex:1; } .map-legend__scale i:nth-child(1) { background:var(--low); } .map-legend__scale i:nth-child(2) { background:var(--medium); } .map-legend__scale i:nth-child(3) { background:var(--high); }
       .leaflet-container { font:inherit; }
       .leaflet-control-zoom { overflow:hidden; border:0!important; border-radius:12px!important; box-shadow:0 8px 20px rgba(16,44,58,.16)!important; }
       .leaflet-control-zoom a { width:36px!important; height:36px!important; border:0!important; color:var(--ink)!important; line-height:34px!important; }
@@ -54,7 +67,7 @@
       .region-card dl { display:grid; grid-template-columns:1fr auto; gap:7px 16px; margin:0; color:#607880; font-size:.73rem; }
       .region-card dt, .region-card dd { margin:0; }
       .region-card dd { color:#244955; font-weight:750; text-align:right; }
-      @media (max-width:760px) { .sidebar { position:relative; top:auto; left:auto; bottom:auto; width:auto; min-height:auto; padding:24px; overflow:visible; border-width:0 0 1px; border-radius:0 0 24px 24px; box-shadow:0 12px 28px rgba(16,44,58,.1); } .eyebrow { margin-top:34px; } h1 { font-size:3.15rem; } .intro { max-width:35rem; } .note { margin-top:22px; } .map-stage, #map { min-height:68vh; } .leaflet-control-zoom { margin-bottom:18px!important; } }
+      @media (max-width:760px) { .sidebar { position:relative; top:auto; left:auto; bottom:auto; width:auto; min-height:auto; padding:24px; overflow:visible; border-width:0 0 1px; border-radius:0 0 24px 24px; box-shadow:0 12px 28px rgba(16,44,58,.1); } .eyebrow { margin-top:34px; } h1 { font-size:3.15rem; } .intro { max-width:35rem; } .note { margin-top:22px; } .map-stage, #map { min-height:68vh; } .map-inspector { top:14px; right:14px; left:14px; width:auto; padding:15px; } .map-inspector__hint { display:none; } .map-legend { right:14px; bottom:16px; } .leaflet-control-zoom { margin-bottom:18px!important; } }
     </style>
   </head>
   <body>
@@ -78,12 +91,21 @@
       </aside>
       <section class="map-stage" aria-label="Germany NUTS 3 priority map">
         <div id="map" aria-label="Interactive choropleth map of Germany’s NUTS 3 regions"></div>
+        <aside class="map-inspector" id="region-details" aria-live="polite">
+          <p class="map-inspector__eyebrow">Regional detail</p>
+          <h2>Explore the map</h2>
+          <p class="map-inspector__hint">Hover over a region for a quick look, or select it to keep its indicators here.</p>
+        </aside>
+        <div class="map-legend" aria-label="Score legend from lower to higher priority">
+          <span class="map-legend__title">Score 0–100</span><span class="map-legend__scale" aria-hidden="true"><i></i><i></i><i></i></span><span>Higher</span>
+        </div>
       </section>
     </main>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
       (() => {
         const statusElement = document.getElementById('map-status');
+        const inspectorElement = document.getElementById('region-details');
         const scoreUrl = 'data/generated/germany_nuts3_priority.json';
         const nutsUrl = 'https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/NUTS_RG_03M_2024_4326_LEVL_3.geojson';
         const priorityDefinitions = {
@@ -124,6 +146,12 @@
           return `<article class="region-card"><p class="region-card__code">NUTS 3 · ${id}</p><h3>${region?.nuts3_name ?? fallbackName}</h3><div class="score-chip" style="background:${priority.color}"><span>${priority.label}</span><b>${score}<small>/100</small></b></div><dl><dt>Population</dt><dd>${formatPopulation(region?.population)}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${method}</dd></dl></article>`;
         }
 
+        function updateInspector(region, fallbackName, id) {
+          const hasScore = Number.isFinite(region?.priority_score);
+          const priority = priorityFor(region?.priority_score);
+          inspectorElement.innerHTML = `<p class="map-inspector__eyebrow">Selected region · ${id}</p><h2>${region?.nuts3_name ?? fallbackName}</h2><div class="map-inspector__score" style="background:${priority.color}"><span>${priority.label}</span><strong>${hasScore ? region.priority_score.toFixed(2) : '—'}<small>/100</small></strong></div><dl><dt>Population</dt><dd>${formatPopulation(region?.population)}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${region?.filter_method ?? 'Not available'}</dd></dl>`;
+        }
+
         if (!window.L) {
           setStatus('error', 'Map library could not load. Check your connection and refresh.');
           return;
@@ -162,9 +190,9 @@
             layer.bindTooltip(detailsHtml(region, name, id), { sticky: true, direction: 'top', opacity: 1 });
             layer.bindPopup(detailsHtml(region, name, id));
             layer.on({
-              mouseover(event) { event.target.setStyle({ weight: 2, color: '#0b2b3c', fillOpacity: 1 }); },
+              mouseover(event) { event.target.setStyle({ weight: 2, color: '#0b2b3c', fillOpacity: 1 }); updateInspector(region, name, id); },
               mouseout(event) { event.target.setStyle(featureStyle(feature)); },
-              click(event) { map.fitBounds(event.target.getBounds(), { padding: [35, 35], maxZoom: 8 }); }
+              click(event) { updateInspector(region, name, id); map.fitBounds(event.target.getBounds(), { padding: [35, 35], maxZoom: 8 }); }
             });
           };
 

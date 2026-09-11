@@ -35,7 +35,7 @@
       .legend-item::after { content:""; flex:1; order:1; border-bottom:1px dotted #cbd9d7; }
       .legend-item > span:last-child, .legend-item { }
       .swatch { width:11px; height:11px; flex:0 0 auto; border-radius:50%; box-shadow:0 0 0 4px rgba(91,168,149,.1); }
-      .note { margin:25px 0 0; padding:15px 15px 0; border-top:1px solid var(--line); color:#71868c; font-size:.72rem; line-height:1.6; }
+      .note { margin:25px 0 0; padding:15px 15px 0; border-top:1px solid var(--line); color:#71868c; font-size:.72rem; line-height:1.6; text-align:justify; }
       .note strong { color:#3d5e66; }
       .map-stage { position:relative; min-height:100vh; padding:0; }
       #map { min-height:100vh; background:radial-gradient(circle at 63% 42%,#edf6f3 0,#d9e8e8 53%,#cbdedd 100%); }
@@ -79,7 +79,7 @@
         <a class="back" href="index.html">← Back to introduction</a>
         <p class="eyebrow">Water Under Pressure</p>
         <h1>Germany<br />priority map</h1>
-        <p class="intro">Explore Germany’s NUTS 3 regions with the locally prepared pre-prioritisation score. Hover or select a region for its underlying indicators.</p>
+        <p class="intro">Explore Germany’s NUTS 3 regions with the locally prepared pre-prioritisation score to identify relative regional priorities. Hover or select a region for its underlying indicators.</p>
         <section class="methodology-banner" aria-label="Methodology and limitations">
           <p class="methodology-banner__label">Methodology &amp; limits</p>
           <p><strong>Indicative pre-prioritisation only.</strong> Industrial sites are a pressure proxy, not evidence of PFAS contamination, population exposure, a health risk or non-compliance. Colours show a relative ranking across German regions, not an absolute risk threshold. <span id="filter-status">Checking the local sector method…</span></p>
@@ -94,7 +94,7 @@
             <li class="legend-item"><span class="swatch" style="background: #aebbc0"></span>Insufficient data</li>
           </ul>
         </section>
-        <p class="note"><strong>Local-only runtime.</strong> No API key or external database is used while viewing this map. It loads the prepared local score dataset and local NUTS 2024 boundary snapshot; source provenance is documented in the project.</p>
+        <p class="note"><strong>Indicative only.</strong> This tool supports regional pre-prioritisation with industrial pressure, pesticide concentration, nutrient concentration, population density, and hydrological connectivity. These data do not determine regulatory compliance. <strong>Boundaries:</strong> Eurostat GISCO NUTS 3 regions provide regional context, not exact water-source or catchment boundaries. <strong>Local-only runtime:</strong> no API key or external database is used while viewing this map; it loads prepared local score and boundary snapshots.</p>
       </aside>
       <section class="map-stage" aria-label="Germany NUTS 3 priority map">
         <div id="map" aria-label="Interactive choropleth map of Germany’s NUTS 3 regions"></div>
@@ -194,13 +194,13 @@
           const score = hasScore ? region.priority_score.toFixed(2) : '—';
           const method = region?.filter_method ?? 'Not available';
           const priority = priorityFor(region);
-          return `<article class="region-card"><p class="region-card__code">NUTS 3 · ${id}</p><h3>${region?.nuts3_name ?? fallbackName}</h3><div class="score-chip" style="background:${priority.color}"><span>${priority.label}</span><b>${score}<small>/100</small></b></div><dl><dt>Population</dt><dd>${formatPopulation(region?.population)}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${method}</dd></dl></article>`;
+          return `<article class="region-card"><p class="region-card__code">NUTS 3 · ${id}</p><h3>${region?.nuts3_name ?? fallbackName}</h3><div class="score-chip" style="background:${priority.color}"><span>${priority.label}</span><b>${score}<small>/100</small></b></div><dl><dt>WISE pesticide mean</dt><dd>${region?.pesticide_concentration_mean ?? 'Not available'}</dd><dt>WISE nutrient mean</dt><dd>${region?.nutrient_concentration_mean ?? 'Not available'}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${method}</dd></dl></article>`;
         }
 
         function updateInspector(region, fallbackName, id) {
           const hasScore = Number.isFinite(region?.priority_score);
           const priority = priorityFor(region);
-          inspectorElement.innerHTML = `<p class="map-inspector__eyebrow">Selected region · ${id}</p><h2>${region?.nuts3_name ?? fallbackName}</h2><div class="map-inspector__score" style="background:${priority.color}"><span>${priority.label}</span><strong>${hasScore ? region.priority_score.toFixed(2) : '—'}<small>/100</small></strong></div><dl><dt>Population</dt><dd>${formatPopulation(region?.population)}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${region?.filter_method ?? 'Not available'}</dd></dl>`;
+          inspectorElement.innerHTML = `<p class="map-inspector__eyebrow">Selected region · ${id}</p><h2>${region?.nuts3_name ?? fallbackName}</h2><div class="map-inspector__score" style="background:${priority.color}"><span>${priority.label}</span><strong>${hasScore ? region.priority_score.toFixed(2) : '—'}<small>/100</small></strong></div><dl><dt>WISE pesticide mean</dt><dd>${region?.pesticide_concentration_mean ?? 'Not available'}</dd><dt>WISE nutrient mean</dt><dd>${region?.nutrient_concentration_mean ?? 'Not available'}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${region?.filter_method ?? 'Not available'}</dd></dl>`;
         }
 
         if (!window.L) {

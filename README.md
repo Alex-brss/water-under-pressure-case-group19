@@ -52,6 +52,8 @@ These questions aren't here to slow you down — they're part of what's being ev
 
 The first workstream now has a local-only PFAS data-preparation workbench in `src/`. Open `src/index.html` through a static web server to configure source provenance, import a future CSV or JSON file, review validation findings, and export record-level prepared data. No public observations are bundled or fetched yet. The scope and handoff contract are documented in `docs/DATA_PREPARATION.md`.
 
+Separately, the Germany-only NUTS 3 analytical input for the PFAS priority map is generated in `data/generated/germany_nuts3_priority.json`. It uses the EEA Industrial Emissions Portal, Eurostat population, Eurostat GISCO boundaries, and Copernicus EU-Hydro main-river corridors, all without an API key. Its transparent 0–100 pre-prioritisation score weights industrial pressure (45%), population (25%), population density (15%), and hydrological connectivity (15%). See `data/generated/README.md` for the formula, sources, and limitations.
+
 ## Deployment and data-security boundary
 
 The Vercel-hosted interface is suitable for sharing public German source data and the validation workflow. In this prototype, operator-specific CSV/JSON files are processed in the browser and are not uploaded. This must not be described as a complete production security architecture: before storing operator data, add authentication, role-based authorization, encryption at rest and in transit, tenant separation, audit logging, retention/deletion controls, and server-side input validation. Never place API keys in browser code or committed files.

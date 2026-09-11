@@ -1,7 +1,8 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/", "destination": "/src/index.html" },
+    { "source": "/", "destination": "/map.html" },
+    { "source": "/introduction", "destination": "/src/index.html" },
     { "source": "/app.js", "destination": "/src/app.js" },
     { "source": "/data-validation.js", "destination": "/src/data-validation.js" },
     { "source": "/styles.css", "destination": "/src/styles.css" }

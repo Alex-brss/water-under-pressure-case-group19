@@ -17,10 +17,10 @@ The Industrial Emissions Portal exposes `eprtr_sectors` and `eea_activities`, so
 
 Every regional row includes these core fields:
 
-`nuts3_id`, `nuts3_name`, `area_km2`, `population`, `population_density_per_km2`, `industrial_site_count`, `water_network_segment_count`, `water_network_length_km`, `water_connectivity_raw`, the four component indices, `priority_score`, and `data_status`.
+`nuts3_id`, `nuts3_name`, `area_km2`, `population`, `population_density_per_km2`, `wise_concentration_mean`, `industrial_site_count`, `water_network_segment_count`, `water_network_length_km`, `water_connectivity_raw`, the component indices, `priority_score`, and `data_status`.
 
 Exposure, total population, population density, and the water-connectivity proxy are each normalised separately to 0–100. The final score is a transparent weighted sum:
 
-`0.45 × exposure + 0.25 × population + 0.15 × population density + 0.15 × water connectivity`
+`0.45 × exposure + 0.25 × WISE pesticide/nutrient concentration + 0.15 × population density + 0.15 × water connectivity`
 
 The connectivity proxy is the EU-Hydro main-river-corridor length weighted by Strahler order and assigned by segment midpoint to a NUTS 3 region. It is not a hydrological transport model. This is an indicative pre-prioritisation measure only: an industrial site and a connected river corridor are proxies for potential pressure and propagation, not evidence of PFAS contamination, population exposure, a health risk, or regulatory non-compliance.

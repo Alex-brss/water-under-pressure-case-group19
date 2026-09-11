@@ -8,6 +8,7 @@ const GISCO_NUTS3 =
   'https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/NUTS_RG_03M_2024_4326_LEVL_3.geojson';
 const EU_HYDRO_RIVER_SERVICE =
   'https://image.discomap.eea.europa.eu/arcgis/rest/services/EUHydro/EU_Hydro_RiverNetworkDatabase/MapServer';
+const WISE_QUERY = 'https://discodata.eea.europa.eu/sql';
 const OUTPUT_PATH = 'data/generated/germany_nuts3_priority.json';
 const BATCH_SIZE = 1_000;
 const NUTS3_PATTERN = /^DE[A-Z0-9]{3}$/;
@@ -196,6 +197,32 @@ async function loadPopulation() {
   );
 }
 
+async function loadWiseConcentrations(boundaries) {
+  const queries = [
+    "select resultMeanValue, resultUom, lat, lon from [WISE_Indicators].[v6r1].[AggregatedData_Pesticides] where countryCode = 'DE' and phenomenonTimeReferenceYear = 2023",
+    "select resultMeanValue, resultUom, lat, lon from [WISE_Indicators].[v6r1].[AggregatedDataByWaterBody] where countryCode = 'DE' and phenomenonTimeReferenceYear = 2023",
+  ];
+  const rows = [];
+  for (const sql of queries) {
+    const query = new URLSearchParams({ query: sql, p: '1', nrOfHits: '10000' });
+    const payload = await getJson(`${WISE_QUERY}?${query}`, 'WISE Freshwater');
+    if (payload.errors?.length) throw new Error('WISE returned a query error.');
+    rows.push(...(payload.results ?? []));
+  }
+  const values = new Map();
+  for (const row of rows) {
+    const point = [Number(row.lon), Number(row.lat)];
+    const value = Number(row.resultMeanValue);
+    if (!Number.isFinite(point[0]) || !Number.isFinite(point[1]) || !Number.isFinite(value) || value < 0) continue;
+    const nuts3Id = nuts3FromWgs84Point(point, boundaries);
+    if (!nuts3Id) continue;
+    const current = values.get(nuts3Id) ?? [];
+    current.push(value);
+    values.set(nuts3Id, current);
+  }
+  return new Map([...values].map(([id, entries]) => [id, entries.reduce((sum, value) => sum + value, 0) / entries.length]));
+}
+
 async function loadWaterConnectivity(boundaries) {
   const segments = [];
   for (const layer of EU_HYDRO_RIVER_LAYERS) {
@@ -292,7 +319,7 @@ function assignAndDeduplicateSites(sites, boundaries) {
   return { assigned, quality };
 }
 
-function buildRegionalTable(boundaries, population, sites, waterConnectivity) {
+function buildRegionalTable(boundaries, population, wiseConcentration, sites, waterConnectivity) {
   const industrialByNuts3 = new Map();
   for (const site of sites) {
     const current = industrialByNuts3.get(site.nuts3_id) ?? { industrial_site_count: 0, sector_proxy_counts: {} };
@@ -311,6 +338,7 @@ function buildRegionalTable(boundaries, population, sites, waterConnectivity) {
     return Number.isFinite(value) && boundary.area_km2 > 0 ? value / boundary.area_km2 : null;
   });
   const maxPopulationDensity = Math.max(...populationDensity.filter(Number.isFinite), 1);
+  const maxWiseConcentration = Math.max(...wiseConcentration.values(), 1);
 
   const regions = boundaries.map((boundary) => {
     const industrial = industrialByNuts3.get(boundary.nuts3_id) ?? { industrial_site_count: 0, sector_proxy_counts: {} };
@@ -322,9 +350,11 @@ function buildRegionalTable(boundaries, population, sites, waterConnectivity) {
     const populationIndex = Number.isFinite(regionPopulation) ? (regionPopulation / maxPopulation) * 100 : null;
     const populationDensityIndex = regionPopulationDensity === null ? null : (regionPopulationDensity / maxPopulationDensity) * 100;
     const waterConnectivityIndex = (water.water_connectivity_raw / maxWaterConnectivity) * 100;
-    const priorityScore = populationIndex === null || populationDensityIndex === null
+    const wiseValue = wiseConcentration.get(boundary.nuts3_id) ?? null;
+    const wiseIndex = Number.isFinite(wiseValue) ? (wiseValue / maxWiseConcentration) * 100 : null;
+    const priorityScore = wiseIndex === null || populationDensityIndex === null
       ? null
-      : exposureIndex * 0.45 + populationIndex * 0.25 + populationDensityIndex * 0.15 + waterConnectivityIndex * 0.15;
+      : exposureIndex * 0.45 + wiseIndex * 0.25 + populationDensityIndex * 0.15 + waterConnectivityIndex * 0.15;
     return {
       nuts3_id: boundary.nuts3_id,
       nuts3_name: boundary.nuts3_name,
@@ -339,6 +369,8 @@ function buildRegionalTable(boundaries, population, sites, waterConnectivity) {
       water_connectivity_raw: Number(water.water_connectivity_raw.toFixed(2)),
       exposure_index: Number(exposureIndex.toFixed(2)),
       population_index: populationIndex === null ? null : Number(populationIndex.toFixed(2)),
+      wise_concentration_mean: wiseValue === null ? null : Number(wiseValue.toFixed(4)),
+      wise_concentration_index: wiseIndex === null ? null : Number(wiseIndex.toFixed(2)),
       population_density_index: populationDensityIndex === null ? null : Number(populationDensityIndex.toFixed(2)),
       water_connectivity_index: Number(waterConnectivityIndex.toFixed(2)),
       priority_score: priorityScore === null ? null : Number(priorityScore.toFixed(2)),
@@ -353,10 +385,11 @@ function buildRegionalTable(boundaries, population, sites, waterConnectivity) {
 }
 
 async function main() {
-  const [boundaries, rawSites, population] = await Promise.all([loadBoundaries(), loadIndustrialSites(), loadPopulation()]);
+  const boundaries = await loadBoundaries();
+  const [rawSites, population, wiseConcentration] = await Promise.all([loadIndustrialSites(), loadPopulation(), loadWiseConcentrations(boundaries)]);
   const { assigned, quality } = assignAndDeduplicateSites(rawSites, boundaries);
   const { byNuts3: waterConnectivity, quality: waterQuality } = await loadWaterConnectivity(boundaries);
-  const regions = buildRegionalTable(boundaries, population, assigned, waterConnectivity);
+  const regions = buildRegionalTable(boundaries, population, wiseConcentration, assigned, waterConnectivity);
   const regionsWithPopulation = regions.filter(({ population: value }) => Number.isFinite(value)).length;
 
   const output = {
@@ -367,7 +400,7 @@ async function main() {
       consequence: 'Eurostat population on 1 January by NUTS 3 region.',
       population_density: 'Population divided by NUTS 3 polygon area in km², derived from Eurostat population and GISCO boundaries.',
       water_connectivity: 'EU-Hydro main-river-corridor length in km weighted by Strahler order (orders 6–9 only), assigned to the NUTS 3 region containing each segment midpoint. It is a hydrological-connectivity proxy, not a model of contaminant transport.',
-      score: '0.45 × exposure index + 0.25 × population index + 0.15 × population-density index + 0.15 × water-connectivity index; each index is normalised to 0–100 against the German maximum.',
+      score: '0.45 × exposure index + 0.25 × WISE pesticide/nutrient concentration index + 0.15 × population-density index + 0.15 × water-connectivity index; each index is normalised to 0–100 against the German maximum.',
       limitation: 'Indicative pre-prioritisation only. Industrial sites and water-network connectivity are proxies for potential pressure and propagation, not evidence of PFAS contamination, human exposure, health risk, contaminant transport, or regulatory non-compliance.',
     },
     sources: {

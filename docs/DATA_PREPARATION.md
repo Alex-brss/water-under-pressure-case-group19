@@ -27,7 +27,7 @@ The blank [record template](../data/pfas-record-template.csv) defines the minimu
 - coordinates are numeric and in valid geographic ranges, with a warning for points outside an approximate Germany bounding box;
 - sample dates are real `YYYY-MM-DD` dates and are not in the future;
 - concentrations are non-negative numbers when reported;
-- blank concentrations stay explicitly `unavailable` and are never changed to zero;
+- blank concentrations remain blank and are never changed to zero;
 - record IDs are unique;
 - record-level URLs use HTTPS;
 - provenance metadata includes a publisher/dataset name and HTTPS source URL.

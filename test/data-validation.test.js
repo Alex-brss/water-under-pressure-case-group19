@@ -14,14 +14,12 @@ test("accepts a JSON records envelope", () => {
   assert.deepEqual(records, [{ record_id: "r1", country: "Germany" }]);
 });
 
-test("keeps unavailable concentrations explicit and does not convert them to zero", () => {
+test("keeps blank concentrations blank", () => {
   const result = validateRecords([{
     record_id: "r1", country: "DE", latitude: "51", longitude: "10", sample_date: "2025-01-02",
     analyte: "PFOS", concentration: "", unit: "µg/L", matrix: "surface water", source_url: "https://example.test/r1",
   }]);
   assert.equal(result.summary.errors, 0);
-  assert.equal(result.summary.warnings, 1);
-  assert.equal(result.rows[0].record.concentration_status, "unavailable");
   assert.equal(result.rows[0].record.concentration, "");
 });
 

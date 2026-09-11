@@ -28,7 +28,6 @@ export const FIELD_LABELS = {
   downstream_rivers: "Downstream rivers",
   directly_connected_lakes_reservoirs: "Directly connected lakes/reservoirs",
   connected_water_bodies: "Connected water bodies",
-  concentration_status: "Concentration status",
   source_url: "Record source URL",
 };
 
@@ -181,10 +180,8 @@ export function validateRecords(records = []) {
     }
 
     const concentration = String(record.concentration ?? "").trim();
-    if (concentration === "") {
-      rowIssues.push(issue("missing-concentration", "warning", "Concentration is unavailable; it will not be treated as zero.", index, "concentration"));
-    } else if (!Number.isFinite(Number(concentration)) || Number(concentration) < 0) {
-      rowIssues.push(issue("invalid-concentration", "error", "Concentration must be a non-negative number or be left blank when unavailable.", index, "concentration"));
+    if (concentration !== "" && (!Number.isFinite(Number(concentration)) || Number(concentration) < 0)) {
+      rowIssues.push(issue("invalid-concentration", "error", "Concentration must be a non-negative number.", index, "concentration"));
     }
 
     if (record.record_id) {
@@ -235,12 +232,11 @@ export function validateRecords(records = []) {
       rowIssues.push(issue("insecure-record-url", "error", "Record source URL must use HTTPS.", index, "source_url"));
     }
 
-    const status = concentration === "" ? "unavailable" : "reported";
     const connectionFields = [record.upstream_rivers, record.downstream_rivers, record.directly_connected_lakes_reservoirs];
     const connected = connectionFields.every((value) => nonNegativeInteger(value))
       ? connectionFields.reduce((total, value) => total + Number(value), 0)
       : "";
-    return { record: { ...record, concentration_status: status, connected_water_bodies: connected }, issues: rowIssues };
+    return { record: { ...record, connected_water_bodies: connected }, issues: rowIssues };
   });
 
   const issues = rows.flatMap(({ issues: rowIssues }) => rowIssues);

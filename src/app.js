@@ -15,6 +15,24 @@ const $ = (selector) => document.querySelector(selector);
 const metadataFields = ["source_name", "source_url", "publication_date", "retrieved_at"];
 const metadata = () => Object.fromEntries(metadataFields.map((field) => [field, $(`#${field}`).value]));
 
+async function checkEurostat() {
+  const status = $("#eurostat-status");
+  status.textContent = "Checking the public Eurostat API…";
+  status.dataset.type = "neutral";
+  try {
+    const endpoint = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/tgs00024?geo=DE";
+    const response = await fetch(endpoint, { headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error(`Eurostat returned HTTP ${response.status}.`);
+    const payload = await response.json();
+    const count = Array.isArray(payload.value) ? payload.value.length : Object.keys(payload.value ?? {}).length;
+    status.textContent = `Live Eurostat response received for Germany: ${count} population-density observations. No API key used.`;
+    status.dataset.type = "success";
+  } catch (error) {
+    status.textContent = `Eurostat could not be reached from this browser: ${error.message}`;
+    status.dataset.type = "error";
+  }
+}
+
 function setStatus(message, type = "neutral") {
   const element = $("#import-status");
   element.textContent = message;
@@ -126,10 +144,11 @@ async function importFile(file) {
 }
 
 $("#data-file").addEventListener("change", (event) => importFile(event.target.files[0]));
+$("#load-eurostat").addEventListener("click", checkEurostat);
 for (const field of metadataFields) $(`#${field}`).addEventListener("input", runValidation);
 $("#recheck").addEventListener("click", runValidation);
 $("#export-prepared").addEventListener("click", () => {
-  download("prepared-pfas-records.csv", serializeCsv(prepareExport(state.validation)), "text/csv;charset=utf-8");
+  download("prepared-german-water-records.csv", serializeCsv(prepareExport(state.validation)), "text/csv;charset=utf-8");
 });
 $("#export-manifest").addEventListener("click", () => {
   const manifest = {

@@ -11,7 +11,7 @@
       <header class="hero">
         <p class="eyebrow">Water Under Pressure · Workstream 01</p>
         <h1>Prioritise German water sources for treatment.</h1>
-        <p class="lede">A local-only workbench for German water operators. Import official WISE, Eurostat, Copernicus EU-Hydro, and PFAS records, then calculate connected water bodies without inventing missing measurements.</p>
+        <p class="lede">A browser-based catalogue for German water operators using official WISE, Eurostat, and Copernicus data to prioritise water-source treatment.</p>
         <div class="scope-note"><strong>Deployment-safe prototype</strong><span>Public German datasets may be shared on Vercel; imported operator files are processed in this browser and are not uploaded.</span></div>
       </header>
 
@@ -40,11 +40,11 @@
         <div class="section-heading"><div><p class="eyebrow">Public sources · Germany</p><h2>Data coverage and access</h2></div></div>
         <div class="table-wrap"><table><thead><tr><th>Source</th><th>Implemented field/use</th><th>API key</th><th>Availability</th></tr></thead><tbody>
           <tr><td><a href="https://water.europa.eu/freshwater/freshwater/resources/wise-soe-data-collection" target="_blank" rel="noreferrer">WISE Freshwater</a></td><td>German nutrient, pesticide, and chemical-status records</td><td>No</td><td>Import official Germany-filtered CSV/SQLite export</td></tr>
-          <tr><td><a href="https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access" target="_blank" rel="noreferrer">Eurostat API</a></td><td>German population density (`DE*` NUTS/grid records)</td><td>No</td><td>Import or retrieve public data</td></tr>
+          <tr><td><a href="https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access" target="_blank" rel="noreferrer">Eurostat API</a></td><td>German population density (`DE*` NUTS/grid records)</td><td>No</td><td><button id="load-eurostat" class="secondary">Check live API</button></td></tr>
           <tr><td><a href="https://land.copernicus.eu/en/products/eu-hydro" target="_blank" rel="noreferrer">Copernicus EU-Hydro</a></td><td>Counts `connected_water_bodies` from three supplied count fields</td><td>No</td><td>Import Germany-clipped network attributes</td></tr>
-          <tr><td>Official German PFAS measurements</td><td>PFAS concentration, when measured</td><td>Not applicable</td><td><strong>Unavailable unless an official source file is supplied</strong></td></tr>
         </tbody></table></div>
-        <p class="small">The app never creates PFAS values. A blank concentration is exported with <code>concentration_status=unavailable</code>. Operator-specific service-area or customer data should remain local until a secure authenticated backend exists.</p>
+        <p class="small">Only official source records should be used. The app contains no bundled observations or fabricated values. Keep each refresh's <code>sample_date</code>, source URL, and retrieval date so maps and analysis can filter by data vintage. Operator-specific service-area or customer data should remain local until a secure authenticated backend exists.</p>
+        <p id="eurostat-status" class="status" data-type="neutral">Eurostat live check not run.</p>
       </section>
 
       <section class="card" aria-label="Validation report">
@@ -60,11 +60,11 @@
 
       <section class="card" aria-label="Prepared records preview">
         <div class="section-heading"><div><p class="eyebrow">Review before hand-off</p><h2>Prepared records preview</h2></div><div class="actions"><button id="export-prepared" class="primary" disabled>Export prepared CSV</button><button id="export-manifest" class="secondary" disabled>Export source manifest</button></div></div>
-        <p class="muted">Rows with errors stay out of the prepared export. Blank PFAS concentrations remain explicitly unavailable and are never converted to zero. Connected water bodies are calculated as upstream rivers + downstream rivers + directly connected lakes/reservoirs.</p>
+        <p class="muted">Rows with errors stay out of the prepared export. Connected water bodies are calculated as upstream rivers + downstream rivers + directly connected lakes/reservoirs.</p>
         <div class="table-wrap"><table><thead id="preview-head"></thead><tbody id="preview-body"></tbody></table></div>
       </section>
 
-      <footer class="footer"><p><strong>German public sources:</strong> WISE Freshwater (micropollution), Eurostat API (population density), Copernicus EU-Hydro (network connectivity), and an official PFAS measurement dataset where available.</p><p class="small">Missing PFAS values are labelled unavailable. Do not upload personal or household-level data. A production deployment requires authentication, authorization, encryption, audit logging, retention controls, and tenant separation before storing operator data.</p></footer>
+      <footer class="footer"><p><strong>German public sources:</strong> WISE Freshwater (micropollution), Eurostat API (population density), and Copernicus EU-Hydro (network connectivity).</p><p class="small">No observations are bundled or fabricated. Do not upload personal or household-level data. A production deployment requires authentication, authorization, encryption, audit logging, retention controls, and tenant separation before storing operator data.</p></footer>
     </main>
     <script type="module" src="./app.js"></script>
   </body>

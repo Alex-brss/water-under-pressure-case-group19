@@ -46,7 +46,7 @@ These questions aren't here to slow you down — they're part of what's being ev
 
 ## Our Approach
 
-*[To be filled in by the team at the end.]*
+We built a pre-prioritisation map that helps a German water utility or public authority decide which NUTS 3 regions to investigate first for potential PFAS-related pressure. It combines two key-free public data sources: the European Industrial Emissions Portal (industrial sites, filtered to PFAS-associated sectors like chemicals, surface treatment, paper, and textiles) as an *exposure* proxy, and Eurostat population and density as a *consequence* measure. All 400 of Germany's NUTS 3 regions receive a score from this robust baseline; where public water-quality measurements (WISE pesticides/nutrients) and hydrological connectivity exist, the score is refined further. Regions are ranked relatively (upper/middle/lower third) so a decision-maker sees at a glance where attention is most warranted. It is explicitly an *indicative pre-prioritisation*: an industrial site is a pressure proxy, not proof of PFAS contamination, a health risk, or non-compliance.
 
 ## Current prototype
 

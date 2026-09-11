@@ -4,7 +4,7 @@ import test from 'node:test';
 
 const scorePath = new URL('../data/generated/germany_nuts3_priority.json', import.meta.url);
 const boundaryPath = new URL('../data/generated/germany_nuts3_boundaries.geojson', import.meta.url);
-const mapPath = new URL('../map.html', import.meta.url);
+const mapPath = new URL('../index.html', import.meta.url);
 
 test('the Germany map reads the generated local score dataset instead of deriving pseudo-priorities', async () => {
   const map = await readFile(mapPath, 'utf8');

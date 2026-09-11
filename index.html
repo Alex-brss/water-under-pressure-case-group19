@@ -243,7 +243,7 @@
         }
 
         if (window.location.protocol === 'file:') {
-          setStatus('error', 'This page was opened directly from a file, so the browser cannot read the local score dataset. Start a local web server and open http://localhost:4173/map.html instead.');
+          setStatus('error', 'This page was opened directly from a file, so the browser cannot read the local score dataset. Start a local web server and open http://localhost:4173/ instead.');
           setInspectorMessage('Local server required', 'The score and boundary snapshots are local files. Browsers block them when the page is opened directly from disk.');
           return;
         }

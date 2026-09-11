@@ -220,14 +220,14 @@
         const CONCENTRATION_UNIT = 'µg/L';
 
         function scoreDetails(region) {
-          return `<dl><dt>Score variant</dt><dd>${scoreVariantLabel(region)}</dd><dt>WISE pesticide available</dt><dd>${availability(region?.pesticide_concentration_mean)}</dd><dt>WISE pesticide mean</dt><dd>${formatWiseValue(region?.pesticide_concentration_mean)}</dd><dt>WISE nutrient available</dt><dd>${availability(region?.nutrient_concentration_mean)}</dd><dt>WISE nutrient mean</dt><dd>${formatWiseValue(region?.nutrient_concentration_mean)}</dd><dt>PFAS-associated industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${formatSectorMethod(region?.filter_method)}</dd></dl><p class="map-inspector__hint">A missing WISE measurement is not a lack of regional data.</p>`;
+          return `<dl><dt>Priority level</dt><dd>${priorityFor(region).label}</dd><dt>Score variant</dt><dd>${scoreVariantLabel(region)}</dd><dt>WISE pesticide available</dt><dd>${availability(region?.pesticide_concentration_mean)}</dd><dt>WISE pesticide mean</dt><dd>${formatWiseValue(region?.pesticide_concentration_mean)}</dd><dt>WISE nutrient available</dt><dd>${availability(region?.nutrient_concentration_mean)}</dd><dt>WISE nutrient mean</dt><dd>${formatWiseValue(region?.nutrient_concentration_mean)}</dd><dt>PFAS-associated industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${formatSectorMethod(region?.filter_method)}</dd></dl><p class="map-inspector__hint">A missing WISE measurement is not a lack of regional data.</p>`;
         }
 
         function tooltipHtml(region, fallbackName, id) {
           const scoreValue = scoreFor(region);
           const score = Number.isFinite(scoreValue) ? scoreValue.toFixed(2) : '—';
           const priority = priorityFor(region);
-          return `<article class="region-card"><p class="region-card__code">NUTS 3 · ${id}</p><h3>${region?.nuts3_name ?? fallbackName}</h3><div class="score-chip" style="background:${priority.color}"><span>${priority.label}</span><b>${score}<small>/100</small></b></div></article>`;
+          return `<article class="region-card"><p class="region-card__code">NUTS 3 · ${id}</p><h3>${region?.nuts3_name ?? fallbackName}</h3><div class="score-chip" style="background:${priority.color}"><span>${priority.label}</span><b>${score}<small>/100</small></b></div><dl><dt>Priority level</dt><dd>${priority.label}</dd></dl></article>`;
         }
 
         function updateInspector(region, fallbackName, id) {

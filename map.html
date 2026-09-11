@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Germany NUTS 3 priority map." />
+    <title>Germany priority map | Water Under Pressure</title>
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQWnB1fV9A4J0A5fnXPM6YIG7k2S3yI=" crossorigin="" />
+    <style>
+      :root { --ink: #0b2b3c; --muted: #58717e; --canvas: #e9f3f2; --panel: #ffffff; --high: #d65a4a; --medium: #e6ac45; --low: #58a993; }
+      * { box-sizing: border-box; }
+      body { margin: 0; color: var(--ink); background: var(--canvas); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .app { display: grid; grid-template-columns: minmax(280px, 360px) 1fr; min-height: 100vh; }
+      .sidebar { z-index: 2; padding: 32px; background: var(--panel); box-shadow: 10px 0 28px rgba(11,43,60,.08); }
+      .back { color: #0d6b80; font-size: .83rem; font-weight: 750; text-decoration: none; }
+      .back:hover { text-decoration: underline; }
+      .eyebrow { margin: 48px 0 12px; color: #0d7286; font-size: .73rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+      h1 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.4rem, 4vw, 3.6rem); font-weight: 400; line-height: .94; letter-spacing: -.045em; }
+      .intro { margin: 22px 0 30px; color: var(--muted); font-size: .98rem; line-height: 1.6; }
+      .status { display: flex; align-items: center; gap: 10px; min-height: 48px; margin: 0 0 30px; padding: 12px 14px; border: 1px solid #d7e4e6; border-radius: 8px; color: #3f5d69; font-size: .86rem; line-height: 1.35; }
+      .status[data-state="loading"]::before { width: 13px; height: 13px; content: ""; border: 2px solid #b7ccd1; border-top-color: #0d7286; border-radius: 50%; animation: spin .8s linear infinite; }
+      .status[data-state="ready"] { border-color: #b9dbd2; color: #227260; background: #f2fbf8; }
+      .status[data-state="ready"]::before { content: "✓"; color: #227260; font-weight: 900; }
+      .status[data-state="error"] { border-color: #f0c5bf; color: #9d382e; background: #fff8f7; }
+      .status[data-state="error"]::before { content: "!"; display: grid; width: 16px; height: 16px; place-items: center; border-radius: 50%; color: white; background: #bd493d; font-size: .7rem; font-weight: 900; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .legend h2 { margin: 0 0 14px; font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; }
+      .legend-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+      .legend-item { display: flex; align-items: center; gap: 10px; color: #405c68; font-size: .88rem; }
+      .swatch { width: 14px; height: 14px; border-radius: 3px; }
+      .note { margin-top: 34px; color: #708690; font-size: .78rem; line-height: 1.55; }
+      #map { min-height: 100vh; background: #d9e7e9; }
+      .leaflet-container { font: inherit; }
+      .leaflet-control-attribution { font-size: 10px; }
+      .tooltip { min-width: 185px; color: var(--ink); font-family: Inter, sans-serif; }
+      .tooltip strong { display: block; margin-bottom: 5px; font-size: 1rem; }
+      .tooltip span { color: var(--muted); font-size: .82rem; }
+      .priority-label { display: inline-block; margin-top: 9px; padding: 3px 7px; border-radius: 999px; color: white; font-size: .71rem; font-weight: 800; text-transform: uppercase; }
+      @media (max-width: 760px) { .app { display: block; } .sidebar { min-height: auto; padding: 22px 24px; } .eyebrow { margin-top: 34px; } #map { min-height: 68vh; } }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <aside class="sidebar">
+        <a class="back" href="index.html">← Back to introduction</a>
+        <p class="eyebrow">Water Under Pressure</p>
+        <h1>Germany<br />priority map</h1>
+        <p class="intro">Explore Germany’s NUTS 3 regions through a simple priority lens. Select a region to see its code and assigned priority.</p>
+        <div class="status" id="map-status" data-state="loading" role="status" aria-live="polite">Loading NUTS 3 boundaries…</div>
+        <section class="legend" aria-labelledby="legend-title">
+          <h2 id="legend-title">Priority level</h2>
+          <ul class="legend-list">
+            <li class="legend-item"><span class="swatch" style="background: var(--high)"></span>High priority</li>
+            <li class="legend-item"><span class="swatch" style="background: var(--medium)"></span>Medium priority</li>
+            <li class="legend-item"><span class="swatch" style="background: var(--low)"></span>Lower priority</li>
+          </ul>
+        </section>
+        <p class="note">Boundary data: Eurostat GISCO, NUTS 2021. Priority colours are a prototype classification and should be replaced with your validated decision data.</p>
+      </aside>
+      <div id="map" aria-label="Interactive choropleth map of Germany’s NUTS 3 regions"></div>
+    </main>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+      const statusElement = document.getElementById('map-status');
+      const map = L.map('map', { zoomControl: false, preferCanvas: true });
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+      const priorityDefinitions = {
+        high: { label: 'High priority', color: '#d65a4a' },
+        medium: { label: 'Medium priority', color: '#e6ac45' },
+        low: { label: 'Lower priority', color: '#58a993' }
+      };
+
+      function getPriority(nutsId) {
+        let value = 0;
+        for (const character of nutsId) value = (value * 31 + character.charCodeAt(0)) >>> 0;
+        const score = value % 100;
+        return score < 25 ? 'high' : score < 62 ? 'medium' : 'low';
+      }
+
+      function setStatus(state, message) {
+        statusElement.dataset.state = state;
+        statusElement.textContent = message;
+      }
+
+      function featureStyle(feature) {
+        const priority = getPriority(feature.properties.NUTS_ID);
+        return { color: '#ffffff', weight: 0.75, fillColor: priorityDefinitions[priority].color, fillOpacity: 0.82 };
+      }
+
+      function onEachFeature(feature, layer) {
+        const id = feature.properties.NUTS_ID;
+        const name = feature.properties.NAME_LATN || feature.properties.NUTS_NAME || id;
+        const priority = getPriority(id);
+        const definition = priorityDefinitions[priority];
+        layer.bindTooltip(`<div class="tooltip"><strong>${name}</strong><span>NUTS 3: ${id}</span><br><span class="priority-label" style="background:${definition.color}">${definition.label}</span></div>`, { sticky: true, direction: 'top', opacity: 1 });
+        layer.on({
+          mouseover(event) { event.target.setStyle({ weight: 2, color: '#0b2b3c', fillOpacity: 1 }); },
+          mouseout(event) { event.target.setStyle(featureStyle(feature)); },
+          click(event) { map.fitBounds(event.target.getBounds(), { padding: [35, 35], maxZoom: 8 }); }
+        });
+      }
+
+      const nutsUrl = 'https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/NUTS_RG_03M_2021_4326_LEVL_3.geojson';
+      fetch(nutsUrl)
+        .then(response => {
+          if (!response.ok) throw new Error(`Boundary service responded with ${response.status}`);
+          return response.json();
+        })
+        .then(data => {
+          const germany = data.features.filter(feature => feature.properties.CNTR_CODE === 'DE');
+          if (!germany.length) throw new Error('No German NUTS 3 boundaries were returned.');
+          const layer = L.geoJSON({ type: 'FeatureCollection', features: germany }, { style: featureStyle, onEachFeature }).addTo(map);
+          map.fitBounds(layer.getBounds(), { padding: [28, 28] });
+          setStatus('ready', `${germany.length} German NUTS 3 regions loaded`);
+        })
+        .catch(error => {
+          map.setView([51.1657, 10.4515], 6);
+          setStatus('error', `Map could not load. ${error.message}`);
+          console.error('Unable to load NUTS boundaries:', error);
+        });
+    </script>
+  </body>
+</html>

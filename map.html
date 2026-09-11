@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Germany NUTS 3 priority map." />
+    <title>Germany priority map | Water Under Pressure</title>
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQWnB1fV9A4J0A5fnXPM6YIG7k2S3yI=" crossorigin="" />
+    <style>
+      :root { --ink:#102c3a; --muted:#657b84; --canvas:#dce9e9; --panel:#fffdfa; --line:#dce8e5; --high:#df6759; --medium:#e9b24f; --low:#5ba895; --shadow:0 24px 60px rgba(16,44,58,.18); }
+      * { box-sizing:border-box; }
+      body { margin:0; color:var(--ink); background:var(--canvas); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+      .app { min-height:100vh; }
+      .sidebar { position:fixed; z-index:1000; top:20px; left:20px; bottom:20px; display:flex; flex-direction:column; width:370px; padding:28px; overflow:auto; border:1px solid rgba(255,255,255,.8); border-radius:24px; background:rgba(255,253,250,.94); box-shadow:var(--shadow); backdrop-filter:blur(16px); }
+      .back { display:inline-flex; align-items:center; width:max-content; gap:7px; color:#2c716d; font-size:.78rem; font-weight:800; letter-spacing:.02em; text-decoration:none; }
+      .back:hover { color:var(--ink); }
+      .eyebrow { margin:42px 0 12px; color:#39827b; font-size:.67rem; font-weight:850; letter-spacing:.16em; text-transform:uppercase; }
+      h1 { margin:0; font-family:Georgia,"Times New Roman",serif; font-size:clamp(2.8rem,4vw,4.25rem); font-weight:400; line-height:.88; letter-spacing:-.06em; }
+      .intro { margin:22px 0 22px; color:var(--muted); font-size:.92rem; line-height:1.65; }
+      .status { display:flex; align-items:center; gap:10px; min-height:52px; margin:0 0 25px; padding:12px 14px; border:1px solid var(--line); border-radius:14px; color:#49636c; background:#f5faf8; font-size:.79rem; font-weight:650; line-height:1.35; }
+      .status[data-state="loading"]::before { width:14px; height:14px; flex:0 0 auto; content:""; border:2px solid #b7ccd1; border-top-color:#278279; border-radius:50%; animation:spin .8s linear infinite; }
+      .status[data-state="ready"] { border-color:#c8e4db; color:#2c7164; background:#f2faf6; }
+      .status[data-state="ready"]::before { content:"✓"; color:#27816d; font-size:1rem; font-weight:900; }
+      .status[data-state="error"] { border-color:#efc7c0; color:#9c3b31; background:#fff7f5; }
+      .status[data-state="error"]::before { display:grid; width:17px; height:17px; flex:0 0 auto; content:"!"; place-items:center; border-radius:50%; color:white; background:#bd493d; font-size:.72rem; font-weight:900; }
+      @keyframes spin { to { transform:rotate(360deg); } }
+      .legend { padding-top:3px; border-top:1px solid var(--line); }
+      .legend h2 { margin:18px 0 13px; color:#526d73; font-size:.66rem; letter-spacing:.13em; text-transform:uppercase; }
+      .legend-list { display:grid; gap:9px; margin:0; padding:0; list-style:none; }
+      .legend-item { display:flex; align-items:center; justify-content:space-between; gap:10px; color:#4e6870; font-size:.8rem; }
+      .legend-item::after { content:""; flex:1; order:1; border-bottom:1px dotted #cbd9d7; }
+      .legend-item > span:last-child, .legend-item { }
+      .swatch { width:11px; height:11px; flex:0 0 auto; border-radius:50%; box-shadow:0 0 0 4px rgba(91,168,149,.1); }
+      .note { margin:25px 0 0; padding:15px 15px 0; border-top:1px solid var(--line); color:#71868c; font-size:.72rem; line-height:1.6; }
+      .note strong { color:#3d5e66; }
+      .map-stage { position:relative; min-height:100vh; padding:0; }
+      #map { min-height:100vh; background:radial-gradient(circle at 63% 42%,#edf6f3 0,#d9e8e8 53%,#cbdedd 100%); }
+      .map-inspector { position:absolute; z-index:800; top:24px; right:24px; width:300px; padding:18px; border:1px solid rgba(255,255,255,.8); border-radius:18px; background:rgba(255,253,250,.94); box-shadow:0 18px 45px rgba(16,44,58,.15); backdrop-filter:blur(16px); }
+      .map-inspector__eyebrow { margin:0 0 7px; color:#39827b; font-size:.62rem; font-weight:850; letter-spacing:.13em; text-transform:uppercase; }
+      .map-inspector h2 { margin:0; font-family:Georgia,"Times New Roman",serif; font-size:1.35rem; font-weight:400; line-height:1.05; }
+      .map-inspector__hint { margin:9px 0 0; color:#6d8389; font-size:.75rem; line-height:1.5; }
+      .map-inspector__score { display:flex; align-items:baseline; justify-content:space-between; margin:14px 0; padding:10px 11px; border-radius:11px; color:white; font-size:.65rem; font-weight:850; letter-spacing:.09em; text-transform:uppercase; }
+      .map-inspector__score strong { font-size:1.15rem; letter-spacing:-.02em; }
+      .map-inspector dl { display:grid; grid-template-columns:1fr auto; gap:8px 12px; margin:0; padding-top:13px; border-top:1px solid var(--line); color:#678087; font-size:.72rem; }
+      .map-inspector dt, .map-inspector dd { margin:0; }
+      .map-inspector dd { max-width:145px; color:#244955; font-weight:800; text-align:right; }
+      .map-legend { position:absolute; z-index:800; right:24px; bottom:26px; display:flex; align-items:center; gap:10px; padding:10px 13px; border:1px solid rgba(255,255,255,.8); border-radius:14px; color:#516970; background:rgba(255,253,250,.9); box-shadow:0 10px 28px rgba(16,44,58,.1); font-size:.68rem; font-weight:750; backdrop-filter:blur(12px); }
+      .map-legend__title { color:#2c4f58; font-weight:850; letter-spacing:.06em; text-transform:uppercase; }
+      .map-legend__scale { display:flex; overflow:hidden; width:104px; height:8px; border-radius:8px; }
+      .map-legend__scale i { flex:1; } .map-legend__scale i:nth-child(1) { background:var(--low); } .map-legend__scale i:nth-child(2) { background:var(--medium); } .map-legend__scale i:nth-child(3) { background:var(--high); }
+      .leaflet-container { font:inherit; }
+      .leaflet-control-zoom { overflow:hidden; border:0!important; border-radius:12px!important; box-shadow:0 8px 20px rgba(16,44,58,.16)!important; }
+      .leaflet-control-zoom a { width:36px!important; height:36px!important; border:0!important; color:var(--ink)!important; line-height:34px!important; }
+      .leaflet-control-attribution { padding:3px 8px!important; color:#547078!important; background:rgba(255,255,255,.72)!important; font-size:9px!important; }
+      .leaflet-tooltip, .leaflet-popup-content-wrapper { border:0!important; border-radius:16px!important; box-shadow:0 16px 42px rgba(16,44,58,.22)!important; }
+      .leaflet-tooltip { padding:0!important; background:transparent!important; }
+      .leaflet-tooltip::before { border-top-color:#fffdfa!important; }
+      .leaflet-popup-content-wrapper { background:#fffdfa!important; }
+      .leaflet-popup-content { margin:0!important; }
+      .leaflet-popup-tip { background:#fffdfa!important; }
+      .region-card { min-width:232px; padding:16px; color:var(--ink); font-family:Inter,ui-sans-serif,system-ui,sans-serif; }
+      .region-card__code { margin:0 0 5px; color:#66828a; font-size:.63rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+      .region-card h3 { max-width:255px; margin:0 0 13px; font-family:Georgia,"Times New Roman",serif; font-size:1.22rem; font-weight:400; line-height:1.05; }
+      .score-chip { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:13px; padding:9px 10px; border-radius:10px; color:white; font-size:.69rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+      .score-chip b { font-size:1.03rem; letter-spacing:0; }
+      .region-card dl { display:grid; grid-template-columns:1fr auto; gap:7px 16px; margin:0; color:#607880; font-size:.73rem; }
+      .region-card dt, .region-card dd { margin:0; }
+      .region-card dd { color:#244955; font-weight:750; text-align:right; }
+      @media (max-width:760px) { .sidebar { position:relative; top:auto; left:auto; bottom:auto; width:auto; min-height:auto; padding:24px; overflow:visible; border-width:0 0 1px; border-radius:0 0 24px 24px; box-shadow:0 12px 28px rgba(16,44,58,.1); } .eyebrow { margin-top:34px; } h1 { font-size:3.15rem; } .intro { max-width:35rem; } .note { margin-top:22px; } .map-stage, #map { min-height:68vh; } .map-inspector { top:14px; right:14px; left:14px; width:auto; padding:15px; } .map-inspector__hint { display:none; } .map-legend { right:14px; bottom:16px; } .leaflet-control-zoom { margin-bottom:18px!important; } }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <aside class="sidebar">
+        <a class="back" href="index.html">← Back to introduction</a>
+        <p class="eyebrow">Water Under Pressure</p>
+        <h1>Germany<br />priority map</h1>
+        <p class="intro">Explore Germany’s NUTS 3 regions with the locally prepared pre-prioritisation score. Hover or select a region for its underlying indicators.</p>
+        <div class="status" id="map-status" data-state="loading" role="status" aria-live="polite">Loading scores and NUTS 3 boundaries…</div>
+        <section class="legend" aria-labelledby="legend-title">
+          <h2 id="legend-title">Priority level</h2>
+          <ul class="legend-list">
+            <li class="legend-item"><span class="swatch" style="background: var(--high)"></span>Higher score (67–100)</li>
+            <li class="legend-item"><span class="swatch" style="background: var(--medium)"></span>Middle score (34–66.99)</li>
+            <li class="legend-item"><span class="swatch" style="background: var(--low)"></span>Lower score (0–33.99)</li>
+            <li class="legend-item"><span class="swatch" style="background: #aebbc0"></span>Insufficient data</li>
+          </ul>
+        </section>
+        <p class="note"><strong>Indicative only.</strong> This is a non-health and non-regulatory pre-prioritisation tool. It uses industrial-site, population and water-connectivity proxies; it is not a PFAS measurement or health diagnosis. Score data are loaded from the local generated dataset. Boundaries: Eurostat GISCO, NUTS 2024.</p>
+      </aside>
+      <section class="map-stage" aria-label="Germany NUTS 3 priority map">
+        <div id="map" aria-label="Interactive choropleth map of Germany’s NUTS 3 regions"></div>
+        <aside class="map-inspector" id="region-details" aria-live="polite">
+          <p class="map-inspector__eyebrow">Regional detail</p>
+          <h2>Explore the map</h2>
+          <p class="map-inspector__hint">Hover over a region for a quick look, or select it to keep its indicators here.</p>
+        </aside>
+        <div class="map-legend" aria-label="Score legend from lower to higher priority">
+          <span class="map-legend__title">Score 0–100</span><span class="map-legend__scale" aria-hidden="true"><i></i><i></i><i></i></span><span>Higher</span>
+        </div>
+      </section>
+    </main>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+      (() => {
+        const statusElement = document.getElementById('map-status');
+        const inspectorElement = document.getElementById('region-details');
+        const scoreUrl = 'data/generated/germany_nuts3_priority.json';
+        const nutsUrl = 'https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/NUTS_RG_03M_2024_4326_LEVL_3.geojson';
+        const priorityDefinitions = {
+          high: { label: 'Higher score', color: '#d65a4a' },
+          medium: { label: 'Middle score', color: '#e6ac45' },
+          low: { label: 'Lower score', color: '#58a993' },
+          unavailable: { label: 'Insufficient data', color: '#aebbc0' }
+        };
+
+        function setStatus(state, message) {
+          statusElement.dataset.state = state;
+          statusElement.textContent = message;
+        }
+
+        function loadJson(url, sourceName) {
+          return fetch(url).then(response => {
+            if (!response.ok) throw new Error(`${sourceName} responded with ${response.status}`);
+            return response.json();
+          });
+        }
+
+        function priorityFor(score) {
+          if (!Number.isFinite(score)) return priorityDefinitions.unavailable;
+          if (score >= 67) return priorityDefinitions.high;
+          if (score >= 34) return priorityDefinitions.medium;
+          return priorityDefinitions.low;
+        }
+
+        function formatPopulation(value) {
+          return Number.isFinite(value) ? new Intl.NumberFormat('en-DE').format(value) : 'Not available';
+        }
+
+        function detailsHtml(region, fallbackName, id) {
+          const hasScore = Number.isFinite(region?.priority_score);
+          const score = hasScore ? region.priority_score.toFixed(2) : '—';
+          const method = region?.filter_method ?? 'Not available';
+          const priority = priorityFor(region?.priority_score);
+          return `<article class="region-card"><p class="region-card__code">NUTS 3 · ${id}</p><h3>${region?.nuts3_name ?? fallbackName}</h3><div class="score-chip" style="background:${priority.color}"><span>${priority.label}</span><b>${score}<small>/100</small></b></div><dl><dt>Population</dt><dd>${formatPopulation(region?.population)}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${method}</dd></dl></article>`;
+        }
+
+        function updateInspector(region, fallbackName, id) {
+          const hasScore = Number.isFinite(region?.priority_score);
+          const priority = priorityFor(region?.priority_score);
+          inspectorElement.innerHTML = `<p class="map-inspector__eyebrow">Selected region · ${id}</p><h2>${region?.nuts3_name ?? fallbackName}</h2><div class="map-inspector__score" style="background:${priority.color}"><span>${priority.label}</span><strong>${hasScore ? region.priority_score.toFixed(2) : '—'}<small>/100</small></strong></div><dl><dt>Population</dt><dd>${formatPopulation(region?.population)}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${region?.filter_method ?? 'Not available'}</dd></dl>`;
+        }
+
+        if (!window.L) {
+          setStatus('error', 'Map library could not load. Check your connection and refresh.');
+          return;
+        }
+
+        if (window.location.protocol === 'file:') {
+          setStatus('error', 'This page was opened directly from a file, so the browser cannot read the local score dataset. Start a local web server and open http://localhost:4173/map.html instead.');
+          return;
+        }
+
+        const map = L.map('map', { zoomControl: false, preferCanvas: true });
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+        Promise.all([
+          loadJson(scoreUrl, 'Local score dataset'),
+          loadJson(nutsUrl, 'NUTS 3 boundary service')
+        ]).then(([scoreData, boundaryData]) => {
+          if (!Array.isArray(scoreData.regions)) throw new Error('Local score dataset has no regions array.');
+          if (!Array.isArray(boundaryData.features)) throw new Error('NUTS 3 boundary response has no features array.');
+
+          const regionsByNutsId = new Map(scoreData.regions.map(region => [region.nuts3_id, region]));
+          const germany = boundaryData.features.filter(feature => feature.properties?.CNTR_CODE === 'DE');
+          if (!germany.length) throw new Error('No German NUTS 3 boundaries were returned.');
+          const joinedCount = germany.filter(feature => regionsByNutsId.has(feature.properties.NUTS_ID)).length;
+          if (!joinedCount) throw new Error('No NUTS 3 codes matched the local score dataset.');
+
+          const featureStyle = feature => {
+            const region = regionsByNutsId.get(feature.properties.NUTS_ID);
+            const priority = priorityFor(region?.priority_score);
+            return { color: '#ffffff', weight: 0.75, fillColor: priority.color, fillOpacity: 0.82 };
+          };
+          const onEachFeature = (feature, layer) => {
+            const id = feature.properties.NUTS_ID;
+            const name = feature.properties.NAME_LATN || feature.properties.NUTS_NAME || id;
+            const region = regionsByNutsId.get(id);
+            layer.bindTooltip(detailsHtml(region, name, id), { sticky: true, direction: 'top', opacity: 1 });
+            layer.bindPopup(detailsHtml(region, name, id));
+            layer.on({
+              mouseover(event) { event.target.setStyle({ weight: 2, color: '#0b2b3c', fillOpacity: 1 }); updateInspector(region, name, id); },
+              mouseout(event) { event.target.setStyle(featureStyle(feature)); },
+              click(event) { updateInspector(region, name, id); map.fitBounds(event.target.getBounds(), { padding: [35, 35], maxZoom: 8 }); }
+            });
+          };
+
+          const layer = L.geoJSON({ type: 'FeatureCollection', features: germany }, { style: featureStyle, onEachFeature }).addTo(map);
+          map.fitBounds(layer.getBounds(), { padding: [28, 28] });
+          setStatus('ready', `${joinedCount} of ${germany.length} German NUTS 3 regions joined to local scores`);
+        }).catch(error => {
+          map.setView([51.1657, 10.4515], 6);
+          setStatus('error', `Map could not load. ${error.message}`);
+          console.error('Unable to load priority map:', error);
+        });
+      })();
+    </script>
+  </body>
+</html>

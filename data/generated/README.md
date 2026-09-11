@@ -17,11 +17,11 @@ The Industrial Emissions Portal exposes `eprtr_sectors` and `eea_activities`, so
 
 Every regional row includes these core fields:
 
-`nuts3_id`, `nuts3_name`, `area_km2`, `population_density_per_km2`, `pesticide_concentration_mean`, `nutrient_concentration_mean`, `industrial_site_count`, `water_network_segment_count`, `water_network_length_km`, `water_connectivity_raw`, the component indices, `priority_score`, and `data_status`.
+`nuts3_id`, `nuts3_name`, `area_km2`, `population_density_per_km2`, `base_priority_score`, `pesticide_concentration_mean`, `nutrient_concentration_mean`, `industrial_site_count`, `water_network_segment_count`, `water_network_length_km`, `water_connectivity_raw`, the component indices, `priority_score`, `score_variant`, and `data_status`.
 
-Exposure, total population, population density, and the water-connectivity proxy are each normalised separately to 0–100. The final score is a transparent weighted sum:
+Exposure, total population, population density, WISE observations, and the water-connectivity proxy are each normalised separately to 0–100. The base score uses only exposure, population, and density, so it remains available where optional observations are absent. The final score adds any available WISE pesticide, WISE nutrient, and connectivity components; their available weights are renormalised to sum to 100.
 
-`0.20 × exposure + 0.30 × WISE pesticide concentration + 0.20 × WISE nutrient concentration + 0.15 × population density + 0.15 × water connectivity`
+The base-score proportions are `45:25:15` for exposure, population, and population density, rescaled to 100. In a fully enriched score, the available component weights are exposure `34.4118`, population `19.1176`, population density `11.4706`, WISE pesticide `15`, WISE nutrient `10`, and connectivity `10`; any absent optional component is removed before the remaining weights are normalised to 100.
 
 The connectivity proxy is the EU-Hydro main-river-corridor length weighted by Strahler order and assigned by segment midpoint to a NUTS 3 region. It is not a hydrological transport model. This tool helps water operators pre-prioritize water sources that need further assessment. The score is indicative: the underlying industrial, pesticide, nutrient, population, and connectivity data do not determine whether a water source complies with regulatory standards, and industrial sites and connected river corridors are proxies rather than evidence of PFAS contamination, population exposure, or a health risk. The NUTS 3 boundaries come from Eurostat GISCO (2024) and provide regional context; they are not the exact boundaries of water sources or catchments.
 

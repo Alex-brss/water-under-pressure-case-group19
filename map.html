@@ -82,7 +82,7 @@
         <p class="intro">Explore Germany’s NUTS 3 regions with the locally prepared pre-prioritisation score to identify relative regional priorities. Hover or select a region for its underlying indicators.</p>
         <section class="methodology-banner" aria-label="Methodology and limitations">
           <p class="methodology-banner__label">Methodology &amp; limits</p>
-          <p><strong>Indicative pre-prioritisation only.</strong> Industrial sites are a pressure proxy, not evidence of PFAS contamination, population exposure, a health risk or non-compliance. Colours show a relative ranking across German regions, not an absolute risk threshold. <span id="filter-status">Checking the local sector method…</span></p>
+          <p><strong>Indicative pre-prioritisation only.</strong> The score is built on an industry, population and population-density baseline that covers all German NUTS 3 regions. WISE pesticide/nutrient observations and hydrological connectivity refine it only where validated local data exist. Colours show a relative ranking across German regions, not an absolute risk threshold. <span id="filter-status">Checking the local sector method…</span></p>
         </section>
         <div class="status" id="map-status" data-state="loading" role="status" aria-live="polite">Loading scores and NUTS 3 boundaries…</div>
         <section class="legend" aria-labelledby="legend-title">
@@ -91,7 +91,7 @@
             <li class="legend-item"><span class="swatch" style="background: var(--high)"></span>High priority (upper third)</li>
             <li class="legend-item"><span class="swatch" style="background: var(--medium)"></span>Medium priority (middle third)</li>
             <li class="legend-item"><span class="swatch" style="background: var(--low)"></span>Low priority (lower third)</li>
-            <li class="legend-item"><span class="swatch" style="background: #aebbc0"></span>Insufficient data</li>
+            <li class="legend-item"><span class="swatch" style="background: #aebbc0"></span>Insufficient base data</li>
           </ul>
         </section>
         <p class="note"><strong>Indicative only.</strong> This tool supports regional pre-prioritisation with industrial pressure, pesticide concentration, nutrient concentration, population density, and hydrological connectivity. These data do not determine regulatory compliance. <strong>Boundaries:</strong> Eurostat GISCO NUTS 3 regions provide regional context, not exact water-source or catchment boundaries. <strong>Local-only runtime:</strong> no API key or external database is used while viewing this map; it loads prepared local score and boundary snapshots.</p>
@@ -117,9 +117,9 @@
         const scoreUrl = 'data/generated/germany_nuts3_priority.json';
         const nutsUrl = 'data/generated/germany_nuts3_boundaries.geojson';
         const priorityDefinitions = {
-          high: { label: 'Higher score', color: '#d65a4a' },
-          medium: { label: 'Middle score', color: '#e6ac45' },
-          low: { label: 'Lower score', color: '#58a993' },
+          high: { label: 'Upper third', color: '#d65a4a' },
+          medium: { label: 'Middle third', color: '#e6ac45' },
+          low: { label: 'Lower third', color: '#58a993' },
           unavailable: { label: 'Insufficient data', color: '#aebbc0' }
         };
         const priorityByNutsId = new Map();
@@ -162,16 +162,21 @@
         function describeSectorMethod(regions) {
           const methods = [...new Set(regions.map(region => region.filter_method.trim()).filter(Boolean))];
           if (!methods.length) return 'The sector method could not be verified from the local score data.';
-          const method = methods.join(' · ');
+          const method = methods.map(formatSectorMethod).join(' · ');
           if (/\ball\s+sites\b|\btous\s+les\s+sites\b/i.test(method)) return `All German industrial sites were used because a reliable sector filter was not available (${method}).`;
           return `Sector-based filtering was possible and applied: ${method}.`;
+        }
+
+        function formatSectorMethod(method) {
+          if (/secteurs\s+pfas\s+associés/i.test(method ?? '')) return 'PFAS-associated sectors';
+          return method || 'Not available';
         }
 
         function assignTerciles(regions) {
           priorityByNutsId.clear();
           const eligibleRegions = regions
-            .filter(region => Number.isFinite(region.priority_score))
-            .sort((left, right) => left.priority_score - right.priority_score || left.nuts3_id.localeCompare(right.nuts3_id));
+            .filter(region => Number.isFinite(scoreFor(region)))
+            .sort((left, right) => scoreFor(left) - scoreFor(right) || left.nuts3_id.localeCompare(right.nuts3_id));
           const lowerEnd = Math.floor(eligibleRegions.length / 3);
           const middleEnd = Math.floor((eligibleRegions.length * 2) / 3);
           eligibleRegions.forEach((region, index) => {
@@ -180,8 +185,13 @@
           });
         }
 
+        function scoreFor(region) {
+          if (Number.isFinite(region?.priority_score)) return region.priority_score;
+          return Number.isFinite(region?.base_priority_score) ? region.base_priority_score : null;
+        }
+
         function priorityFor(region) {
-          if (!Number.isFinite(region?.priority_score)) return priorityDefinitions.unavailable;
+          if (!Number.isFinite(region?.base_priority_score)) return priorityDefinitions.unavailable;
           return priorityDefinitions[priorityByNutsId.get(region.nuts3_id) ?? 'unavailable'];
         }
 
@@ -189,18 +199,41 @@
           return Number.isFinite(value) ? new Intl.NumberFormat('en-DE').format(value) : 'Not available';
         }
 
-        function detailsHtml(region, fallbackName, id) {
-          const hasScore = Number.isFinite(region?.priority_score);
-          const score = hasScore ? region.priority_score.toFixed(2) : '—';
-          const method = region?.filter_method ?? 'Not available';
+        function scoreVariantLabel(region) {
+          if (region?.score_variant === 'base_only') return 'Base score';
+          const enrichments = [
+            ...(Number.isFinite(region?.pesticide_concentration_mean) ? ['WISE pesticide'] : []),
+            ...(Number.isFinite(region?.nutrient_concentration_mean) ? ['WISE nutrient'] : []),
+            ...(region?.water_network_segment_count > 0 ? ['hydrological connectivity'] : []),
+          ];
+          return enrichments.length ? `Enriched score · ${enrichments.join(' + ')}` : 'Base score';
+        }
+
+        function availability(value) {
+          return Number.isFinite(value) ? 'Yes' : 'No';
+        }
+
+        function formatWiseValue(value) {
+          return Number.isFinite(value) ? `${value} ${CONCENTRATION_UNIT}` : 'Not available';
+        }
+
+        const CONCENTRATION_UNIT = 'µg/L';
+
+        function scoreDetails(region) {
+          return `<dl><dt>Score variant</dt><dd>${scoreVariantLabel(region)}</dd><dt>WISE pesticide available</dt><dd>${availability(region?.pesticide_concentration_mean)}</dd><dt>WISE pesticide mean</dt><dd>${formatWiseValue(region?.pesticide_concentration_mean)}</dd><dt>WISE nutrient available</dt><dd>${availability(region?.nutrient_concentration_mean)}</dd><dt>WISE nutrient mean</dt><dd>${formatWiseValue(region?.nutrient_concentration_mean)}</dd><dt>PFAS-associated industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${formatSectorMethod(region?.filter_method)}</dd></dl><p class="map-inspector__hint">A missing WISE measurement is not a lack of regional data.</p>`;
+        }
+
+        function tooltipHtml(region, fallbackName, id) {
+          const scoreValue = scoreFor(region);
+          const score = Number.isFinite(scoreValue) ? scoreValue.toFixed(2) : '—';
           const priority = priorityFor(region);
-          return `<article class="region-card"><p class="region-card__code">NUTS 3 · ${id}</p><h3>${region?.nuts3_name ?? fallbackName}</h3><div class="score-chip" style="background:${priority.color}"><span>${priority.label}</span><b>${score}<small>/100</small></b></div><dl><dt>WISE pesticide mean</dt><dd>${region?.pesticide_concentration_mean ?? 'Not available'}</dd><dt>WISE nutrient mean</dt><dd>${region?.nutrient_concentration_mean ?? 'Not available'}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${method}</dd></dl></article>`;
+          return `<article class="region-card"><p class="region-card__code">NUTS 3 · ${id}</p><h3>${region?.nuts3_name ?? fallbackName}</h3><div class="score-chip" style="background:${priority.color}"><span>${priority.label}</span><b>${score}<small>/100</small></b></div></article>`;
         }
 
         function updateInspector(region, fallbackName, id) {
-          const hasScore = Number.isFinite(region?.priority_score);
+          const scoreValue = scoreFor(region);
           const priority = priorityFor(region);
-          inspectorElement.innerHTML = `<p class="map-inspector__eyebrow">Selected region · ${id}</p><h2>${region?.nuts3_name ?? fallbackName}</h2><div class="map-inspector__score" style="background:${priority.color}"><span>${priority.label}</span><strong>${hasScore ? region.priority_score.toFixed(2) : '—'}<small>/100</small></strong></div><dl><dt>WISE pesticide mean</dt><dd>${region?.pesticide_concentration_mean ?? 'Not available'}</dd><dt>WISE nutrient mean</dt><dd>${region?.nutrient_concentration_mean ?? 'Not available'}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${region?.filter_method ?? 'Not available'}</dd></dl>`;
+          inspectorElement.innerHTML = `<p class="map-inspector__eyebrow">Selected region · ${id}</p><h2>${region?.nuts3_name ?? fallbackName}</h2><div class="map-inspector__score" style="background:${priority.color}"><span>${priority.label}</span><strong>${Number.isFinite(scoreValue) ? scoreValue.toFixed(2) : '—'}<small>/100</small></strong></div>${scoreDetails(region)}`;
         }
 
         if (!window.L) {
@@ -248,8 +281,7 @@
             const id = feature.properties.NUTS_ID;
             const name = feature.properties.NAME_LATN || feature.properties.NUTS_NAME || id;
             const region = regionsByNutsId.get(id);
-            layer.bindTooltip(detailsHtml(region, name, id), { sticky: true, direction: 'top', opacity: 1 });
-            layer.bindPopup(detailsHtml(region, name, id));
+            layer.bindTooltip(tooltipHtml(region, name, id), { sticky: true, direction: 'top', opacity: 1 });
             layer.on({
               mouseover(event) { event.target.setStyle({ weight: 2, color: '#0b2b3c', fillOpacity: 1 }); updateInspector(region, name, id); },
               mouseout(event) { event.target.setStyle(featureStyle(feature)); },

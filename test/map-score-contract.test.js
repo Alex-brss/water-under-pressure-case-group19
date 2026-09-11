@@ -13,7 +13,8 @@ test('the Germany map reads the generated local score dataset instead of derivin
   assert.match(map, /joinedCount/);
   assert.match(map, /id="region-details"/);
   assert.match(map, /function updateInspector\(/);
-  assert.match(map, /Population<\/dt>/);
+  assert.match(map, /WISE pesticide mean<\/dt>/);
+  assert.match(map, /WISE nutrient mean<\/dt>/);
   assert.match(map, /Industrial sites<\/dt>/);
   assert.match(map, /Sector method<\/dt>/);
   assert.match(map, /window\.location\.protocol === 'file:'/);

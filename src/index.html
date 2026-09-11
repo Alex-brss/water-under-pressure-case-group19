@@ -47,6 +47,13 @@
         <p id="eurostat-status" class="status" data-type="neutral">Eurostat live check not run.</p>
       </section>
 
+      <section class="card" aria-label="Live WISE observations">
+        <div class="section-heading"><div><p class="eyebrow">WISE Freshwater · Germany · 2023</p><h2>Water-quality observations</h2></div><button id="load-wise" class="secondary">Load WISE 2023</button></div>
+        <p class="muted">Reads both official public WISE tables. Queries are restricted to <code>countryCode = DE</code> and <code>phenomenonTimeReferenceYear = 2023</code>. When a selected field is absent from a table, the app displays <strong>no data is available</strong>.</p>
+        <p id="wise-status" class="status" data-type="neutral">WISE live load not run.</p>
+        <div class="table-wrap"><table><thead id="wise-head"></thead><tbody id="wise-body"></tbody></table></div>
+      </section>
+
       <section class="card" aria-label="Validation report">
         <div class="section-heading"><div><p class="eyebrow">Quality gate</p><h2>Validation report</h2></div><button id="recheck" class="secondary">Run checks again</button></div>
         <div class="metrics" aria-live="polite">

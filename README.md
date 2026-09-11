@@ -52,7 +52,7 @@ These questions aren't here to slow you down — they're part of what's being ev
 
 The first workstream now has a local-only PFAS data-preparation workbench in `src/`. Open `src/index.html` through a static web server to configure source provenance, import a future CSV or JSON file, review validation findings, and export record-level prepared data. No public observations are bundled or fetched yet. The scope and handoff contract are documented in `docs/DATA_PREPARATION.md`.
 
-Separately, the Germany-only NUTS 3 analytical input for the PFAS priority map is generated in `data/generated/germany_nuts3_priority.json`. It uses the EEA Industrial Emissions Portal, Eurostat population, Eurostat GISCO boundaries, and Copernicus EU-Hydro main-river corridors, all without an API key. Its transparent 0–100 pre-prioritisation score weights industrial pressure (45%), population (25%), population density (15%), and hydrological connectivity (15%). See `data/generated/README.md` for the formula, sources, and limitations.
+Separately, the Germany-only NUTS 3 analytical input for the PFAS priority map is generated in `data/generated/germany_nuts3_priority.json`. It uses the EEA Industrial Emissions Portal, Eurostat population, Eurostat GISCO boundaries, and Copernicus EU-Hydro main-river corridors, all without an API key. Its transparent 0–100 pre-prioritisation score weights industrial pressure (45%), population (25%), population density (15%), and hydrological connectivity (15%). The map runs from the prepared local score and NUTS 3 boundary snapshots, with no API, database, or third-party library request at viewing time. See `data/generated/README.md` for the formula, sources, safeguards, and limitations.
 
 ## Deployment and data-security boundary
 

@@ -24,3 +24,7 @@ Exposure, total population, population density, and the water-connectivity proxy
 `0.45 × exposure + 0.25 × population + 0.15 × population density + 0.15 × water connectivity`
 
 The connectivity proxy is the EU-Hydro main-river-corridor length weighted by Strahler order and assigned by segment midpoint to a NUTS 3 region. It is not a hydrological transport model. This is an indicative pre-prioritisation measure only: an industrial site and a connected river corridor are proxies for potential pressure and propagation, not evidence of PFAS contamination, population exposure, a health risk, or regulatory non-compliance.
+
+## Map runtime safeguards
+
+The published map reads only prepared project assets at runtime: `germany_nuts3_priority.json` and the 400-region GISCO snapshot in `germany_nuts3_boundaries.geojson`. Leaflet is also vendored under `vendor/leaflet/`; the page makes no API, database, or third-party library request and needs no key. Before replacing either snapshot, validate that it is non-empty, has the expected NUTS 3 identifiers, and that every score-region code joins to a boundary. The map keeps the boundary layer visible in grey when the score snapshot is unavailable, and provides a readable status for missing, empty, or malformed local sources.

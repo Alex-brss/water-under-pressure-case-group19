@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Germany NUTS 3 priority map." />
     <title>Germany priority map | Water Under Pressure</title>
-    <link rel="preconnect" href="https://unpkg.com" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQWnB1fV9A4J0A5fnXPM6YIG7k2S3yI=" crossorigin="" />
+    <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
     <style>
       :root { --ink:#102c3a; --muted:#657b84; --canvas:#dce9e9; --panel:#fffdfa; --line:#dce8e5; --high:#df6759; --medium:#e9b24f; --low:#5ba895; --shadow:0 24px 60px rgba(16,44,58,.18); }
       * { box-sizing:border-box; }
@@ -18,6 +17,10 @@
       .eyebrow { margin:42px 0 12px; color:#39827b; font-size:.67rem; font-weight:850; letter-spacing:.16em; text-transform:uppercase; }
       h1 { margin:0; font-family:Georgia,"Times New Roman",serif; font-size:clamp(2.8rem,4vw,4.25rem); font-weight:400; line-height:.88; letter-spacing:-.06em; }
       .intro { margin:22px 0 22px; color:var(--muted); font-size:.92rem; line-height:1.65; }
+      .methodology-banner { margin:0 0 16px; padding:14px 15px; border:1px solid #cfe2dd; border-radius:14px; background:#edf7f3; color:#315b61; }
+      .methodology-banner__label { margin:0 0 7px; color:#287467; font-size:.62rem; font-weight:850; letter-spacing:.13em; text-transform:uppercase; }
+      .methodology-banner p:last-child { margin:0; font-size:.75rem; line-height:1.55; }
+      .methodology-banner strong { color:#174d52; }
       .status { display:flex; align-items:center; gap:10px; min-height:52px; margin:0 0 25px; padding:12px 14px; border:1px solid var(--line); border-radius:14px; color:#49636c; background:#f5faf8; font-size:.79rem; font-weight:650; line-height:1.35; }
       .status[data-state="loading"]::before { width:14px; height:14px; flex:0 0 auto; content:""; border:2px solid #b7ccd1; border-top-color:#278279; border-radius:50%; animation:spin .8s linear infinite; }
       .status[data-state="ready"] { border-color:#c8e4db; color:#2c7164; background:#f2faf6; }
@@ -77,6 +80,10 @@
         <p class="eyebrow">Water Under Pressure</p>
         <h1>Germany<br />priority map</h1>
         <p class="intro">Explore Germany’s NUTS 3 regions with the locally prepared pre-prioritisation score. Hover or select a region for its underlying indicators.</p>
+        <section class="methodology-banner" aria-label="Methodology and limitations">
+          <p class="methodology-banner__label">Methodology &amp; limits</p>
+          <p><strong>Indicative pre-prioritisation only.</strong> Industrial sites are a pressure proxy, not evidence of PFAS contamination, population exposure, a health risk or non-compliance. <span id="filter-status">Checking the local sector method…</span></p>
+        </section>
         <div class="status" id="map-status" data-state="loading" role="status" aria-live="polite">Loading scores and NUTS 3 boundaries…</div>
         <section class="legend" aria-labelledby="legend-title">
           <h2 id="legend-title">Priority level</h2>
@@ -87,7 +94,7 @@
             <li class="legend-item"><span class="swatch" style="background: #aebbc0"></span>Insufficient data</li>
           </ul>
         </section>
-        <p class="note"><strong>Indicative only.</strong> This is a non-health and non-regulatory pre-prioritisation tool. It uses industrial-site, population and water-connectivity proxies; it is not a PFAS measurement or health diagnosis. Score data are loaded from the local generated dataset. Boundaries: Eurostat GISCO, NUTS 2024.</p>
+        <p class="note"><strong>Local-only runtime.</strong> No API key or external database is used while viewing this map. It loads the prepared local score dataset and local NUTS 2024 boundary snapshot; source provenance is documented in the project.</p>
       </aside>
       <section class="map-stage" aria-label="Germany NUTS 3 priority map">
         <div id="map" aria-label="Interactive choropleth map of Germany’s NUTS 3 regions"></div>
@@ -101,13 +108,14 @@
         </div>
       </section>
     </main>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="vendor/leaflet/leaflet.js"></script>
     <script>
       (() => {
         const statusElement = document.getElementById('map-status');
         const inspectorElement = document.getElementById('region-details');
+        const filterStatusElement = document.getElementById('filter-status');
         const scoreUrl = 'data/generated/germany_nuts3_priority.json';
-        const nutsUrl = 'https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/NUTS_RG_03M_2024_4326_LEVL_3.geojson';
+        const nutsUrl = 'data/generated/germany_nuts3_boundaries.geojson';
         const priorityDefinitions = {
           high: { label: 'Higher score', color: '#d65a4a' },
           medium: { label: 'Middle score', color: '#e6ac45' },
@@ -120,11 +128,42 @@
           statusElement.textContent = message;
         }
 
-        function loadJson(url, sourceName) {
+        function loadJson(url, sourceName, validate) {
           return fetch(url).then(response => {
-            if (!response.ok) throw new Error(`${sourceName} responded with ${response.status}`);
+            if (!response.ok) throw new Error(`${sourceName} is unavailable (HTTP ${response.status}).`);
             return response.json();
-          });
+          }).then(validate);
+        }
+
+        function validateScoreData(data) {
+          if (!data || typeof data !== 'object' || !Array.isArray(data.regions)) throw new Error('Local score data have an unexpected structure.');
+          if (!data.regions.length) throw new Error('Local score data are empty.');
+          if (data.regions.some(region => !/^DE[A-Z0-9]{3}$/.test(region?.nuts3_id ?? '') || typeof region.filter_method !== 'string')) {
+            throw new Error('Local score data are missing required NUTS 3 IDs or sector methods.');
+          }
+          return data;
+        }
+
+        function validateBoundaryData(data) {
+          if (!data || !Array.isArray(data.features)) throw new Error('Local NUTS 3 boundaries have an unexpected structure.');
+          const germany = data.features.filter(feature => feature.properties?.CNTR_CODE === 'DE');
+          if (!germany.length) throw new Error('Local boundary data contain no German NUTS 3 regions.');
+          if (germany.some(feature => !/^DE[A-Z0-9]{3}$/.test(feature.properties?.NUTS_ID ?? ''))) {
+            throw new Error('Local boundary data contain invalid NUTS 3 IDs.');
+          }
+          return { type: 'FeatureCollection', features: germany };
+        }
+
+        function setInspectorMessage(title, message) {
+          inspectorElement.innerHTML = `<p class="map-inspector__eyebrow">Data status</p><h2>${title}</h2><p class="map-inspector__hint">${message}</p>`;
+        }
+
+        function describeSectorMethod(regions) {
+          const methods = [...new Set(regions.map(region => region.filter_method.trim()).filter(Boolean))];
+          if (!methods.length) return 'The sector method could not be verified from the local score data.';
+          const method = methods.join(' · ');
+          if (/\ball\s+sites\b|\btous\s+les\s+sites\b/i.test(method)) return `All German industrial sites were used because a reliable sector filter was not available (${method}).`;
+          return `Sector-based filtering was possible and applied: ${method}.`;
         }
 
         function priorityFor(score) {
@@ -153,30 +192,39 @@
         }
 
         if (!window.L) {
-          setStatus('error', 'Map library could not load. Check your connection and refresh.');
+          setStatus('error', 'Map library could not load from local files. Refresh the page or check the project assets.');
+          setInspectorMessage('Map unavailable', 'The local map library is missing or unreadable.');
           return;
         }
 
         if (window.location.protocol === 'file:') {
           setStatus('error', 'This page was opened directly from a file, so the browser cannot read the local score dataset. Start a local web server and open http://localhost:4173/map.html instead.');
+          setInspectorMessage('Local server required', 'The score and boundary snapshots are local files. Browsers block them when the page is opened directly from disk.');
           return;
         }
 
         const map = L.map('map', { zoomControl: false, preferCanvas: true });
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-        Promise.all([
-          loadJson(scoreUrl, 'Local score dataset'),
-          loadJson(nutsUrl, 'NUTS 3 boundary service')
-        ]).then(([scoreData, boundaryData]) => {
-          if (!Array.isArray(scoreData.regions)) throw new Error('Local score dataset has no regions array.');
-          if (!Array.isArray(boundaryData.features)) throw new Error('NUTS 3 boundary response has no features array.');
+        Promise.allSettled([
+          loadJson(scoreUrl, 'Local score data', validateScoreData),
+          loadJson(nutsUrl, 'Local NUTS 3 boundaries', validateBoundaryData)
+        ]).then(([scoreLoad, boundaryLoad]) => {
+          if (boundaryLoad.status === 'rejected') {
+            map.setView([51.1657, 10.4515], 6);
+            setStatus('error', `Map boundaries could not load. ${boundaryLoad.reason.message}`);
+            filterStatusElement.textContent = 'Sector method unavailable because the map cannot be drawn.';
+            setInspectorMessage('Boundary data unavailable', 'The page remains available, but cannot draw regions until the local boundary snapshot is restored.');
+            return;
+          }
 
+          const germany = boundaryLoad.value.features;
+          const scoreIssue = scoreLoad.status === 'rejected' ? scoreLoad.reason.message : null;
+          const scoreData = scoreLoad.status === 'fulfilled' ? scoreLoad.value : { regions: [] };
           const regionsByNutsId = new Map(scoreData.regions.map(region => [region.nuts3_id, region]));
-          const germany = boundaryData.features.filter(feature => feature.properties?.CNTR_CODE === 'DE');
-          if (!germany.length) throw new Error('No German NUTS 3 boundaries were returned.');
+          filterStatusElement.textContent = scoreIssue ? `Sector method unavailable: ${scoreIssue}` : describeSectorMethod(scoreData.regions);
           const joinedCount = germany.filter(feature => regionsByNutsId.has(feature.properties.NUTS_ID)).length;
-          if (!joinedCount) throw new Error('No NUTS 3 codes matched the local score dataset.');
+          const joinIssue = !scoreIssue && !joinedCount ? 'No NUTS 3 codes in the score data match the local boundary snapshot.' : null;
 
           const featureStyle = feature => {
             const region = regionsByNutsId.get(feature.properties.NUTS_ID);
@@ -198,11 +246,12 @@
 
           const layer = L.geoJSON({ type: 'FeatureCollection', features: germany }, { style: featureStyle, onEachFeature }).addTo(map);
           map.fitBounds(layer.getBounds(), { padding: [28, 28] });
-          setStatus('ready', `${joinedCount} of ${germany.length} German NUTS 3 regions joined to local scores`);
-        }).catch(error => {
-          map.setView([51.1657, 10.4515], 6);
-          setStatus('error', `Map could not load. ${error.message}`);
-          console.error('Unable to load priority map:', error);
+          if (scoreIssue || joinIssue) {
+            setStatus('error', `Boundaries are shown without scores. ${scoreIssue ?? joinIssue}`);
+            setInspectorMessage('Score data unavailable', 'Regions remain visible in grey. Restore a valid local score dataset to show pre-prioritisation values.');
+          } else {
+            setStatus('ready', `${joinedCount} of ${germany.length} German NUTS 3 regions joined to local scores`);
+          }
         });
       })();
     </script>

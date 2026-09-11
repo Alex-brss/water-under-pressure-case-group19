@@ -14,6 +14,8 @@ export const REQUIRED_FIELDS = [
 export const FIELD_LABELS = {
   record_id: "Record ID",
   country: "Country",
+  water_source_id: "Water source ID",
+  water_source_name: "Water source name",
   latitude: "Latitude",
   longitude: "Longitude",
   sample_date: "Sample date",
@@ -21,6 +23,11 @@ export const FIELD_LABELS = {
   concentration: "Concentration",
   unit: "Unit",
   matrix: "Matrix",
+  population_density: "Population density (people/km²)",
+  upstream_rivers: "Upstream rivers",
+  downstream_rivers: "Downstream rivers",
+  directly_connected_lakes_reservoirs: "Directly connected lakes/reservoirs",
+  connected_water_bodies: "Connected water bodies",
   source_url: "Record source URL",
 };
 
@@ -41,6 +48,11 @@ const HEADER_ALIASES = {
   concentration_value: "concentration",
   unit_of_measure: "unit",
   sample_matrix: "matrix",
+  source_id: "water_source_id",
+  waterbody_id: "water_source_id",
+  water_source: "water_source_name",
+  population_density_per_km2: "population_density",
+  connected_lakes: "directly_connected_lakes_reservoirs",
   url: "source_url",
 };
 
@@ -132,6 +144,10 @@ function isGermany(value) {
   return ["de", "deu", "germany", "deutschland"].includes(String(value ?? "").trim().toLowerCase());
 }
 
+function nonNegativeInteger(value) {
+  return /^\\d+$/.test(String(value ?? "").trim());
+}
+
 export function validateMetadata(metadata = {}) {
   const issues = [];
   if (!String(metadata.source_name ?? "").trim()) {
@@ -164,10 +180,8 @@ export function validateRecords(records = []) {
     }
 
     const concentration = String(record.concentration ?? "").trim();
-    if (concentration === "") {
-      rowIssues.push(issue("missing-concentration", "warning", "Concentration is unavailable; it will not be treated as zero.", index, "concentration"));
-    } else if (!Number.isFinite(Number(concentration)) || Number(concentration) < 0) {
-      rowIssues.push(issue("invalid-concentration", "error", "Concentration must be a non-negative number or be left blank when unavailable.", index, "concentration"));
+    if (concentration !== "" && (!Number.isFinite(Number(concentration)) || Number(concentration) < 0)) {
+      rowIssues.push(issue("invalid-concentration", "error", "Concentration must be a non-negative number.", index, "concentration"));
     }
 
     if (record.record_id) {
@@ -179,6 +193,16 @@ export function validateRecords(records = []) {
     }
     if (record.country && !isGermany(record.country)) {
       rowIssues.push(issue("not-germany", "error", "This prototype accepts Germany records only.", index, "country"));
+    }
+
+    for (const field of ["upstream_rivers", "downstream_rivers", "directly_connected_lakes_reservoirs"]) {
+      if (String(record[field] ?? "").trim() !== "" && !nonNegativeInteger(record[field])) {
+        rowIssues.push(issue("invalid-count", "error", `${FIELD_LABELS[field]} must be a non-negative whole number.`, index, field));
+      }
+    }
+    if (String(record.population_density ?? "").trim() !== "" &&
+        (!Number.isFinite(Number(record.population_density)) || Number(record.population_density) < 0)) {
+      rowIssues.push(issue("invalid-population-density", "error", "Population density must be a non-negative number.", index, "population_density"));
     }
 
     const latitude = Number(record.latitude);
@@ -208,8 +232,11 @@ export function validateRecords(records = []) {
       rowIssues.push(issue("insecure-record-url", "error", "Record source URL must use HTTPS.", index, "source_url"));
     }
 
-    const status = concentration === "" ? "unavailable" : "reported";
-    return { record: { ...record, concentration_status: status }, issues: rowIssues };
+    const connectionFields = [record.upstream_rivers, record.downstream_rivers, record.directly_connected_lakes_reservoirs];
+    const connected = connectionFields.every((value) => nonNegativeInteger(value))
+      ? connectionFields.reduce((total, value) => total + Number(value), 0)
+      : "";
+    return { record: { ...record, connected_water_bodies: connected }, issues: rowIssues };
   });
 
   const issues = rows.flatMap(({ issues: rowIssues }) => rowIssues);

@@ -271,6 +271,7 @@
           filterStatusElement.textContent = scoreIssue ? `Sector method unavailable: ${scoreIssue}` : describeSectorMethod(scoreData.regions);
           const joinedCount = germany.filter(feature => regionsByNutsId.has(feature.properties.NUTS_ID)).length;
           const joinIssue = !scoreIssue && !joinedCount ? 'No NUTS 3 codes in the score data match the local boundary snapshot.' : null;
+          let selectedRegion = null;
 
           const featureStyle = feature => {
             const region = regionsByNutsId.get(feature.properties.NUTS_ID);
@@ -283,9 +284,9 @@
             const region = regionsByNutsId.get(id);
             layer.bindTooltip(tooltipHtml(region, name, id), { sticky: true, direction: 'top', opacity: 1 });
             layer.on({
-              mouseover(event) { event.target.setStyle({ weight: 2, color: '#0b2b3c', fillOpacity: 1 }); updateInspector(region, name, id); },
+              mouseover(event) { event.target.setStyle({ weight: 2, color: '#0b2b3c', fillOpacity: 1 }); if (!selectedRegion) updateInspector(region, name, id); },
               mouseout(event) { event.target.setStyle(featureStyle(feature)); },
-              click(event) { updateInspector(region, name, id); map.fitBounds(event.target.getBounds(), { padding: [35, 35], maxZoom: 8 }); }
+              click(event) { selectedRegion = { region, name, id }; updateInspector(region, name, id); map.fitBounds(event.target.getBounds(), { padding: [35, 35], maxZoom: 8 }); }
             });
           };
 

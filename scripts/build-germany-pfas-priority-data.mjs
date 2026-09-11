@@ -15,6 +15,14 @@ const NUTS3_PATTERN = /^DE[A-Z0-9]{3}$/;
 const FILTER_METHOD = 'secteurs PFAS associés';
 const GERMANY_BBOX = '5.5,47.0,15.5,55.5';
 const CONCENTRATION_UNIT = 'µg/L';
+const SCORE_WEIGHTS = {
+  exposure: 34.4118,
+  population: 19.1176,
+  populationDensity: 11.4706,
+  pesticide: 15,
+  nutrient: 10,
+  waterConnectivity: 10,
+};
 // Orders 6–9 represent the main river corridors. Lower-order streams would make the
 // public REST extraction disproportionately large without improving this regional proxy.
 const EU_HYDRO_RIVER_LAYERS = [10, 11, 12, 13];
@@ -362,14 +370,37 @@ function buildRegionalTable(boundaries, population, wiseConcentration, sites, wa
     const exposureIndex = (industrial.industrial_site_count / maxSites) * 100;
     const populationIndex = Number.isFinite(regionPopulation) ? (regionPopulation / maxPopulation) * 100 : null;
     const populationDensityIndex = regionPopulationDensity === null ? null : (regionPopulationDensity / maxPopulationDensity) * 100;
+    // The mandatory baseline deliberately excludes WISE and connectivity. These
+    // historical base-component proportions are rescaled from 45/25/15 to 100.
+    const basePriorityScore = populationIndex === null || populationDensityIndex === null
+      ? null
+      : exposureIndex * (45 / 85) + populationIndex * (25 / 85) + populationDensityIndex * (15 / 85);
     const waterConnectivityIndex = (water.water_connectivity_raw / maxWaterConnectivity) * 100;
     const pesticideValue = wiseConcentration.get('pesticide').get(boundary.nuts3_id) ?? null;
     const nutrientValue = wiseConcentration.get('nutrient').get(boundary.nuts3_id) ?? null;
     const pesticideIndex = Number.isFinite(pesticideValue) ? (pesticideValue / maxPesticide) * 100 : null;
     const nutrientIndex = Number.isFinite(nutrientValue) ? (nutrientValue / maxNutrient) * 100 : null;
-    const priorityScore = pesticideIndex === null || nutrientIndex === null || populationDensityIndex === null
+    const hasWaterConnectivity = water.water_network_segment_count > 0 && Number.isFinite(waterConnectivityIndex);
+    const availableComponents = basePriorityScore === null
+      ? []
+      : [
+          { value: exposureIndex, weight: SCORE_WEIGHTS.exposure },
+          { value: populationIndex, weight: SCORE_WEIGHTS.population },
+          { value: populationDensityIndex, weight: SCORE_WEIGHTS.populationDensity },
+          ...(pesticideIndex === null ? [] : [{ value: pesticideIndex, weight: SCORE_WEIGHTS.pesticide }]),
+          ...(nutrientIndex === null ? [] : [{ value: nutrientIndex, weight: SCORE_WEIGHTS.nutrient }]),
+          ...(hasWaterConnectivity ? [{ value: waterConnectivityIndex, weight: SCORE_WEIGHTS.waterConnectivity }] : []),
+        ];
+    const availableWeight = availableComponents.reduce((total, component) => total + component.weight, 0);
+    const priorityScore = availableWeight === 0
       ? null
-      : exposureIndex * 0.20 + pesticideIndex * 0.30 + nutrientIndex * 0.20 + populationDensityIndex * 0.15 + waterConnectivityIndex * 0.15;
+      : availableComponents.reduce((total, component) => total + component.value * component.weight, 0) / availableWeight;
+    const optionalComponents = [
+      ...(pesticideIndex === null ? [] : ['pesticide']),
+      ...(nutrientIndex === null ? [] : ['nutrient']),
+      ...(hasWaterConnectivity ? ['connectivity'] : []),
+    ];
+    const scoreVariant = optionalComponents.length ? `base_plus_${optionalComponents.join('_')}` : 'base_only';
     return {
       nuts3_id: boundary.nuts3_id,
       nuts3_name: boundary.nuts3_name,
@@ -384,6 +415,7 @@ function buildRegionalTable(boundaries, population, wiseConcentration, sites, wa
       water_connectivity_raw: Number(water.water_connectivity_raw.toFixed(2)),
       exposure_index: Number(exposureIndex.toFixed(2)),
       population_index: populationIndex === null ? null : Number(populationIndex.toFixed(2)),
+      base_priority_score: basePriorityScore === null ? null : Number(basePriorityScore.toFixed(2)),
       pesticide_concentration_mean: pesticideValue === null ? null : Number(pesticideValue.toFixed(4)),
       nutrient_concentration_mean: nutrientValue === null ? null : Number(nutrientValue.toFixed(4)),
       concentration_unit: CONCENTRATION_UNIT,
@@ -392,6 +424,7 @@ function buildRegionalTable(boundaries, population, wiseConcentration, sites, wa
       population_density_index: populationDensityIndex === null ? null : Number(populationDensityIndex.toFixed(2)),
       water_connectivity_index: Number(waterConnectivityIndex.toFixed(2)),
       priority_score: priorityScore === null ? null : Number(priorityScore.toFixed(2)),
+      score_variant: scoreVariant,
       data_status: dataStatus,
     };
   });
@@ -409,6 +442,8 @@ async function main() {
   const { byNuts3: waterConnectivity, quality: waterQuality } = await loadWaterConnectivity(boundaries);
   const regions = buildRegionalTable(boundaries, population, wiseConcentration, assigned, waterConnectivity);
   const regionsWithPopulation = regions.filter(({ population: value }) => Number.isFinite(value)).length;
+  const regionsWithBasePriorityScore = regions.filter(({ base_priority_score: value }) => Number.isFinite(value)).length;
+  const regionsWithPriorityScore = regions.filter(({ priority_score: value }) => Number.isFinite(value)).length;
 
   const output = {
     generated_at: new Date().toISOString(),
@@ -417,8 +452,9 @@ async function main() {
       exposure: 'Count of sites in PFAS-associated industrial proxy sectors: chemicals, metals/surface treatment, paper/wood and textile.',
       consequence: 'Eurostat population on 1 January by NUTS 3 region.',
       population_density: 'Population divided by NUTS 3 polygon area in km², derived from Eurostat population and GISCO boundaries.',
+      base_score: '0.5294 × exposure index + 0.2941 × population index + 0.1765 × population-density index; these weights preserve the historical 45:25:15 proportion and are rescaled to 0–100.',
       water_connectivity: 'EU-Hydro main-river-corridor length in km weighted by Strahler order (orders 6–9 only), assigned to the NUTS 3 region containing each segment midpoint. It is a hydrological-connectivity proxy, not a model of contaminant transport.',
-      score: '0.20 × exposure index + 0.30 × WISE pesticide concentration index + 0.20 × WISE nutrient concentration index + 0.15 × population-density index + 0.15 × water-connectivity index; each index is normalised to 0–100 against the German maximum.',
+      score: 'The mandatory base score uses exposure (34.4118), population (19.1176) and population-density (11.4706). Available optional enrichments add WISE pesticide (15), WISE nutrient (10), and hydrological connectivity (10). The weights of available components are renormalised to sum to 100, so missing optional data never prevents scoring.',
       limitation: 'Indicative pre-prioritisation only. Industrial sites and water-network connectivity are proxies for potential pressure and propagation, not evidence of PFAS contamination, human exposure, health risk, contaminant transport, or regulatory non-compliance.',
     },
     sources: {
@@ -452,6 +488,8 @@ async function main() {
       assigned_industrial_site_count: assigned.length,
       german_nuts3_region_count: regions.length,
       regions_with_population_count: regionsWithPopulation,
+      regions_with_base_priority_score_count: regionsWithBasePriorityScore,
+      regions_with_priority_score_count: regionsWithPriorityScore,
       missing_population_region_count: regions.length - regionsWithPopulation,
       nuts3_codes_aligned_count: regionsWithPopulation,
     },

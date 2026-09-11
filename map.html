@@ -46,80 +46,111 @@
         <a class="back" href="index.html">← Back to introduction</a>
         <p class="eyebrow">Water Under Pressure</p>
         <h1>Germany<br />priority map</h1>
-        <p class="intro">Explore Germany’s NUTS 3 regions through a simple priority lens. Select a region to see its code and assigned priority.</p>
-        <div class="status" id="map-status" data-state="loading" role="status" aria-live="polite">Loading NUTS 3 boundaries…</div>
+        <p class="intro">Explore Germany’s NUTS 3 regions with the locally prepared pre-prioritisation score. Hover or select a region for its underlying indicators.</p>
+        <div class="status" id="map-status" data-state="loading" role="status" aria-live="polite">Loading scores and NUTS 3 boundaries…</div>
         <section class="legend" aria-labelledby="legend-title">
           <h2 id="legend-title">Priority level</h2>
           <ul class="legend-list">
-            <li class="legend-item"><span class="swatch" style="background: var(--high)"></span>High priority</li>
-            <li class="legend-item"><span class="swatch" style="background: var(--medium)"></span>Medium priority</li>
-            <li class="legend-item"><span class="swatch" style="background: var(--low)"></span>Lower priority</li>
+            <li class="legend-item"><span class="swatch" style="background: var(--high)"></span>Higher score (67–100)</li>
+            <li class="legend-item"><span class="swatch" style="background: var(--medium)"></span>Middle score (34–66.99)</li>
+            <li class="legend-item"><span class="swatch" style="background: var(--low)"></span>Lower score (0–33.99)</li>
+            <li class="legend-item"><span class="swatch" style="background: #aebbc0"></span>Insufficient data</li>
           </ul>
         </section>
-        <p class="note">Boundary data: Eurostat GISCO, NUTS 2021. Priority colours are a prototype classification and should be replaced with your validated decision data.</p>
+        <p class="note"><strong>Indicative only.</strong> This is a non-health and non-regulatory pre-prioritisation tool. It uses industrial-site, population and water-connectivity proxies; it is not a PFAS measurement or health diagnosis. Score data are loaded from the local generated dataset. Boundaries: Eurostat GISCO, NUTS 2024.</p>
       </aside>
       <div id="map" aria-label="Interactive choropleth map of Germany’s NUTS 3 regions"></div>
     </main>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
-      const statusElement = document.getElementById('map-status');
-      const map = L.map('map', { zoomControl: false, preferCanvas: true });
-      L.control.zoom({ position: 'bottomright' }).addTo(map);
+      (() => {
+        const statusElement = document.getElementById('map-status');
+        const scoreUrl = 'data/generated/germany_nuts3_priority.json';
+        const nutsUrl = 'https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/NUTS_RG_03M_2024_4326_LEVL_3.geojson';
+        const priorityDefinitions = {
+          high: { label: 'Higher score', color: '#d65a4a' },
+          medium: { label: 'Middle score', color: '#e6ac45' },
+          low: { label: 'Lower score', color: '#58a993' },
+          unavailable: { label: 'Insufficient data', color: '#aebbc0' }
+        };
 
-      const priorityDefinitions = {
-        high: { label: 'High priority', color: '#d65a4a' },
-        medium: { label: 'Medium priority', color: '#e6ac45' },
-        low: { label: 'Lower priority', color: '#58a993' }
-      };
+        function setStatus(state, message) {
+          statusElement.dataset.state = state;
+          statusElement.textContent = message;
+        }
 
-      function getPriority(nutsId) {
-        let value = 0;
-        for (const character of nutsId) value = (value * 31 + character.charCodeAt(0)) >>> 0;
-        const score = value % 100;
-        return score < 25 ? 'high' : score < 62 ? 'medium' : 'low';
-      }
+        function loadJson(url, sourceName) {
+          return fetch(url).then(response => {
+            if (!response.ok) throw new Error(`${sourceName} responded with ${response.status}`);
+            return response.json();
+          });
+        }
 
-      function setStatus(state, message) {
-        statusElement.dataset.state = state;
-        statusElement.textContent = message;
-      }
+        function priorityFor(score) {
+          if (!Number.isFinite(score)) return priorityDefinitions.unavailable;
+          if (score >= 67) return priorityDefinitions.high;
+          if (score >= 34) return priorityDefinitions.medium;
+          return priorityDefinitions.low;
+        }
 
-      function featureStyle(feature) {
-        const priority = getPriority(feature.properties.NUTS_ID);
-        return { color: '#ffffff', weight: 0.75, fillColor: priorityDefinitions[priority].color, fillOpacity: 0.82 };
-      }
+        function formatPopulation(value) {
+          return Number.isFinite(value) ? new Intl.NumberFormat('en-DE').format(value) : 'Not available';
+        }
 
-      function onEachFeature(feature, layer) {
-        const id = feature.properties.NUTS_ID;
-        const name = feature.properties.NAME_LATN || feature.properties.NUTS_NAME || id;
-        const priority = getPriority(id);
-        const definition = priorityDefinitions[priority];
-        layer.bindTooltip(`<div class="tooltip"><strong>${name}</strong><span>NUTS 3: ${id}</span><br><span class="priority-label" style="background:${definition.color}">${definition.label}</span></div>`, { sticky: true, direction: 'top', opacity: 1 });
-        layer.on({
-          mouseover(event) { event.target.setStyle({ weight: 2, color: '#0b2b3c', fillOpacity: 1 }); },
-          mouseout(event) { event.target.setStyle(featureStyle(feature)); },
-          click(event) { map.fitBounds(event.target.getBounds(), { padding: [35, 35], maxZoom: 8 }); }
-        });
-      }
+        function detailsHtml(region, fallbackName, id) {
+          const score = Number.isFinite(region?.priority_score) ? `${region.priority_score.toFixed(2)} / 100` : 'Not available';
+          const method = region?.filter_method ?? 'Not available';
+          return `<div class="tooltip"><strong>${region?.nuts3_name ?? fallbackName}</strong><span>NUTS 3: ${id}</span><br><span>Score: ${score}</span><br><span>Population: ${formatPopulation(region?.population)}</span><br><span>Industrial sites: ${region?.industrial_site_count ?? 'Not available'}</span><br><span>Sector method: ${method}</span></div>`;
+        }
 
-      const nutsUrl = 'https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/NUTS_RG_03M_2021_4326_LEVL_3.geojson';
-      fetch(nutsUrl)
-        .then(response => {
-          if (!response.ok) throw new Error(`Boundary service responded with ${response.status}`);
-          return response.json();
-        })
-        .then(data => {
-          const germany = data.features.filter(feature => feature.properties.CNTR_CODE === 'DE');
+        if (!window.L) {
+          setStatus('error', 'Map library could not load. Check your connection and refresh.');
+          return;
+        }
+
+        const map = L.map('map', { zoomControl: false, preferCanvas: true });
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+        Promise.all([
+          loadJson(scoreUrl, 'Local score dataset'),
+          loadJson(nutsUrl, 'NUTS 3 boundary service')
+        ]).then(([scoreData, boundaryData]) => {
+          if (!Array.isArray(scoreData.regions)) throw new Error('Local score dataset has no regions array.');
+          if (!Array.isArray(boundaryData.features)) throw new Error('NUTS 3 boundary response has no features array.');
+
+          const regionsByNutsId = new Map(scoreData.regions.map(region => [region.nuts3_id, region]));
+          const germany = boundaryData.features.filter(feature => feature.properties?.CNTR_CODE === 'DE');
           if (!germany.length) throw new Error('No German NUTS 3 boundaries were returned.');
+          const joinedCount = germany.filter(feature => regionsByNutsId.has(feature.properties.NUTS_ID)).length;
+          if (!joinedCount) throw new Error('No NUTS 3 codes matched the local score dataset.');
+
+          const featureStyle = feature => {
+            const region = regionsByNutsId.get(feature.properties.NUTS_ID);
+            const priority = priorityFor(region?.priority_score);
+            return { color: '#ffffff', weight: 0.75, fillColor: priority.color, fillOpacity: 0.82 };
+          };
+          const onEachFeature = (feature, layer) => {
+            const id = feature.properties.NUTS_ID;
+            const name = feature.properties.NAME_LATN || feature.properties.NUTS_NAME || id;
+            const region = regionsByNutsId.get(id);
+            layer.bindTooltip(detailsHtml(region, name, id), { sticky: true, direction: 'top', opacity: 1 });
+            layer.bindPopup(detailsHtml(region, name, id));
+            layer.on({
+              mouseover(event) { event.target.setStyle({ weight: 2, color: '#0b2b3c', fillOpacity: 1 }); },
+              mouseout(event) { event.target.setStyle(featureStyle(feature)); },
+              click(event) { map.fitBounds(event.target.getBounds(), { padding: [35, 35], maxZoom: 8 }); }
+            });
+          };
+
           const layer = L.geoJSON({ type: 'FeatureCollection', features: germany }, { style: featureStyle, onEachFeature }).addTo(map);
           map.fitBounds(layer.getBounds(), { padding: [28, 28] });
-          setStatus('ready', `${germany.length} German NUTS 3 regions loaded`);
-        })
-        .catch(error => {
+          setStatus('ready', `${joinedCount} of ${germany.length} German NUTS 3 regions joined to local scores`);
+        }).catch(error => {
           map.setView([51.1657, 10.4515], 6);
           setStatus('error', `Map could not load. ${error.message}`);
-          console.error('Unable to load NUTS boundaries:', error);
+          console.error('Unable to load priority map:', error);
         });
+      })();
     </script>
   </body>
 </html>

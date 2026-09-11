@@ -14,6 +14,8 @@ export const REQUIRED_FIELDS = [
 export const FIELD_LABELS = {
   record_id: "Record ID",
   country: "Country",
+  water_source_id: "Water source ID",
+  water_source_name: "Water source name",
   latitude: "Latitude",
   longitude: "Longitude",
   sample_date: "Sample date",
@@ -21,6 +23,12 @@ export const FIELD_LABELS = {
   concentration: "Concentration",
   unit: "Unit",
   matrix: "Matrix",
+  population_density: "Population density (people/km²)",
+  upstream_rivers: "Upstream rivers",
+  downstream_rivers: "Downstream rivers",
+  directly_connected_lakes_reservoirs: "Directly connected lakes/reservoirs",
+  connected_water_bodies: "Connected water bodies",
+  concentration_status: "Concentration status",
   source_url: "Record source URL",
 };
 
@@ -41,6 +49,11 @@ const HEADER_ALIASES = {
   concentration_value: "concentration",
   unit_of_measure: "unit",
   sample_matrix: "matrix",
+  source_id: "water_source_id",
+  waterbody_id: "water_source_id",
+  water_source: "water_source_name",
+  population_density_per_km2: "population_density",
+  connected_lakes: "directly_connected_lakes_reservoirs",
   url: "source_url",
 };
 
@@ -132,6 +145,10 @@ function isGermany(value) {
   return ["de", "deu", "germany", "deutschland"].includes(String(value ?? "").trim().toLowerCase());
 }
 
+function nonNegativeInteger(value) {
+  return /^\\d+$/.test(String(value ?? "").trim());
+}
+
 export function validateMetadata(metadata = {}) {
   const issues = [];
   if (!String(metadata.source_name ?? "").trim()) {
@@ -181,6 +198,16 @@ export function validateRecords(records = []) {
       rowIssues.push(issue("not-germany", "error", "This prototype accepts Germany records only.", index, "country"));
     }
 
+    for (const field of ["upstream_rivers", "downstream_rivers", "directly_connected_lakes_reservoirs"]) {
+      if (String(record[field] ?? "").trim() !== "" && !nonNegativeInteger(record[field])) {
+        rowIssues.push(issue("invalid-count", "error", `${FIELD_LABELS[field]} must be a non-negative whole number.`, index, field));
+      }
+    }
+    if (String(record.population_density ?? "").trim() !== "" &&
+        (!Number.isFinite(Number(record.population_density)) || Number(record.population_density) < 0)) {
+      rowIssues.push(issue("invalid-population-density", "error", "Population density must be a non-negative number.", index, "population_density"));
+    }
+
     const latitude = Number(record.latitude);
     const longitude = Number(record.longitude);
     if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90) {
@@ -209,7 +236,11 @@ export function validateRecords(records = []) {
     }
 
     const status = concentration === "" ? "unavailable" : "reported";
-    return { record: { ...record, concentration_status: status }, issues: rowIssues };
+    const connectionFields = [record.upstream_rivers, record.downstream_rivers, record.directly_connected_lakes_reservoirs];
+    const connected = connectionFields.every((value) => nonNegativeInteger(value))
+      ? connectionFields.reduce((total, value) => total + Number(value), 0)
+      : "";
+    return { record: { ...record, concentration_status: status, connected_water_bodies: connected }, issues: rowIssues };
   });
 
   const issues = rows.flatMap(({ issues: rowIssues }) => rowIssues);

@@ -12,6 +12,12 @@ python -m http.server 8000
 
 Then open `http://localhost:8000/src/` and choose a CSV or JSON file. The prototype runs locally in the browser; it does not upload files or call an external API.
 
+## Vercel deployment
+
+This is a static deployment: there is no build step, serverless function, environment variable, API key, or database. The root `vercel.json` rewrites `/` and the three browser assets into `src/`, so the deployed site opens at its Vercel root URL rather than requiring visitors to know the source directory. Keep the repository root as the Vercel project root and leave the framework preset as “Other” (or let Vercel detect the static site).
+
+The browser-only import behavior is intentional. A Vercel deployment does not receive uploaded files and does not persist them; each visitor prepares their own local file. When official data is added later, keep the source snapshot or a secure server-side ingestion process separate from this client-only prototype.
+
 The blank [record template](../data/pfas-record-template.csv) defines the minimum source-record shape. JSON may be either an array or an object containing a `records` array.
 
 ## Checks performed

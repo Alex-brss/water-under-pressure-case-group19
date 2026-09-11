@@ -15,6 +15,10 @@ test('the Germany map reads the generated local score dataset instead of derivin
   assert.match(map, /vendor\/leaflet\/leaflet\.css/);
   assert.doesNotMatch(map, /gisco-services\.ec\.europa\.eu|unpkg\.com/);
   assert.match(map, /regionsByNutsId = new Map\(scoreData\.regions/);
+  assert.match(map, /function assignTerciles\(regions\)/);
+  assert.match(map, /priorityByNutsId\.set\(region\.nuts3_id, priority\)/);
+  assert.doesNotMatch(map, /score >= 67|score >= 34/);
+  assert.match(map, /relative ranking across German regions, not an absolute risk threshold/);
   assert.match(map, /joinedCount/);
   assert.match(map, /id="region-details"/);
   assert.match(map, /function updateInspector\(/);

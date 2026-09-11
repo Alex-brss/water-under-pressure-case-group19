@@ -82,15 +82,15 @@
         <p class="intro">Explore Germany’s NUTS 3 regions with the locally prepared pre-prioritisation score. Hover or select a region for its underlying indicators.</p>
         <section class="methodology-banner" aria-label="Methodology and limitations">
           <p class="methodology-banner__label">Methodology &amp; limits</p>
-          <p><strong>Indicative pre-prioritisation only.</strong> Industrial sites are a pressure proxy, not evidence of PFAS contamination, population exposure, a health risk or non-compliance. <span id="filter-status">Checking the local sector method…</span></p>
+          <p><strong>Indicative pre-prioritisation only.</strong> Industrial sites are a pressure proxy, not evidence of PFAS contamination, population exposure, a health risk or non-compliance. Colours show a relative ranking across German regions, not an absolute risk threshold. <span id="filter-status">Checking the local sector method…</span></p>
         </section>
         <div class="status" id="map-status" data-state="loading" role="status" aria-live="polite">Loading scores and NUTS 3 boundaries…</div>
         <section class="legend" aria-labelledby="legend-title">
           <h2 id="legend-title">Priority level</h2>
           <ul class="legend-list">
-            <li class="legend-item"><span class="swatch" style="background: var(--high)"></span>Higher score (67–100)</li>
-            <li class="legend-item"><span class="swatch" style="background: var(--medium)"></span>Middle score (34–66.99)</li>
-            <li class="legend-item"><span class="swatch" style="background: var(--low)"></span>Lower score (0–33.99)</li>
+            <li class="legend-item"><span class="swatch" style="background: var(--high)"></span>High priority (upper third)</li>
+            <li class="legend-item"><span class="swatch" style="background: var(--medium)"></span>Medium priority (middle third)</li>
+            <li class="legend-item"><span class="swatch" style="background: var(--low)"></span>Low priority (lower third)</li>
             <li class="legend-item"><span class="swatch" style="background: #aebbc0"></span>Insufficient data</li>
           </ul>
         </section>
@@ -104,7 +104,7 @@
           <p class="map-inspector__hint">Hover over a region for a quick look, or select it to keep its indicators here.</p>
         </aside>
         <div class="map-legend" aria-label="Score legend from lower to higher priority">
-          <span class="map-legend__title">Score 0–100</span><span class="map-legend__scale" aria-hidden="true"><i></i><i></i><i></i></span><span>Higher</span>
+          <span class="map-legend__title">Relative priority</span><span class="map-legend__scale" aria-hidden="true"><i></i><i></i><i></i></span><span>Upper third</span>
         </div>
       </section>
     </main>
@@ -122,6 +122,7 @@
           low: { label: 'Lower score', color: '#58a993' },
           unavailable: { label: 'Insufficient data', color: '#aebbc0' }
         };
+        const priorityByNutsId = new Map();
 
         function setStatus(state, message) {
           statusElement.dataset.state = state;
@@ -166,11 +167,22 @@
           return `Sector-based filtering was possible and applied: ${method}.`;
         }
 
-        function priorityFor(score) {
-          if (!Number.isFinite(score)) return priorityDefinitions.unavailable;
-          if (score >= 67) return priorityDefinitions.high;
-          if (score >= 34) return priorityDefinitions.medium;
-          return priorityDefinitions.low;
+        function assignTerciles(regions) {
+          priorityByNutsId.clear();
+          const eligibleRegions = regions
+            .filter(region => Number.isFinite(region.priority_score))
+            .sort((left, right) => left.priority_score - right.priority_score || left.nuts3_id.localeCompare(right.nuts3_id));
+          const lowerEnd = Math.floor(eligibleRegions.length / 3);
+          const middleEnd = Math.floor((eligibleRegions.length * 2) / 3);
+          eligibleRegions.forEach((region, index) => {
+            const priority = index < lowerEnd ? 'low' : index < middleEnd ? 'medium' : 'high';
+            priorityByNutsId.set(region.nuts3_id, priority);
+          });
+        }
+
+        function priorityFor(region) {
+          if (!Number.isFinite(region?.priority_score)) return priorityDefinitions.unavailable;
+          return priorityDefinitions[priorityByNutsId.get(region.nuts3_id) ?? 'unavailable'];
         }
 
         function formatPopulation(value) {
@@ -181,13 +193,13 @@
           const hasScore = Number.isFinite(region?.priority_score);
           const score = hasScore ? region.priority_score.toFixed(2) : '—';
           const method = region?.filter_method ?? 'Not available';
-          const priority = priorityFor(region?.priority_score);
+          const priority = priorityFor(region);
           return `<article class="region-card"><p class="region-card__code">NUTS 3 · ${id}</p><h3>${region?.nuts3_name ?? fallbackName}</h3><div class="score-chip" style="background:${priority.color}"><span>${priority.label}</span><b>${score}<small>/100</small></b></div><dl><dt>Population</dt><dd>${formatPopulation(region?.population)}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${method}</dd></dl></article>`;
         }
 
         function updateInspector(region, fallbackName, id) {
           const hasScore = Number.isFinite(region?.priority_score);
-          const priority = priorityFor(region?.priority_score);
+          const priority = priorityFor(region);
           inspectorElement.innerHTML = `<p class="map-inspector__eyebrow">Selected region · ${id}</p><h2>${region?.nuts3_name ?? fallbackName}</h2><div class="map-inspector__score" style="background:${priority.color}"><span>${priority.label}</span><strong>${hasScore ? region.priority_score.toFixed(2) : '—'}<small>/100</small></strong></div><dl><dt>Population</dt><dd>${formatPopulation(region?.population)}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${region?.filter_method ?? 'Not available'}</dd></dl>`;
         }
 
@@ -222,13 +234,14 @@
           const scoreIssue = scoreLoad.status === 'rejected' ? scoreLoad.reason.message : null;
           const scoreData = scoreLoad.status === 'fulfilled' ? scoreLoad.value : { regions: [] };
           const regionsByNutsId = new Map(scoreData.regions.map(region => [region.nuts3_id, region]));
+          assignTerciles(scoreData.regions);
           filterStatusElement.textContent = scoreIssue ? `Sector method unavailable: ${scoreIssue}` : describeSectorMethod(scoreData.regions);
           const joinedCount = germany.filter(feature => regionsByNutsId.has(feature.properties.NUTS_ID)).length;
           const joinIssue = !scoreIssue && !joinedCount ? 'No NUTS 3 codes in the score data match the local boundary snapshot.' : null;
 
           const featureStyle = feature => {
             const region = regionsByNutsId.get(feature.properties.NUTS_ID);
-            const priority = priorityFor(region?.priority_score);
+            const priority = priorityFor(region);
             return { color: '#ffffff', weight: 0.75, fillColor: priority.color, fillOpacity: 0.82 };
           };
           const onEachFeature = (feature, layer) => {

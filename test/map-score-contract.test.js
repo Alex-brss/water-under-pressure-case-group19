@@ -11,6 +11,8 @@ test('the Germany map reads the generated local score dataset instead of derivin
   assert.match(map, /const scoreUrl = 'data\/generated\/germany_nuts3_priority\.json'/);
   assert.match(map, /regionsByNutsId = new Map\(scoreData\.regions/);
   assert.match(map, /joinedCount/);
+  assert.match(map, /window\.location\.protocol === 'file:'/);
+  assert.match(map, /cannot read the local score dataset/);
   assert.doesNotMatch(map, /function getPriority\(/);
 });
 

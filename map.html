@@ -108,6 +108,11 @@
           return;
         }
 
+        if (window.location.protocol === 'file:') {
+          setStatus('error', 'This page was opened directly from a file, so the browser cannot read the local score dataset. Start a local web server and open http://localhost:4173/map.html instead.');
+          return;
+        }
+
         const map = L.map('map', { zoomControl: false, preferCanvas: true });
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 

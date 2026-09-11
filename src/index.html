@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PFAS data preparation workbench</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <p class="eyebrow">Water Under Pressure · Workstream 01</p>
+        <h1>Prepare reliable PFAS records before analysis.</h1>
+        <p class="lede">A local-only workbench for importing, checking, and documenting future Germany-focused PFAS data. It intentionally stops before analytical aggregation, mapping, exploration, and methodology presentation.</p>
+        <div class="scope-note"><strong>Prototype scope</strong><span>Data preparation and quality checks only · no external data is fetched or bundled.</span></div>
+      </header>
+
+      <section class="grid two-up" aria-label="Source configuration and import">
+        <article class="card">
+          <div class="card-heading"><span class="step">01</span><div><p class="eyebrow">Provenance first</p><h2>Describe the source</h2></div></div>
+          <p class="muted">Record where the future file came from so another teammate can reproduce the preparation step.</p>
+          <div class="form-grid">
+            <label>Publisher / dataset name<input id="source_name" placeholder="e.g. EEA Waterbase" /></label>
+            <label>Official source URL<input id="source_url" type="url" placeholder="https://…" /></label>
+            <label>Publication date<input id="publication_date" type="date" /></label>
+            <label>Retrieved / checked date<input id="retrieved_at" type="date" /></label>
+          </div>
+        </article>
+
+        <article class="card import-card">
+          <div class="card-heading"><span class="step">02</span><div><p class="eyebrow">No network calls</p><h2>Import a future file</h2></div></div>
+          <p class="muted">Choose a CSV or JSON file from your computer. Nothing is uploaded; processing happens in this browser.</p>
+          <label class="file-drop">Select CSV or JSON<input id="data-file" type="file" accept=".csv,.json,text/csv,application/json" /></label>
+          <p id="import-status" class="status" data-type="neutral">No file loaded.</p>
+          <p class="small">Expected fields: <code>record_id</code>, <code>country</code>, <code>latitude</code>, <code>longitude</code>, <code>sample_date</code>, <code>analyte</code>, <code>concentration</code>, <code>unit</code>, <code>matrix</code>, <code>source_url</code>.</p>
+        </article>
+      </section>
+
+      <section class="card" aria-label="Validation report">
+        <div class="section-heading"><div><p class="eyebrow">Quality gate</p><h2>Validation report</h2></div><button id="recheck" class="secondary">Run checks again</button></div>
+        <div class="metrics" aria-live="polite">
+          <div><span id="loaded-count">0</span><small>loaded</small></div>
+          <div><span id="valid-count">0</span><small>without errors</small></div>
+          <div class="metric-error"><span id="error-count">0</span><small>errors</small></div>
+          <div class="metric-warning"><span id="warning-count">0</span><small>warnings</small></div>
+        </div>
+        <div class="table-wrap"><table><thead><tr><th>Level</th><th>Row</th><th>Field</th><th>Finding</th></tr></thead><tbody id="issues-body"></tbody></table></div>
+      </section>
+
+      <section class="card" aria-label="Prepared records preview">
+        <div class="section-heading"><div><p class="eyebrow">Review before hand-off</p><h2>Prepared records preview</h2></div><div class="actions"><button id="export-prepared" class="primary" disabled>Export prepared CSV</button><button id="export-manifest" class="secondary" disabled>Export source manifest</button></div></div>
+        <p class="muted">Rows with errors stay out of the prepared export. Blank concentrations remain unavailable and are never converted to zero. This is still record-level data—not the analytical dataset.</p>
+        <div class="table-wrap"><table><thead id="preview-head"></thead><tbody id="preview-body"></tbody></table></div>
+      </section>
+
+      <footer class="footer"><p><strong>Handoff boundary:</strong> this workstream validates and documents input records. Teammates can later consume the prepared export to build the analytical dataset and map.</p><p class="small">No PFAS observations are included in this prototype. Add official source links and dataset dates when data is supplied.</p></footer>
+    </main>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

@@ -47,3 +47,7 @@ These questions aren't here to slow you down — they're part of what's being ev
 ## Our Approach
 
 *[To be filled in by the team at the end.]*
+
+## Current prototype
+
+The first workstream now has a local-only PFAS data-preparation workbench in `src/`. Open `src/index.html` through a static web server to configure source provenance, import a future CSV or JSON file, review validation findings, and export record-level prepared data. No public observations are bundled or fetched yet. The scope and handoff contract are documented in `docs/DATA_PREPARATION.md`.

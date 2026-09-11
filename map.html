@@ -143,13 +143,13 @@
           const score = hasScore ? region.priority_score.toFixed(2) : '—';
           const method = region?.filter_method ?? 'Not available';
           const priority = priorityFor(region?.priority_score);
-          return `<article class="region-card"><p class="region-card__code">NUTS 3 · ${id}</p><h3>${region?.nuts3_name ?? fallbackName}</h3><div class="score-chip" style="background:${priority.color}"><span>${priority.label}</span><b>${score}<small>/100</small></b></div><dl><dt>WISE pesticide/nutrient mean</dt><dd>${region?.wise_concentration_mean ?? 'Not available'}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${method}</dd></dl></article>`;
+          return `<article class="region-card"><p class="region-card__code">NUTS 3 · ${id}</p><h3>${region?.nuts3_name ?? fallbackName}</h3><div class="score-chip" style="background:${priority.color}"><span>${priority.label}</span><b>${score}<small>/100</small></b></div><dl><dt>WISE pesticide mean</dt><dd>${region?.pesticide_concentration_mean ?? 'Not available'}</dd><dt>WISE nutrient mean</dt><dd>${region?.nutrient_concentration_mean ?? 'Not available'}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${method}</dd></dl></article>`;
         }
 
         function updateInspector(region, fallbackName, id) {
           const hasScore = Number.isFinite(region?.priority_score);
           const priority = priorityFor(region?.priority_score);
-          inspectorElement.innerHTML = `<p class="map-inspector__eyebrow">Selected region · ${id}</p><h2>${region?.nuts3_name ?? fallbackName}</h2><div class="map-inspector__score" style="background:${priority.color}"><span>${priority.label}</span><strong>${hasScore ? region.priority_score.toFixed(2) : '—'}<small>/100</small></strong></div><dl><dt>WISE pesticide/nutrient mean</dt><dd>${region?.wise_concentration_mean ?? 'Not available'}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${region?.filter_method ?? 'Not available'}</dd></dl>`;
+          inspectorElement.innerHTML = `<p class="map-inspector__eyebrow">Selected region · ${id}</p><h2>${region?.nuts3_name ?? fallbackName}</h2><div class="map-inspector__score" style="background:${priority.color}"><span>${priority.label}</span><strong>${hasScore ? region.priority_score.toFixed(2) : '—'}<small>/100</small></strong></div><dl><dt>WISE pesticide mean</dt><dd>${region?.pesticide_concentration_mean ?? 'Not available'}</dd><dt>WISE nutrient mean</dt><dd>${region?.nutrient_concentration_mean ?? 'Not available'}</dd><dt>Industrial sites</dt><dd>${region?.industrial_site_count ?? 'Not available'}</dd><dt>Sector method</dt><dd>${region?.filter_method ?? 'Not available'}</dd></dl>`;
         }
 
         if (!window.L) {

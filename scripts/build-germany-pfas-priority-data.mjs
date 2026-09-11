@@ -207,20 +207,21 @@ async function loadWiseConcentrations(boundaries) {
     const query = new URLSearchParams({ query: sql, p: '1', nrOfHits: '10000' });
     const payload = await getJson(`${WISE_QUERY}?${query}`, 'WISE Freshwater');
     if (payload.errors?.length) throw new Error('WISE returned a query error.');
-    rows.push(...(payload.results ?? []));
+    rows.push(...(payload.results ?? []).map((row) => ({ ...row, wiseKind: sql.includes('AggregatedData_Pesticides') ? 'pesticide' : 'nutrient' })));
   }
-  const values = new Map();
+  const values = new Map([['pesticide', new Map()], ['nutrient', new Map()]]);
   for (const row of rows) {
     const point = [Number(row.lon), Number(row.lat)];
     const value = Number(row.resultMeanValue);
     if (!Number.isFinite(point[0]) || !Number.isFinite(point[1]) || !Number.isFinite(value) || value < 0) continue;
     const nuts3Id = nuts3FromWgs84Point(point, boundaries);
     if (!nuts3Id) continue;
-    const current = values.get(nuts3Id) ?? [];
+    const kind = row.wiseKind;
+    const current = values.get(kind).get(nuts3Id) ?? [];
     current.push(value);
-    values.set(nuts3Id, current);
+    values.get(kind).set(nuts3Id, current);
   }
-  return new Map([...values].map(([id, entries]) => [id, entries.reduce((sum, value) => sum + value, 0) / entries.length]));
+  return new Map([...values].map(([kind, entries]) => [kind, new Map([...entries].map(([id, valuesForRegion]) => [id, valuesForRegion.reduce((sum, value) => sum + value, 0) / valuesForRegion.length]))]));
 }
 
 async function loadWaterConnectivity(boundaries) {
@@ -338,7 +339,8 @@ function buildRegionalTable(boundaries, population, wiseConcentration, sites, wa
     return Number.isFinite(value) && boundary.area_km2 > 0 ? value / boundary.area_km2 : null;
   });
   const maxPopulationDensity = Math.max(...populationDensity.filter(Number.isFinite), 1);
-  const maxWiseConcentration = Math.max(...wiseConcentration.values(), 1);
+  const maxPesticide = Math.max(...wiseConcentration.get('pesticide').values(), 1);
+  const maxNutrient = Math.max(...wiseConcentration.get('nutrient').values(), 1);
 
   const regions = boundaries.map((boundary) => {
     const industrial = industrialByNuts3.get(boundary.nuts3_id) ?? { industrial_site_count: 0, sector_proxy_counts: {} };
@@ -350,11 +352,13 @@ function buildRegionalTable(boundaries, population, wiseConcentration, sites, wa
     const populationIndex = Number.isFinite(regionPopulation) ? (regionPopulation / maxPopulation) * 100 : null;
     const populationDensityIndex = regionPopulationDensity === null ? null : (regionPopulationDensity / maxPopulationDensity) * 100;
     const waterConnectivityIndex = (water.water_connectivity_raw / maxWaterConnectivity) * 100;
-    const wiseValue = wiseConcentration.get(boundary.nuts3_id) ?? null;
-    const wiseIndex = Number.isFinite(wiseValue) ? (wiseValue / maxWiseConcentration) * 100 : null;
-    const priorityScore = wiseIndex === null || populationDensityIndex === null
+    const pesticideValue = wiseConcentration.get('pesticide').get(boundary.nuts3_id) ?? null;
+    const nutrientValue = wiseConcentration.get('nutrient').get(boundary.nuts3_id) ?? null;
+    const pesticideIndex = Number.isFinite(pesticideValue) ? (pesticideValue / maxPesticide) * 100 : null;
+    const nutrientIndex = Number.isFinite(nutrientValue) ? (nutrientValue / maxNutrient) * 100 : null;
+    const priorityScore = pesticideIndex === null || nutrientIndex === null || populationDensityIndex === null
       ? null
-      : exposureIndex * 0.45 + wiseIndex * 0.25 + populationDensityIndex * 0.15 + waterConnectivityIndex * 0.15;
+      : exposureIndex * 0.20 + pesticideIndex * 0.30 + nutrientIndex * 0.20 + populationDensityIndex * 0.15 + waterConnectivityIndex * 0.15;
     return {
       nuts3_id: boundary.nuts3_id,
       nuts3_name: boundary.nuts3_name,
@@ -369,8 +373,10 @@ function buildRegionalTable(boundaries, population, wiseConcentration, sites, wa
       water_connectivity_raw: Number(water.water_connectivity_raw.toFixed(2)),
       exposure_index: Number(exposureIndex.toFixed(2)),
       population_index: populationIndex === null ? null : Number(populationIndex.toFixed(2)),
-      wise_concentration_mean: wiseValue === null ? null : Number(wiseValue.toFixed(4)),
-      wise_concentration_index: wiseIndex === null ? null : Number(wiseIndex.toFixed(2)),
+      pesticide_concentration_mean: pesticideValue === null ? null : Number(pesticideValue.toFixed(4)),
+      nutrient_concentration_mean: nutrientValue === null ? null : Number(nutrientValue.toFixed(4)),
+      pesticide_concentration_index: pesticideIndex === null ? null : Number(pesticideIndex.toFixed(2)),
+      nutrient_concentration_index: nutrientIndex === null ? null : Number(nutrientIndex.toFixed(2)),
       population_density_index: populationDensityIndex === null ? null : Number(populationDensityIndex.toFixed(2)),
       water_connectivity_index: Number(waterConnectivityIndex.toFixed(2)),
       priority_score: priorityScore === null ? null : Number(priorityScore.toFixed(2)),
@@ -400,7 +406,7 @@ async function main() {
       consequence: 'Eurostat population on 1 January by NUTS 3 region.',
       population_density: 'Population divided by NUTS 3 polygon area in km², derived from Eurostat population and GISCO boundaries.',
       water_connectivity: 'EU-Hydro main-river-corridor length in km weighted by Strahler order (orders 6–9 only), assigned to the NUTS 3 region containing each segment midpoint. It is a hydrological-connectivity proxy, not a model of contaminant transport.',
-      score: '0.45 × exposure index + 0.25 × WISE pesticide/nutrient concentration index + 0.15 × population-density index + 0.15 × water-connectivity index; each index is normalised to 0–100 against the German maximum.',
+      score: '0.20 × exposure index + 0.30 × WISE pesticide concentration index + 0.20 × WISE nutrient concentration index + 0.15 × population-density index + 0.15 × water-connectivity index; each index is normalised to 0–100 against the German maximum.',
       limitation: 'Indicative pre-prioritisation only. Industrial sites and water-network connectivity are proxies for potential pressure and propagation, not evidence of PFAS contamination, human exposure, health risk, contaminant transport, or regulatory non-compliance.',
     },
     sources: {

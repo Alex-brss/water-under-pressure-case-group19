@@ -14,6 +14,7 @@ const BATCH_SIZE = 1_000;
 const NUTS3_PATTERN = /^DE[A-Z0-9]{3}$/;
 const FILTER_METHOD = 'secteurs PFAS associés';
 const GERMANY_BBOX = '5.5,47.0,15.5,55.5';
+const CONCENTRATION_UNIT = 'µg/L';
 // Orders 6–9 represent the main river corridors. Lower-order streams would make the
 // public REST extraction disproportionately large without improving this regional proxy.
 const EU_HYDRO_RIVER_LAYERS = [10, 11, 12, 13];
@@ -197,6 +198,15 @@ async function loadPopulation() {
   );
 }
 
+function concentrationToMicrogramsPerLitre(value, unit) {
+  const normalized = String(unit ?? '').trim().toLowerCase().replace('μ', 'µ').replace(/\s+/g, '');
+  if (['µg/l', 'ug/l', 'µg/litre', 'ug/litre'].includes(normalized)) return value;
+  if (['mg/l', 'mg/litre'].includes(normalized)) return value * 1_000;
+  if (['ng/l', 'ng/litre'].includes(normalized)) return value / 1_000;
+  if (['g/l', 'g/litre'].includes(normalized)) return value * 1_000_000;
+  return null;
+}
+
 async function loadWiseConcentrations(boundaries) {
   const queries = [
     "select resultMeanValue, resultUom, lat, lon from [WISE_Indicators].[v6r1].[AggregatedData_Pesticides] where countryCode = 'DE' and phenomenonTimeReferenceYear = 2023",
@@ -212,7 +222,8 @@ async function loadWiseConcentrations(boundaries) {
   const values = new Map([['pesticide', new Map()], ['nutrient', new Map()]]);
   for (const row of rows) {
     const point = [Number(row.lon), Number(row.lat)];
-    const value = Number(row.resultMeanValue);
+    const rawValue = Number(row.resultMeanValue);
+    const value = concentrationToMicrogramsPerLitre(rawValue, row.resultUom);
     if (!Number.isFinite(point[0]) || !Number.isFinite(point[1]) || !Number.isFinite(value) || value < 0) continue;
     const nuts3Id = nuts3FromWgs84Point(point, boundaries);
     if (!nuts3Id) continue;
@@ -375,6 +386,7 @@ function buildRegionalTable(boundaries, population, wiseConcentration, sites, wa
       population_index: populationIndex === null ? null : Number(populationIndex.toFixed(2)),
       pesticide_concentration_mean: pesticideValue === null ? null : Number(pesticideValue.toFixed(4)),
       nutrient_concentration_mean: nutrientValue === null ? null : Number(nutrientValue.toFixed(4)),
+      concentration_unit: CONCENTRATION_UNIT,
       pesticide_concentration_index: pesticideIndex === null ? null : Number(pesticideIndex.toFixed(2)),
       nutrient_concentration_index: nutrientIndex === null ? null : Number(nutrientIndex.toFixed(2)),
       population_density_index: populationDensityIndex === null ? null : Number(populationDensityIndex.toFixed(2)),

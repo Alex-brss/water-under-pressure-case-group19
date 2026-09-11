@@ -33,6 +33,44 @@ async function checkEurostat() {
   }
 }
 
+async function loadWise() {
+  const status = $("#wise-status");
+  status.textContent = "Loading official WISE observations…";
+  status.dataset.type = "neutral";
+  const query = "select countryCode, monitoringSiteName, phenomenonTimeReferenceYear, resultMeanValue, resultUom, lat, lon from [WISE_Indicators].[v6r1].[AggregatedData_Pesticides] where countryCode = 'DE' and phenomenonTimeReferenceYear = 2023";
+  try {
+    const byWaterBodyQuery = "select countryCode, phenomenonTimeReferenceYear, resultMeanValue, resultUom, lat, lon from [WISE_Indicators].[v6r1].[AggregatedDataByWaterBody] where countryCode = 'DE' and phenomenonTimeReferenceYear = 2023";
+    const urls = [query, byWaterBodyQuery].map((item) => `https://discodata.eea.europa.eu/sql?query=${encodeURIComponent(item)}&p=1&nrOfHits=1000`);
+    const responses = await Promise.all(urls.map((url) => fetch(url, { headers: { Accept: "application/json" } })));
+    if (responses.some((response) => !response.ok)) throw new Error("WISE returned an HTTP error.");
+    const payloads = await Promise.all(responses.map((response) => response.json()));
+    if (payloads.some((payload) => payload.errors?.length)) throw new Error("WISE returned a query error.");
+    const fields = ["countryCode", "monitoringSiteName", "phenomenonTimeReferenceYear", "resultMeanValue", "resultUom", "lat", "lon"];
+    const rows = [
+      ...(payloads[0].results ?? []).map((record) => ({ ...record, wiseTable: "AggregatedData_Pesticides" })),
+      ...(payloads[1].results ?? []).map((record) => ({ ...record, monitoringSiteName: "no data is available", wiseTable: "AggregatedDataByWaterBody" })),
+    ].filter((record) => record.countryCode === "DE" && record.phenomenonTimeReferenceYear === 2023 &&
+      (record.resultMeanValue === null || Number.isFinite(Number(record.resultMeanValue))) &&
+      Number.isFinite(Number(record.lat)) && Number.isFinite(Number(record.lon)));
+    const head = $("#wise-head");
+    const body = $("#wise-body");
+    head.replaceChildren(); body.replaceChildren();
+    const header = document.createElement("tr");
+    fields.forEach((field) => { const cell = document.createElement("th"); cell.textContent = field; header.append(cell); });
+    head.append(header);
+    rows.slice(0, 200).forEach((record) => {
+      const row = document.createElement("tr");
+      fields.forEach((field) => { const cell = document.createElement("td"); cell.textContent = record[field] === null || record[field] === undefined || record[field] === "" ? "no data is available" : String(record[field]); row.append(cell); });
+      body.append(row);
+    });
+    status.textContent = rows.length ? `Loaded ${rows.length} coherent official Germany/2023 WISE observations from both tables (showing up to 200).` : "No data is available for Germany in 2023.";
+    status.dataset.type = "success";
+  } catch (error) {
+    status.textContent = `WISE could not be reached: ${error.message}`;
+    status.dataset.type = "error";
+  }
+}
+
 function setStatus(message, type = "neutral") {
   const element = $("#import-status");
   element.textContent = message;
@@ -145,6 +183,7 @@ async function importFile(file) {
 
 $("#data-file").addEventListener("change", (event) => importFile(event.target.files[0]));
 $("#load-eurostat").addEventListener("click", checkEurostat);
+$("#load-wise").addEventListener("click", loadWise);
 for (const field of metadataFields) $(`#${field}`).addEventListener("input", runValidation);
 $("#recheck").addEventListener("click", runValidation);
 $("#export-prepared").addEventListener("click", () => {

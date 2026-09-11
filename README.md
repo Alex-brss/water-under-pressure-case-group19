@@ -47,3 +47,15 @@ These questions aren't here to slow you down — they're part of what's being ev
 ## Our Approach
 
 *[To be filled in by the team at the end.]*
+
+## Current prototype
+
+The first workstream now has a local-only PFAS data-preparation workbench in `src/`. Open `src/index.html` through a static web server to configure source provenance, import a future CSV or JSON file, review validation findings, and export record-level prepared data. No public observations are bundled or fetched yet. The scope and handoff contract are documented in `docs/DATA_PREPARATION.md`.
+
+## Deployment and data-security boundary
+
+The Vercel-hosted interface is suitable for sharing public German source data and the validation workflow. In this prototype, operator-specific CSV/JSON files are processed in the browser and are not uploaded. This must not be described as a complete production security architecture: before storing operator data, add authentication, role-based authorization, encryption at rest and in transit, tenant separation, audit logging, retention/deletion controls, and server-side input validation. Never place API keys in browser code or committed files.
+
+## Refresh and analytical-data contract
+
+The normalized record shape is designed for future map and analytical tools: every record has a German water-source identifier and coordinates, a dated observation, analyte/concentration fields, population density, and three connectivity counts. `connected_water_bodies` is derived deterministically from those counts. Every ingestion refresh must retain the official source URL and retrieval date, reject records outside Germany, and preserve missing measurements rather than filling them. Eurostat can be refreshed from its public API without a key; WISE and EU-Hydro should be refreshed by a scheduled server-side ingestion job that downloads official releases, validates them, and publishes a versioned Germany-only snapshot. Vercel cron or an external scheduler can trigger that job once a secure backend and storage are added.
